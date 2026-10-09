@@ -1,6 +1,7 @@
 import { useEffect, useReducer, useState } from 'react';
 import type { Spot, Task, Trip } from '../types';
-import { loadTrips, saveTrips } from '../services/storage';
+import { loadTombstones, loadTrips, saveTombstones, saveTrips } from '../services/storage';
+import type { Tombstone } from '../services/sync';
 import { sampleTrip } from '../data/sampleTrip';
 
 type Action =
@@ -14,7 +15,13 @@ type Action =
   | { type: 'upsertSpot'; tripId: string; spot: Spot }
   | { type: 'removeSpot'; tripId: string; spotId: string }
   | { type: 'dismissPlace'; tripId: string; key: string }
-  | { type: 'restorePlaces'; tripId: string };
+  | { type: 'restorePlaces'; tripId: string }
+  | { type: 'merge'; trips: Trip[]; tombstones: Tombstone[] };
+
+interface State {
+  trips: Trip[];
+  tombstones: Tombstone[];
+}
 
 function toggle(list: string[], id: string): string[] {
   return list.includes(id) ? list.filter((x) => x !== id) : [...list, id];
@@ -24,7 +31,7 @@ function updateTrip(trips: Trip[], id: string, fn: (t: Trip) => Trip): Trip[] {
   return trips.map((t) => (t.id === id ? fn(t) : t));
 }
 
-function reducer(trips: Trip[], action: Action): Trip[] {
+function edit(trips: Trip[], action: Exclude<Action, { type: 'merge' }>): Trip[] {
   switch (action.type) {
     case 'upsert':
       return trips.some((t) => t.id === action.trip.id)
@@ -58,13 +65,31 @@ function reducer(trips: Trip[], action: Action): Trip[] {
   }
 }
 
+/** Every edit stamps the trip's updatedAt so synced copies can be merged; deletions leave a tombstone. */
+function reducer(state: State, action: Action): State {
+  if (action.type === 'merge') return { trips: action.trips, tombstones: action.tombstones };
+  const now = new Date().toISOString();
+  if (action.type === 'remove') {
+    return {
+      trips: edit(state.trips, action),
+      tombstones: [...state.tombstones.filter((d) => d.id !== action.tripId), { id: action.tripId, deletedAt: now }],
+    };
+  }
+  const id = action.type === 'upsert' ? action.trip.id : action.tripId;
+  const trips = edit(state.trips, action).map((t) => (t.id === id ? { ...t, updatedAt: now } : t));
+  return { trips, tombstones: state.tombstones.filter((d) => d.id !== id) };
+}
+
 export type TripDispatch = (action: Action) => void;
 
-export function useTrips(): { trips: Trip[]; dispatch: TripDispatch; saved: boolean } {
-  const [trips, dispatch] = useReducer(reducer, undefined, () => loadTrips() ?? [sampleTrip()]);
+export function useTrips(): { trips: Trip[]; tombstones: Tombstone[]; dispatch: TripDispatch; saved: boolean } {
+  const [state, dispatch] = useReducer(reducer, undefined, () => ({ trips: loadTrips() ?? [sampleTrip()], tombstones: loadTombstones() }));
   const [saved, setSaved] = useState(true);
   useEffect(() => {
-    setSaved(saveTrips(trips));
-  }, [trips]);
-  return { trips, dispatch, saved };
+    setSaved(saveTrips(state.trips));
+  }, [state.trips]);
+  useEffect(() => {
+    saveTombstones(state.tombstones);
+  }, [state.tombstones]);
+  return { trips: state.trips, tombstones: state.tombstones, dispatch, saved };
 }

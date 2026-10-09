@@ -34,12 +34,13 @@ General planners (Wanderlog, GetYourGuide, Visit A City, Culture Trip) cover Eth
 4. Each day shows the **Ethiopian date**, every task shows **Ethiopian time**, and the day lists **holidays, fasting and safety** notes.
 5. **Preferences**: budget (tight, mid-range, comfortable), diet (vegetarian, vegan, halal, Orthodox fasting), easy access and travel with young children. They filter the 149-place catalogue across 11 destinations (Hawassa added) and add tasks such as ordering yetsom, asking for "ye Islam" meat, ground-floor rooms, child seats and a midday break for kids.
 6. **Diaspora mode** for Ethiopians and people of Ethiopian origin visiting home. They choose how they enter (Origin ID, Ethiopian passport or visa), and Origin ID or passport holders skip the e-Visa steps. They get prep for money transfers and diaspora accounts, customs allowances for gifts, baggage weight and an old Ethio Telecom number. Optional family afternoons (15:00 to 19:00) are kept free of places, and holidays get a "holiday at home" task.
-7. Your own tasks, hiding generated tasks, calendar export (.ics), works offline on a phone.
+7. **Accounts and sync (Supabase)**. igo is local-first: trips always save on the device. Signing in with email and password syncs trips across devices; the newest edit of each trip wins, and deletions spread too. The example trip is never uploaded. Setup: run `supabase/migrations/0001_trips.sql` once in the Supabase SQL editor, and put the project URL and publishable key in `.env.local` (see `.env.example`).
+8. Your own tasks, hiding generated tasks, calendar export (.ics), works offline on a phone.
 
 ## Not in the MVP
 
 - Local checks of the catalogue. All 149 places show "Not yet checked by a local" until someone in each city reviews them.
 
 - Amharic interface.
-- Accounts and sync, live safety feeds, bookings, paid APIs.
+- Live safety feeds, bookings, paid APIs.
 - Other countries (drafts exist in `app/src/data/laterCountries.ts`).
