@@ -26,6 +26,9 @@ export function sampleTrip(): Trip {
     diets: [],
     mobility: 'full',
     withKids: false,
+    diaspora: false,
+    entryDoc: 'visa',
+    familyTime: false,
     dismissedPlaces: [],
     spots: [
       { id: 'sp2', cityId: 'addis', name: 'Entoto Park viewpoint', light: 'sunset', shotList: 'City reveal, time-lapse into night' },

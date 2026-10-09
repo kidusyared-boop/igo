@@ -26,6 +26,7 @@ export function preferenceLabels(trip: Trip): string[] {
   labels.push(...trip.diets.map((d) => DIETS.find((x) => x.value === d)?.label.toLowerCase() ?? d));
   if (trip.mobility === 'limited') labels.push('easy access');
   if (trip.withKids) labels.push('with kids');
+  if (trip.diaspora) labels.push(trip.familyTime ? 'visiting family' : 'visiting home');
   return labels;
 }
 

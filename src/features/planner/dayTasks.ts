@@ -1,8 +1,9 @@
 import type { City, CountryPack, Spot, Task, Trip } from '../../types';
 import { fromMinutes, shiftTime, toMinutes } from '../../utils/dates';
 import { utcToZoned, zonedToUtc } from '../../utils/timezone';
-import { ANY_SLOTS, MOVE_CHECK_IN, freeWindow, type DaySkeleton } from './assignSpots';
+import { ANY_SLOTS, MOVE_CHECK_IN, anySlots, type DaySkeleton } from './assignSpots';
 import { interestLabel } from './personalize';
+import { needsVisa } from './diaspora';
 
 export interface DayContext {
   trip: Trip;
@@ -38,8 +39,7 @@ function spotDrafts(ctx: DayContext, sunrise: string, sunset: string): Draft[] {
   const creator = ctx.trip.mode === 'creator';
   const verb = creator ? 'Shoot' : 'Visit';
   const drafts: Draft[] = [];
-  const [free, leave] = freeWindow(ctx.day, ctx.trip);
-  const anyTimes = ANY_SLOTS.filter((t) => toMinutes(t) >= free && toMinutes(t) + 120 <= leave);
+  const anyTimes = anySlots(ctx.day, ctx.trip);
   let anyIndex = 0;
   for (const spot of ctx.spots) {
     const detail = spotDetail(spot, ctx.trip);
@@ -79,7 +79,8 @@ function arrivalDrafts(ctx: DayContext): Draft[] {
   const a = trip.arrivalTime;
   const checkIn = fromMinutes(Math.max(toMinutes(a) + 120, toMinutes('15:00')));
   return [
-    { key: 'land', time: a, title: 'Land and clear immigration', detail: country.entry.summary, category: 'logistics' },
+    { key: 'land', time: a, title: 'Land and clear immigration', detail: needsVisa(trip) ? country.entry.summary : 'Use the Ethiopian citizens and Origin ID line with your document ready.', category: 'logistics' },
+    ...(trip.diaspora ? [{ key: 'tell-family', time: shiftTime(a, 50), title: 'Tell family you have landed and when you will reach them', category: 'logistics' as const }] : []),
     { key: 'esim', time: shiftTime(a, 45), title: 'Turn on your eSIM and test data', detail: country.connectivity, category: 'logistics' },
     { key: 'cash', time: shiftTime(a, 55), title: `Get ${country.currency.code} cash from a bank ATM`, detail: country.currency.cashNote, category: 'logistics' },
     { key: 'ride', time: shiftTime(a, 70), title: 'Get to your stay', detail: country.rideApps, category: 'logistics' },
@@ -89,7 +90,8 @@ function arrivalDrafts(ctx: DayContext): Draft[] {
       : []),
     { key: 'sleep', time: '22:00', title: 'Lights out by 22:00 local to reset your body clock', detail: 'Get daylight today and avoid naps longer than 20 minutes.', category: 'rest' },
     ...altitudeDrafts(ctx, shiftTime(checkIn, 15)),
-    ...(country.arrivalTasks ?? []).map((t, i) => ({ ...t, time: shiftTime(checkIn, 30 + i * 10), category: 'logistics' as const })),
+    // People visiting home already know the local clock and customs.
+    ...(trip.diaspora ? [] : country.arrivalTasks ?? []).map((t, i) => ({ ...t, time: shiftTime(checkIn, 30 + i * 10), category: 'logistics' as const })),
   ];
 }
 
@@ -186,6 +188,14 @@ export function buildDayTasks(ctx: DayContext): Task[] {
       if (!hasAnySpot && !day.movedFrom) drafts.push({ key: 'explore', time: '10:00', title: 'Explore a new neighborhood on foot', category: 'explore' });
       drafts.push({ key: 'plan-tomorrow', time: '21:00', title: 'Plan tomorrow: check opening hours and book timed tickets', category: 'rest' });
     }
+  }
+
+  if (trip.diaspora && trip.familyTime && day.kind === 'full' && !day.movedFrom) {
+    drafts.push({ key: 'family', time: '15:00', title: 'Family time', detail: 'Kept free for visits, coffee at home and meals with relatives.', category: 'rest' });
+  }
+
+  if (trip.diaspora && (day.kind === 'full' || day.kind === 'arrival') && ctx.country.dayNotes?.(day.date).some((n) => n.kind === 'holiday')) {
+    drafts.push({ key: 'holiday-home', time: '09:00', title: 'Holiday at home: confirm where the family gathers', detail: 'Shops and offices close and transport is busy. Book any ride a day ahead.', category: 'logistics' });
   }
 
   if (trip.withKids && day.kind === 'full' && !day.movedFrom) {

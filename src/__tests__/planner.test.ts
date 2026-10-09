@@ -197,3 +197,33 @@ describe('traveler preferences', () => {
   });
 });
 
+describe('diaspora mode', () => {
+  const home = (over: Partial<Trip> = {}): Trip => ({
+    ...sampleTrip(), startDate: '2027-01-04', endDate: '2027-01-10', stops: [], cityId: 'addis', mode: 'traveler',
+    diaspora: true, entryDoc: 'origin-id', familyTime: true, interests: ['city', 'history', 'culture', 'markets'], ...over,
+  });
+  const preIds = (t: Trip) => generatePlan(t).preTrip.map((x) => x.id);
+
+  it('skips the e-Visa for Origin ID holders and adds home-visit prep', () => {
+    const ids = preIds(home());
+    expect(ids).not.toContain('auto:pre:form');
+    expect(ids).not.toContain('auto:pre:entry');
+    expect(ids).toEqual(expect.arrayContaining(['auto:pre:dia-origin-id', 'auto:pre:dia-customs', 'auto:pre:dia-money', 'auto:pre:dia-family-plan']));
+    expect(preIds(home({ entryDoc: 'visa' }))).toEqual(expect.arrayContaining(['auto:pre:form', 'auto:pre:dia-get-origin-id']));
+  });
+  it('keeps afternoons free for family', () => {
+    const full = generatePlan(home()).days.filter((d) => d.kind === 'full');
+    for (const d of full) {
+      expect(d.tasks.some((t) => t.id.endsWith(':family'))).toBe(true);
+      const clash = d.tasks.filter((t) => t.id.includes(':spot-') && t.time && toMinutes(t.time) >= toMinutes('13:00') && toMinutes(t.time) < toMinutes('19:00'));
+      expect(clash).toHaveLength(0);
+    }
+  });
+  it('flags Genna as a holiday at home', () => {
+    const genna = generatePlan(home()).days.find((d) => d.date === '2027-01-07');
+    expect(genna?.tasks.some((t) => t.id.endsWith(':holiday-home'))).toBe(true);
+  });
+  it('leaves visitors unchanged', () => {
+    expect(preIds(home({ diaspora: false }))).toContain('auto:pre:form');
+  });
+});

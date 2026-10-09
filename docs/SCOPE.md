@@ -33,13 +33,13 @@ General planners (Wanderlog, GetYourGuide, Visit A City, Culture Trip) cover Eth
    - Departure: final backup, spending leftover birr, leaving for the airport.
 4. Each day shows the **Ethiopian date**, every task shows **Ethiopian time**, and the day lists **holidays, fasting and safety** notes.
 5. **Preferences**: budget (tight, mid-range, comfortable), diet (vegetarian, vegan, halal, Orthodox fasting), easy access and travel with young children. They filter the 149-place catalogue across 11 destinations (Hawassa added) and add tasks such as ordering yetsom, asking for "ye Islam" meat, ground-floor rooms, child seats and a midday break for kids.
-6. Your own tasks, hiding generated tasks, calendar export (.ics), works offline on a phone.
+6. **Diaspora mode** for Ethiopians and people of Ethiopian origin visiting home. They choose how they enter (Origin ID, Ethiopian passport or visa), and Origin ID or passport holders skip the e-Visa steps. They get prep for money transfers and diaspora accounts, customs allowances for gifts, baggage weight and an old Ethio Telecom number. Optional family afternoons (15:00 to 19:00) are kept free of places, and holidays get a "holiday at home" task.
+7. Your own tasks, hiding generated tasks, calendar export (.ics), works offline on a phone.
 
 ## Not in the MVP
 
 - Local checks of the catalogue. All 149 places show "Not yet checked by a local" until someone in each city reviews them.
 
-- Diaspora mode (Yellow Card / Ethiopian Origin ID, family visits, banking, customs). Waiting on your decision.
 - Amharic interface.
 - Accounts and sync, live safety feeds, bookings, paid APIs.
 - Other countries (drafts exist in `app/src/data/laterCountries.ts`).

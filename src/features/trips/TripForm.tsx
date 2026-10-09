@@ -8,6 +8,7 @@ import { validateTrip } from './tripDraft';
 import { RouteEditor } from './RouteEditor';
 import { InterestPicker } from './InterestPicker';
 import { PreferencePicker } from './PreferencePicker';
+import { DiasporaPicker } from './DiasporaPicker';
 import { formatDay } from '../../utils/dates';
 
 interface TripFormProps {
@@ -101,6 +102,14 @@ export function TripForm({ initial, isNew, onSave, onCancel }: TripFormProps) {
         onDiets={(diets) => set('diets', diets)}
         onMobility={(mobility) => set('mobility', mobility)}
         onKids={(withKids) => set('withKids', withKids)}
+      />
+      <DiasporaPicker
+        diaspora={trip.diaspora}
+        entryDoc={trip.entryDoc}
+        familyTime={trip.familyTime}
+        onDiaspora={(diaspora) => setTrip((t) => ({ ...t, diaspora, entryDoc: diaspora && t.entryDoc === 'visa' ? 'origin-id' : t.entryDoc }))}
+        onEntryDoc={(entryDoc) => set('entryDoc', entryDoc)}
+        onFamilyTime={(familyTime) => set('familyTime', familyTime)}
       />
       <Segmented label="Plan for" value={trip.mode} options={MODES} onChange={(v) => set('mode', v)} />
       {trip.mode === 'creator' && (
