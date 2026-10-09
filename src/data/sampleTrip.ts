@@ -22,6 +22,10 @@ export function sampleTrip(): Trip {
     flyingDrone: true,
     interests: ['city', 'food', 'coffee', 'culture', 'history'],
     pace: 'balanced',
+    budget: 'mid',
+    diets: [],
+    mobility: 'full',
+    withKids: false,
     dismissedPlaces: [],
     spots: [
       { id: 'sp2', cityId: 'addis', name: 'Entoto Park viewpoint', light: 'sunset', shotList: 'City reveal, time-lapse into night' },
