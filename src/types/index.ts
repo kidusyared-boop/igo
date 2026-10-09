@@ -24,6 +24,9 @@ export type Diet = 'vegetarian' | 'vegan' | 'halal' | 'fasting';
 
 export type Mobility = 'full' | 'limited';
 
+/** How a diaspora traveler enters Ethiopia. */
+export type EntryDoc = 'visa' | 'origin-id' | 'ethiopian-passport';
+
 export type TaskCategory =
   | 'prep'
   | 'logistics'
@@ -146,6 +149,11 @@ export interface Trip {
   diets: Diet[];
   mobility: Mobility;
   withKids: boolean;
+  /** Ethiopian or of Ethiopian origin, visiting home. */
+  diaspora: boolean;
+  entryDoc: EntryDoc;
+  /** Keep afternoons free for family on full days. */
+  familyTime: boolean;
   /** Suggested places the traveler said no to. */
   dismissedPlaces: string[];
   spots: Spot[];

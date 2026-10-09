@@ -24,15 +24,35 @@ export function freeWindow(day: DaySkeleton, trip: Trip): [number, number] {
   return [start, end];
 }
 
+/** Afternoons kept free for family: 15:00 to 19:00 on full days in one place. */
+const FAMILY_FROM = toMinutes('15:00');
+const FAMILY_TO = toMinutes('19:00');
+
+export function isFamilyDay(day: DaySkeleton, trip: Trip): boolean {
+  return trip.diaspora && trip.familyTime && day.kind === 'full' && !day.movedFrom;
+}
+
+/** Daytime start times that fit this day's free window. */
+export function anySlots(day: DaySkeleton, trip: Trip): string[] {
+  const [free, leave] = freeWindow(day, trip);
+  const family = isFamilyDay(day, trip);
+  return ANY_SLOTS.filter((t) => {
+    const start = toMinutes(t);
+    const end = start + 120;
+    return start >= free && end <= leave && !(family && end > FAMILY_FROM && start < FAMILY_TO);
+  });
+}
+
 /** Whether a spot with this light fits on this day given flight times. */
 export function slotFits(day: DaySkeleton, light: Light, trip: Trip): boolean {
   const sunrise = toMinutes(day.sun?.sunrise ?? '06:30');
   const sunset = toMinutes(day.sun?.sunset ?? '18:30');
   const [free, leave] = freeWindow(day, trip);
-  const fits = ([start, end]: [number, number]) => start >= free && end <= leave;
+  const family = isFamilyDay(day, trip);
+  const fits = ([start, end]: [number, number]) => start >= free && end <= leave && !(family && end > FAMILY_FROM && start < FAMILY_TO);
   switch (light) {
     case 'sunrise': return fits([sunrise - 30, sunrise + 60]);
-    case 'any': return ANY_SLOTS.some((t) => fits([toMinutes(t), toMinutes(t) + 120]));
+    case 'any': return anySlots(day, trip).length > 0;
     case 'lunch': return fits([toMinutes('12:30'), toMinutes('13:30')]);
     case 'sunset': return fits([sunset - 60, sunset + 15]);
     case 'dinner': return fits([toMinutes('19:30'), toMinutes('21:00')]);
@@ -65,7 +85,7 @@ export function assignSpots(
 
   const place = (spot: Spot, respectPace: boolean): boolean => {
     const pick = days
-      .filter((d) => inCity(spot, d) && used(d.date, spot.light) < CAPACITY[spot.light] && slotFits(d, spot.light, trip))
+      .filter((d) => inCity(spot, d) && used(d.date, spot.light) < (spot.light === 'any' ? anySlots(d, trip).length : CAPACITY[spot.light]) && slotFits(d, spot.light, trip))
       .filter((d) => !respectPace || isMealSpot(spot) || count(d.date) < dayCapacity(d, trip.pace, trip.withKids))
       .sort((a, b) => order(a) - order(b) || count(a.date) - count(b.date))[0];
     if (pick) byDate.get(pick.date)?.push(spot);

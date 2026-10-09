@@ -3,6 +3,7 @@ import { addDays, formatDay } from '../../utils/dates';
 import { findCity } from '../../data/countries';
 import { routeCities } from './route';
 import { preferencePrep } from './preferences';
+import { diasporaPrep, needsVisa } from './diaspora';
 
 function task(trip: Trip, daysBefore: number, key: string, fields: Omit<Task, 'id' | 'date' | 'source'>): Task {
   const date = addDays(trip.startDate, -daysBefore);
@@ -58,7 +59,7 @@ export function buildPreTripTasks(trip: Trip, country: CountryPack, city: City):
     tasks.push(task(trip, extra.daysBefore, extra.key, { title: extra.title, detail: extra.detail, category: 'prep' }));
   }
 
-  for (const pref of preferencePrep(trip)) {
+  for (const pref of [...preferencePrep(trip), ...diasporaPrep(trip)]) {
     tasks.push(task(trip, pref.daysBefore, pref.key, { title: pref.title, detail: pref.detail, category: 'prep' }));
   }
 
@@ -118,5 +119,6 @@ export function buildPreTripTasks(trip: Trip, country: CountryPack, city: City):
     );
   }
 
-  return tasks;
+  // Origin ID holders and Ethiopian citizens skip the visitor e-Visa steps.
+  return needsVisa(trip) ? tasks : tasks.filter((t) => t.id !== 'auto:pre:entry' && t.id !== 'auto:pre:form');
 }
