@@ -1,4 +1,3 @@
-import { preferenceLabels } from '../planner/preferences';
 import { useMemo, useState } from 'react';
 import type { Task, Trip } from '../../types';
 import type { TripDispatch } from '../../hooks/useTrips';
@@ -13,7 +12,17 @@ import { SpotsView } from '../spots/SpotsView';
 import { CountryBrief } from '../country/CountryBrief';
 import { TabBar, type TripTab } from './TabBar';
 import { TripMenu } from './TripMenu';
-import { interestLabel } from '../planner/personalize';
+import { useT, type TFunction } from '../../i18n';
+
+/** Short labels for the "Planned for" line, translated. */
+function profileLabels(trip: Trip, t: TFunction): string[] {
+  const labels = [t('chips.pace', { pace: t(`pace.${trip.pace}`).toLowerCase() }), t('chips.budget', { budget: t(`budget.${trip.budget}`).toLowerCase() })];
+  labels.push(...trip.diets.map((d) => t(`diet.${d}`).toLowerCase()));
+  if (trip.mobility === 'limited') labels.push(t('chips.easyAccess'));
+  if (trip.withKids) labels.push(t('chips.withKids'));
+  if (trip.diaspora) labels.push(t(trip.familyTime ? 'chips.visitingFamily' : 'chips.visitingHome'));
+  return labels;
+}
 
 interface TripViewProps {
   trip: Trip;
@@ -24,6 +33,7 @@ interface TripViewProps {
 }
 
 export function TripView({ trip, dispatch, onBack, onEdit, notify }: TripViewProps) {
+  const t = useT();
   const plan = useMemo(() => generatePlan(trip), [trip]);
   const country = findCountry(trip.countryCode);
   const city = findCity(trip.countryCode, trip.cityId);
@@ -34,7 +44,7 @@ export function TripView({ trip, dispatch, onBack, onEdit, notify }: TripViewPro
   const doneIds = useMemo(() => new Set(trip.doneIds), [trip.doneIds]);
 
   if (!country || !city) {
-    return <div className="empty"><p>This trip's country is no longer supported.</p><button className="btn" onClick={onBack}>Back to trips</button></div>;
+    return <div className="empty"><p>{t('trip.unsupported')}</p><button className="btn" onClick={onBack}>{t('trip.back')}</button></div>;
   }
 
   const dayIndex = Math.max(0, plan.days.findIndex((d) => d.date === selected));
@@ -48,18 +58,18 @@ export function TripView({ trip, dispatch, onBack, onEdit, notify }: TripViewPro
   function exportIcs() {
     try {
       downloadText(`${trip.name.replace(/[^\w-]+/g, '-')}.ics`, buildIcs(trip, plan, city!.timeZone), 'text/calendar');
-      notify('Calendar file downloaded');
+      notify(t('toast.calendar'));
     } catch {
-      notify('Could not create the calendar file on this device.');
+      notify(t('toast.calendarFailed'));
     }
   }
 
   return (
     <>
       <header className="topbar">
-        <button type="button" className="icon-btn" onClick={onBack} aria-label="All trips">‹</button>
+        <button type="button" className="icon-btn" onClick={onBack} aria-label={t('trip.allTrips')}>‹</button>
         <h1>{trip.name}</h1>
-        <button type="button" className="btn small" aria-expanded={menuOpen} onClick={() => setMenuOpen((o) => !o)}>Trip</button>
+        <button type="button" className="btn small" aria-expanded={menuOpen} onClick={() => setMenuOpen((o) => !o)}>{t('trip.menu')}</button>
       </header>
       {menuOpen && (
         <div style={{ paddingTop: 12 }}>
@@ -75,12 +85,11 @@ export function TripView({ trip, dispatch, onBack, onEdit, notify }: TripViewPro
       {tab === 'days' && day && (
         <>
           <div className="profile-line">
-            <span>Planned for</span>
-            {trip.interests.length === 0 && <span className="tag">popular places</span>}
-            {trip.interests.map((i) => <span key={i} className="tag">{interestLabel(i)}</span>)}
-            <span className="tag">{trip.pace} pace</span>
-            {preferenceLabels(trip).map((l) => <span key={l} className="tag">{l}</span>)}
-            <button type="button" className="btn small ghost" onClick={onEdit}>Change</button>
+            <span>{t('chips.plannedFor')}</span>
+            {trip.interests.length === 0 && <span className="tag">{t('chips.popular')}</span>}
+            {trip.interests.map((i) => <span key={i} className="tag">{t(`interest.${i}`).toLowerCase()}</span>)}
+            {profileLabels(trip, t).map((l) => <span key={l} className="tag">{l}</span>)}
+            <button type="button" className="btn small ghost" onClick={onEdit}>{t('common.change')}</button>
           </div>
           <DayStrip days={plan.days} selected={day.date} doneIds={doneIds} onSelect={setSelected} />
           <DayView

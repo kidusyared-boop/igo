@@ -7,19 +7,22 @@ import { TripList } from './features/trips/TripList';
 import { TripForm } from './features/trips/TripForm';
 import { TripView } from './features/trips/TripView';
 import { blankTrip } from './features/trips/tripDraft';
+import { LanguageSwitch } from './components/ui/LanguageSwitch';
+import { useT } from './i18n';
 
 type Screen = { name: 'list' } | { name: 'trip'; id: string } | { name: 'form'; trip: Trip; isNew: boolean };
 
 export function App() {
   const { trips, tombstones, dispatch, saved } = useTrips();
   const sync = useSync(trips, tombstones, dispatch);
+  const t = useT();
   const [screen, setScreen] = useState<Screen>(() => (trips.length === 1 && trips[0] ? { name: 'trip', id: trips[0].id } : { name: 'list' }));
   const [toast, setToast] = useState<string | null>(null);
 
   useEffect(() => {
     if (!toast) return;
-    const t = setTimeout(() => setToast(null), 2500);
-    return () => clearTimeout(t);
+    const timer = setTimeout(() => setToast(null), 2500);
+    return () => clearTimeout(timer);
   }, [toast]);
 
   const openTrip = screen.name === 'trip' ? trips.find((t) => t.id === screen.id) : undefined;
@@ -29,7 +32,8 @@ export function App() {
       {screen.name !== 'trip' && (
         <header className="topbar">
           <span className="brand">i<span>go</span></span>
-          <span className="eyebrow" style={{ marginLeft: 'auto' }}>Daily plans for Ethiopia trips</span>
+          <span className="eyebrow tagline">{t('app.tagline')}</span>
+          <LanguageSwitch />
         </header>
       )}
       {screen.name === 'list' && <AccountPanel sync={sync.state} onSyncNow={() => void sync.syncNow()} />}
@@ -55,7 +59,7 @@ export function App() {
         />
       )}
       {screen.name === 'trip' && !openTrip && <TripList trips={trips} onOpen={(id) => setScreen({ name: 'trip', id })} onNew={() => setScreen({ name: 'form', trip: blankTrip(), isNew: true })} />}
-      {!saved && <p className="notice">This browser is not saving data. Your changes last until you close the page.</p>}
+      {!saved && <p className="notice">{t('app.notSaving')}</p>}
       {toast && <div className="toast" role="status">{toast}</div>}
     </div>
   );

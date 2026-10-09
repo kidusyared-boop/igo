@@ -41,6 +41,6 @@ General planners (Wanderlog, GetYourGuide, Visit A City, Culture Trip) cover Eth
 
 - Local checks of the catalogue. All 149 places show "Not yet checked by a local" until someone in each city reviews them.
 
-- Amharic interface.
+- Amharic for generated tasks, place notes and country facts (the interface is translated; plans are still English). The Amharic interface needs review by a native speaker.
 - Live safety feeds, bookings, paid APIs.
 - Other countries (drafts exist in `app/src/data/laterCountries.ts`).

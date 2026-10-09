@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { LanguageSwitch } from '../../components/ui/LanguageSwitch';
+import { useT } from '../../i18n';
 
 interface TripMenuProps {
   hiddenCount: number;
@@ -9,22 +11,24 @@ interface TripMenuProps {
 }
 
 export function TripMenu({ hiddenCount, onEdit, onExport, onRestore, onDelete }: TripMenuProps) {
+  const t = useT();
   const [confirming, setConfirming] = useState(false);
   return (
     <div className="panel">
       <div className="row">
-        <button type="button" className="btn small" onClick={onEdit}>Edit trip</button>
-        <button type="button" className="btn small" onClick={onExport}>Export to calendar (.ics)</button>
-        {hiddenCount > 0 && <button type="button" className="btn small" onClick={onRestore}>Show {hiddenCount} hidden</button>}
-        {!confirming && <button type="button" className="btn small danger" onClick={() => setConfirming(true)}>Delete trip</button>}
+        <button type="button" className="btn small" onClick={onEdit}>{t('form.edit')}</button>
+        <button type="button" className="btn small" onClick={onExport}>{t('menu.export')}</button>
+        {hiddenCount > 0 && <button type="button" className="btn small" onClick={onRestore}>{t('menu.showHidden', { n: hiddenCount })}</button>}
+        {!confirming && <button type="button" className="btn small danger" onClick={() => setConfirming(true)}>{t('menu.delete')}</button>}
       </div>
       {confirming && (
         <div className="row">
-          <span>Delete this trip and its checklist?</span>
-          <button type="button" className="btn small danger" onClick={onDelete}>Delete</button>
-          <button type="button" className="btn small ghost" onClick={() => setConfirming(false)}>Keep it</button>
+          <span>{t('menu.confirm')}</span>
+          <button type="button" className="btn small danger" onClick={onDelete}>{t('common.delete')}</button>
+          <button type="button" className="btn small ghost" onClick={() => setConfirming(false)}>{t('menu.keep')}</button>
         </div>
       )}
+      <LanguageSwitch />
     </div>
   );
 }

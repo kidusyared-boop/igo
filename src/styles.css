@@ -23,9 +23,9 @@
   --c-rest: #7b8494;
   --c-food: #b5521b;
 
-  --font-display: 'Big Shoulders Display', 'Arial Narrow', 'Roboto Condensed', sans-serif;
-  --font-body: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --font-mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  --font-display: 'Big Shoulders Display', 'Arial Narrow', 'Roboto Condensed', 'Noto Sans Ethiopic', sans-serif;
+  --font-body: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', 'Noto Sans Ethiopic', sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, 'Noto Sans Ethiopic', monospace;
 
   --radius: 10px;
   --gutter: 16px;
@@ -106,6 +106,10 @@ h1, h2, h3 { text-wrap: balance; margin: 0; }
 .topbar h1 { font: 700 26px/1 var(--font-display); letter-spacing: 0.02em; text-transform: uppercase; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .brand { font: 800 28px/1 var(--font-display); letter-spacing: 0.04em; }
 .brand span { color: var(--accent-ink); }
+.topbar .tagline { margin-left: auto; text-align: right; min-width: 0; }
+.lang-switch { flex-shrink: 0; justify-self: start; }
+.lang-switch button { padding: 5px 9px; font-size: 13px; }
+:root:lang(am) :is(.eyebrow, .example-tag, .day-pill .dow, .ticket .progress small, .cat, .date-head, .facts dt, .note b) { letter-spacing: 0.02em; }
 
 .eyebrow { font: 600 11px/1.2 var(--font-mono); letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
 .muted { color: var(--muted); }
