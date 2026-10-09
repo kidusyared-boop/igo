@@ -15,11 +15,10 @@ export type SyncState =
 const signature = (trips: Trip[], tombstones: Tombstone[]) =>
   JSON.stringify([trips.map((t) => [t.id, t.updatedAt]), tombstones.map((d) => [d.id, d.deletedAt])]);
 
+/** Returns a message key for known problems, or the server's own message. */
 export function explain(message: string): string {
-  if (/relation .*trips.* does not exist|Could not find the table/i.test(message)) {
-    return 'The trips table is missing. Run supabase/migrations/0001_trips.sql in the Supabase SQL editor.';
-  }
-  if (/Failed to fetch|NetworkError|Load failed/i.test(message)) return 'Can\'t reach the sync server. Your trips are safe on this device and sync when the connection is back.';
+  if (/relation .*trips.* does not exist|Could not find the table/i.test(message)) return 'sync.noTable';
+  if (/Failed to fetch|NetworkError|Load failed/i.test(message)) return 'sync.offline';
   return message;
 }
 

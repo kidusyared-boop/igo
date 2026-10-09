@@ -1,23 +1,25 @@
 import type { ReactNode } from 'react';
 import { CountryIcon, DaysIcon, PrepIcon, SpotsIcon } from '../../components/ui/Icons';
+import { useT } from '../../i18n';
 
 export type TripTab = 'days' | 'before' | 'spots' | 'country';
 
-const TABS: { id: TripTab; label: string; icon: ReactNode }[] = [
-  { id: 'days', label: 'Days', icon: <DaysIcon /> },
-  { id: 'before', label: 'Before you go', icon: <PrepIcon /> },
-  { id: 'spots', label: 'Places', icon: <SpotsIcon /> },
-  { id: 'country', label: 'Country', icon: <CountryIcon /> },
+const TABS: { id: TripTab; icon: ReactNode }[] = [
+  { id: 'days', icon: <DaysIcon /> },
+  { id: 'before', icon: <PrepIcon /> },
+  { id: 'spots', icon: <SpotsIcon /> },
+  { id: 'country', icon: <CountryIcon /> },
 ];
 
 export function TabBar({ tab, onChange }: { tab: TripTab; onChange: (t: TripTab) => void }) {
+  const t = useT();
   return (
-    <nav className="tabbar" aria-label="Trip sections">
+    <nav className="tabbar" aria-label={t('tabs.label')}>
       <div className="tabbar-inner">
-        {TABS.map((t) => (
-          <button key={t.id} type="button" aria-current={t.id === tab ? 'page' : undefined} onClick={() => onChange(t.id)}>
-            {t.icon}
-            {t.label}
+        {TABS.map((item) => (
+          <button key={item.id} type="button" aria-current={item.id === tab ? 'page' : undefined} onClick={() => onChange(item.id)}>
+            {item.icon}
+            {t(`tabs.${item.id}`)}
           </button>
         ))}
       </div>
