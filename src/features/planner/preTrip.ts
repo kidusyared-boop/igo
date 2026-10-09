@@ -2,6 +2,7 @@ import type { CountryPack, City, Task, Trip } from '../../types';
 import { addDays, formatDay } from '../../utils/dates';
 import { findCity } from '../../data/countries';
 import { routeCities } from './route';
+import { preferencePrep } from './preferences';
 
 function task(trip: Trip, daysBefore: number, key: string, fields: Omit<Task, 'id' | 'date' | 'source'>): Task {
   const date = addDays(trip.startDate, -daysBefore);
@@ -55,6 +56,10 @@ export function buildPreTripTasks(trip: Trip, country: CountryPack, city: City):
   for (const extra of country.extraPrep ?? []) {
     if (extra.creatorOnly && !creator) continue;
     tasks.push(task(trip, extra.daysBefore, extra.key, { title: extra.title, detail: extra.detail, category: 'prep' }));
+  }
+
+  for (const pref of preferencePrep(trip)) {
+    tasks.push(task(trip, pref.daysBefore, pref.key, { title: pref.title, detail: pref.detail, category: 'prep' }));
   }
 
   const legs = routeCities(trip);

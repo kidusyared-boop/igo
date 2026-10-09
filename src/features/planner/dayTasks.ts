@@ -24,9 +24,10 @@ export function postingTime(date: string, audienceTimeZone: string, cityTimeZone
   return { time: local.time, dayShift: shift };
 }
 
-function spotDetail(spot: Spot): string | undefined {
+function spotDetail(spot: Spot, trip: Trip): string | undefined {
   const why = spot.pickedFor?.length ? `Picked for you: ${spot.pickedFor.map(interestLabel).join(', ')}. ` : '';
-  return `${why}${spot.shotList}`.trim() || undefined;
+  const access = trip.mobility === 'limited' && spot.effort === 'moderate' ? 'Expect steps or uneven ground; ask your guide for the easiest way in. ' : '';
+  return `${why}${access}${spot.shotList}`.trim() || undefined;
 }
 
 function mealTitle(spot: Spot, meal: 'Lunch' | 'Dinner'): string {
@@ -41,7 +42,7 @@ function spotDrafts(ctx: DayContext, sunrise: string, sunset: string): Draft[] {
   const anyTimes = ANY_SLOTS.filter((t) => toMinutes(t) >= free && toMinutes(t) + 120 <= leave);
   let anyIndex = 0;
   for (const spot of ctx.spots) {
-    const detail = spotDetail(spot);
+    const detail = spotDetail(spot, ctx.trip);
     const category = creator ? 'shoot' : 'explore';
     const key = `spot-${spot.id}`;
     switch (spot.light) {
@@ -160,7 +161,7 @@ function creatorRoutine(ctx: DayContext, hasAnySpot: boolean): Draft[] {
   if (!hasAnySpot) {
     drafts.push({ key: 'broll', time: '10:30', title: 'Film B-roll: food, transport, street life, hands and details', category: 'shoot' });
   }
-  if (!ctx.spots.some((s) => s.light === 'lunch')) {
+  if (!trip.withKids && !ctx.spots.some((s) => s.light === 'lunch')) {
     drafts.push({ key: 'midday', time: '13:00', title: 'Lunch and rest through the harsh midday light', category: 'rest' });
   }
   return drafts;
@@ -185,6 +186,10 @@ export function buildDayTasks(ctx: DayContext): Task[] {
       if (!hasAnySpot && !day.movedFrom) drafts.push({ key: 'explore', time: '10:00', title: 'Explore a new neighborhood on foot', category: 'explore' });
       drafts.push({ key: 'plan-tomorrow', time: '21:00', title: 'Plan tomorrow: check opening hours and book timed tickets', category: 'rest' });
     }
+  }
+
+  if (trip.withKids && day.kind === 'full' && !day.movedFrom) {
+    drafts.push({ key: 'kids-break', time: '13:30', title: 'Quiet break at your stay for the kids', detail: 'A nap or downtime after lunch keeps the afternoon calm, especially at altitude.', category: 'rest' });
   }
 
   if (day.kind === 'arrival' && creator && ctx.spots.length === 0) {

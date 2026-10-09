@@ -18,6 +18,12 @@ export type Interest =
 
 export type Pace = 'relaxed' | 'balanced' | 'packed';
 
+export type Budget = 'low' | 'mid' | 'high';
+
+export type Diet = 'vegetarian' | 'vegan' | 'halal' | 'fasting';
+
+export type Mobility = 'full' | 'limited';
+
 export type TaskCategory =
   | 'prep'
   | 'logistics'
@@ -49,6 +55,16 @@ export interface SuggestedSpot {
   note: string;
   /** What kind of traveler this place suits. Used to personalize plans. */
   tags?: Interest[];
+  /** 1 free or cheap, 2 moderate, 3 expensive. */
+  cost?: 1 | 2 | 3;
+  /** Physical effort to get there and see it. */
+  effort?: 'easy' | 'moderate' | 'hard';
+  /** False where the place is unsuitable for young children. */
+  kids?: boolean;
+  /** For meals: diets the place reliably serves. */
+  diets?: Diet[];
+  /** ISO date a local last checked this entry. Absent means not yet checked. */
+  checked?: string;
 }
 
 export interface CountryPack {
@@ -105,6 +121,9 @@ export interface Spot {
   date?: string;
   /** Set on places igo picked from the traveler's interests. */
   pickedFor?: Interest[];
+  /** Copied from the catalogue for places igo picked. */
+  effort?: SuggestedSpot['effort'];
+  checked?: string;
 }
 
 export interface Trip {
@@ -123,6 +142,10 @@ export interface Trip {
   flyingDrone: boolean;
   interests: Interest[];
   pace: Pace;
+  budget: Budget;
+  diets: Diet[];
+  mobility: Mobility;
+  withKids: boolean;
   /** Suggested places the traveler said no to. */
   dismissedPlaces: string[];
   spots: Spot[];

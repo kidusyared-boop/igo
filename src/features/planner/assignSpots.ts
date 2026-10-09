@@ -66,7 +66,7 @@ export function assignSpots(
   const place = (spot: Spot, respectPace: boolean): boolean => {
     const pick = days
       .filter((d) => inCity(spot, d) && used(d.date, spot.light) < CAPACITY[spot.light] && slotFits(d, spot.light, trip))
-      .filter((d) => !respectPace || isMealSpot(spot) || count(d.date) < dayCapacity(d, trip.pace))
+      .filter((d) => !respectPace || isMealSpot(spot) || count(d.date) < dayCapacity(d, trip.pace, trip.withKids))
       .sort((a, b) => order(a) - order(b) || count(a.date) - count(b.date))[0];
     if (pick) byDate.get(pick.date)?.push(spot);
     return Boolean(pick);

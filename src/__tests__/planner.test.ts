@@ -5,6 +5,7 @@ import { generatePlan } from '../features/planner/generatePlan';
 import { postingTime } from '../features/planner/dayTasks';
 import { sampleTrip } from '../data/sampleTrip';
 import type { Trip } from '../types';
+import { findCity } from '../data/countries';
 import { toMinutes } from '../utils/dates';
 import { formatEthiopian, fromEthiopian, toEthiopianClock } from '../utils/ethiopian';
 import { fasika, holidayNotes } from '../data/ethiopia/holidays';
@@ -151,3 +152,48 @@ describe('personalization', () => {
     expect(museum?.detail).toMatch(/^Picked for you: historic sites/);
   });
 });
+
+describe('traveler preferences', () => {
+  const solo = (over: Partial<Trip> = {}): Trip => ({ ...sampleTrip(), startDate: '2026-11-02', endDate: '2026-11-08', stops: [], cityId: 'lalibela', mode: 'traveler', ...over });
+  const picked = (t: Trip) => generatePlan(t).pickedSpots.map((p) => p.spot);
+  const pre = (t: Trip) => generatePlan(t).preTrip.map((x) => x.id);
+  const catalogue = (id: string) => findCity('ET', id)!.suggestedSpots;
+
+  it('keeps hard climbs out of plans for limited mobility', () => {
+    const interests: Trip['interests'] = ['hiking', 'religion', 'countryside', 'history'];
+    const hardNames = new Set(catalogue('lalibela').filter((p) => p.effort === 'hard').map((p) => p.name));
+    expect(hardNames.size).toBeGreaterThan(0);
+    expect(picked(solo({ interests, mobility: 'limited' })).some((s) => hardNames.has(s.name))).toBe(false);
+    expect(pre(solo({ mobility: 'limited' }))).toContain('auto:pre:pref-access');
+  });
+  it('slows the pace and adds a midday break with children', () => {
+    const interests: Trip['interests'] = ['history', 'religion', 'culture', 'markets', 'countryside'];
+    const count = (t: Trip) => picked(t).filter((s) => s.light !== 'lunch' && s.light !== 'dinner').length;
+    expect(count(solo({ interests, withKids: true, endDate: '2026-11-04' }))).toBeLessThan(count(solo({ interests, endDate: '2026-11-04' })));
+    const plan = generatePlan(solo({ withKids: true }));
+    expect(plan.days.filter((d) => d.kind === 'full').every((d) => d.tasks.some((x) => x.id.endsWith(':kids-break')))).toBe(true);
+    for (const s of picked(solo({ interests, withKids: true }))) {
+      expect(catalogue('lalibela').find((p) => p.name === s.name)?.kids).not.toBe(false);
+    }
+  });
+  it('drops expensive places on a tight budget', () => {
+    const interests: Trip['interests'] = ['city', 'food', 'history', 'culture', 'nightlife', 'countryside', 'hiking', 'adventure'];
+    const pricey = new Set(catalogue('addis').filter((p) => p.cost === 3).map((p) => p.name));
+    expect(picked(solo({ cityId: 'addis', interests, budget: 'low' })).some((s) => pricey.has(s.name))).toBe(false);
+  });
+  it('only suggests halal restaurants to halal travelers', () => {
+    const meals = picked(solo({ cityId: 'harar', interests: ['food'], diets: ['halal'] })).filter((s) => s.light === 'lunch' || s.light === 'dinner');
+    for (const m of meals) expect(catalogue('harar').find((p) => p.name === m.name)?.diets).toContain('halal');
+    expect(pre(solo({ diets: ['halal'] }))).toContain('auto:pre:pref-halal');
+  });
+  it('teaches vegans and vegetarians to order yetsom', () => {
+    expect(pre(solo({ diets: ['vegan'] }))).toContain('auto:pre:pref-yetsom');
+    expect(pre(solo())).not.toContain('auto:pre:pref-yetsom');
+  });
+  it('marks every catalogue place as unchecked until a local reviews it', () => {
+    const spots = picked(solo({ interests: ['history'] }));
+    expect(spots.length).toBeGreaterThan(0);
+    expect(spots.every((s) => !s.checked)).toBe(true);
+  });
+});
+

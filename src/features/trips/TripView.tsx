@@ -1,3 +1,4 @@
+import { preferenceLabels } from '../planner/preferences';
 import { useMemo, useState } from 'react';
 import type { Task, Trip } from '../../types';
 import type { TripDispatch } from '../../hooks/useTrips';
@@ -78,6 +79,7 @@ export function TripView({ trip, dispatch, onBack, onEdit, notify }: TripViewPro
             {trip.interests.length === 0 && <span className="tag">popular places</span>}
             {trip.interests.map((i) => <span key={i} className="tag">{interestLabel(i)}</span>)}
             <span className="tag">{trip.pace} pace</span>
+            {preferenceLabels(trip).map((l) => <span key={l} className="tag">{l}</span>)}
             <button type="button" className="btn small ghost" onClick={onEdit}>Change</button>
           </div>
           <DayStrip days={plan.days} selected={day.date} doneIds={doneIds} onSelect={setSelected} />

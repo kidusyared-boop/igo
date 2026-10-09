@@ -32,12 +32,12 @@ General planners (Wanderlog, GetYourGuide, Visit A City, Culture Trip) cover Eth
    - Shoot days: spots placed in their best light, in the right city, with backup, editing and a posting slot at 7 pm audience time.
    - Departure: final backup, spending leftover birr, leaving for the airport.
 4. Each day shows the **Ethiopian date**, every task shows **Ethiopian time**, and the day lists **holidays, fasting and safety** notes.
-5. Your own tasks, hiding generated tasks, calendar export (.ics), works offline on a phone.
+5. **Preferences**: budget (tight, mid-range, comfortable), diet (vegetarian, vegan, halal, Orthodox fasting), easy access and travel with young children. They filter the 149-place catalogue across 11 destinations (Hawassa added) and add tasks such as ordering yetsom, asking for "ye Islam" meat, ground-floor rooms, child seats and a midday break for kids.
+6. Your own tasks, hiding generated tasks, calendar export (.ics), works offline on a phone.
 
 ## Not in the MVP
 
-- A catalogue deep enough for long stays. With about 6 places per city, a week in one city runs out of new picks. Needs a few hundred places, ideally checked by locals.
-- Budget, diet (vegetarian, halal, fasting), mobility and travel-with-kids preferences.
+- Local checks of the catalogue. All 149 places show "Not yet checked by a local" until someone in each city reviews them.
 
 - Diaspora mode (Yellow Card / Ethiopian Origin ID, family visits, banking, customs). Waiting on your decision.
 - Amharic interface.

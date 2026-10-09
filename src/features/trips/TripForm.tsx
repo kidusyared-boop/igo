@@ -7,6 +7,7 @@ import { Segmented } from '../../components/ui/Segmented';
 import { validateTrip } from './tripDraft';
 import { RouteEditor } from './RouteEditor';
 import { InterestPicker } from './InterestPicker';
+import { PreferencePicker } from './PreferencePicker';
 import { formatDay } from '../../utils/dates';
 
 interface TripFormProps {
@@ -90,6 +91,16 @@ export function TripForm({ initial, isNew, onSave, onCancel }: TripFormProps) {
         pace={trip.pace}
         onInterests={(interests) => set('interests', interests)}
         onPace={(pace) => set('pace', pace)}
+      />
+      <PreferencePicker
+        budget={trip.budget}
+        diets={trip.diets}
+        mobility={trip.mobility}
+        withKids={trip.withKids}
+        onBudget={(budget) => set('budget', budget)}
+        onDiets={(diets) => set('diets', diets)}
+        onMobility={(mobility) => set('mobility', mobility)}
+        onKids={(withKids) => set('withKids', withKids)}
       />
       <Segmented label="Plan for" value={trip.mode} options={MODES} onChange={(v) => set('mode', v)} />
       {trip.mode === 'creator' && (

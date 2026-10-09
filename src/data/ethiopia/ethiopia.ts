@@ -85,6 +85,12 @@ export const ETHIOPIA: CountryPack = {
       suggestedSpots: PLACES['harar'] ?? [],
     },
     {
+      id: 'hawassa', name: 'Hawassa', region: 'Sidama', lat: 7.05, lon: 38.48, timeZone: 'Africa/Addis_Ababa', altitudeM: 1708,
+      access: 'Short Ethiopian Airlines flight from Addis, or about 4 hours by road on the expressway.',
+      safety: 'Check current travel advice for the Sidama region and the roads to it before you go.',
+      suggestedSpots: PLACES['hawassa'] ?? [],
+    },
+    {
       id: 'arba-minch', name: 'Arba Minch', region: 'South Ethiopia', lat: 6.0333, lon: 37.55, timeZone: 'Africa/Addis_Ababa', altitudeM: 1285,
       access: 'Ethiopian Airlines flight from Addis, about 1 hour.', safety: SOUTH_NOTE,
       suggestedSpots: PLACES['arba-minch'] ?? [],

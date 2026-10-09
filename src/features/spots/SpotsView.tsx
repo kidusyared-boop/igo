@@ -49,6 +49,7 @@ export function SpotsView({ trip, plan, onSave, onRemove, onDismiss, onRestore }
               <strong>{spot.name}</strong>
               <span className="meta">{cityName(spot.cityId)} · {lightLabel(spot.light)} · {formatDay(date)}</span>
               {spot.pickedFor && spot.pickedFor.length > 0 && <span className="why">Because you like {spot.pickedFor.map(interestLabel).join(', ')}</span>}
+              <span className="meta">{spot.checked ? `Checked by a local on ${formatDay(spot.checked)}` : 'Not yet checked by a local'}</span>
             </div>
             <div className="row" style={{ alignItems: 'start' }}>
               <button type="button" className="btn small" onClick={() => onDismiss(placeKey(spot.cityId ?? trip.cityId, spot.name))}>Not for me</button>

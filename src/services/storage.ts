@@ -16,6 +16,10 @@ export function loadTrips(): Trip[] | null {
         stops: t.stops ?? [],
         interests: t.interests ?? [],
         pace: t.pace ?? 'balanced',
+        budget: t.budget ?? 'mid',
+        diets: t.diets ?? [],
+        mobility: t.mobility ?? 'full',
+        withKids: t.withKids ?? false,
         dismissedPlaces: t.dismissedPlaces ?? [],
       }))
       .filter((t) => findCity(t.countryCode, t.cityId));
