@@ -161,6 +161,8 @@ export interface Trip {
   doneIds: string[];
   hiddenIds: string[];
   createdAt: string;
+  /** Last change on any device, used to merge synced copies. */
+  updatedAt?: string;
 }
 
 export interface Task {

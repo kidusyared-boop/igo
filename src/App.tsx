@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import type { Trip } from './types';
 import { useTrips } from './hooks/useTrips';
+import { useSync } from './hooks/useSync';
+import { AccountPanel } from './features/account/AccountPanel';
 import { TripList } from './features/trips/TripList';
 import { TripForm } from './features/trips/TripForm';
 import { TripView } from './features/trips/TripView';
@@ -9,7 +11,8 @@ import { blankTrip } from './features/trips/tripDraft';
 type Screen = { name: 'list' } | { name: 'trip'; id: string } | { name: 'form'; trip: Trip; isNew: boolean };
 
 export function App() {
-  const { trips, dispatch, saved } = useTrips();
+  const { trips, tombstones, dispatch, saved } = useTrips();
+  const sync = useSync(trips, tombstones, dispatch);
   const [screen, setScreen] = useState<Screen>(() => (trips.length === 1 && trips[0] ? { name: 'trip', id: trips[0].id } : { name: 'list' }));
   const [toast, setToast] = useState<string | null>(null);
 
@@ -29,6 +32,7 @@ export function App() {
           <span className="eyebrow" style={{ marginLeft: 'auto' }}>Daily plans for Ethiopia trips</span>
         </header>
       )}
+      {screen.name === 'list' && <AccountPanel sync={sync.state} onSyncNow={() => void sync.syncNow()} />}
       {screen.name === 'list' && (
         <TripList trips={trips} onOpen={(id) => setScreen({ name: 'trip', id })} onNew={() => setScreen({ name: 'form', trip: blankTrip(), isNew: true })} />
       )}

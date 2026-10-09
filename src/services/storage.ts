@@ -1,5 +1,6 @@
 import type { Trip } from '../types';
 import { findCity } from '../data/countries';
+import type { Tombstone } from './sync';
 
 const KEY = 'igo.trips.v1';
 
@@ -29,6 +30,26 @@ export function loadTrips(): Trip[] | null {
     return trips.length ? trips : null;
   } catch {
     return null;
+  }
+}
+
+const DELETED_KEY = 'igo.deleted.v1';
+
+export function loadTombstones(): Tombstone[] {
+  try {
+    const raw = window.localStorage.getItem(DELETED_KEY);
+    const parsed: unknown = raw ? JSON.parse(raw) : [];
+    return Array.isArray(parsed) ? (parsed as Tombstone[]) : [];
+  } catch {
+    return [];
+  }
+}
+
+export function saveTombstones(tombstones: Tombstone[]): void {
+  try {
+    window.localStorage.setItem(DELETED_KEY, JSON.stringify(tombstones));
+  } catch {
+    // Sync falls back to the server's copy if this is lost.
   }
 }
 
