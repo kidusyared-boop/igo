@@ -1,4 +1,4 @@
-import { useLang, useT, type Lang } from '../../i18n';
+import { AMHARIC_ENABLED, useLang, useT, type Lang } from '../../i18n';
 
 const LANGS: { value: Lang; label: string }[] = [
   { value: 'en', label: 'English' },
@@ -8,6 +8,7 @@ const LANGS: { value: Lang; label: string }[] = [
 export function LanguageSwitch() {
   const [lang, setLang] = useLang();
   const t = useT();
+  if (!AMHARIC_ENABLED) return null;
   return (
     <div className="segmented lang-switch" role="group" aria-label={t('lang.label')}>
       {LANGS.map((l) => (

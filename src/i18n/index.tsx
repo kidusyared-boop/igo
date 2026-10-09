@@ -8,6 +8,9 @@ export type TVars = Record<string, string | number>;
 export type TFunction = (key: TKey, vars?: TVars) => string;
 
 const STORAGE_KEY = 'igo.lang.v1';
+
+/** Amharic is translated but switched off until the wording is reviewed. Set to true to offer it again. */
+export const AMHARIC_ENABLED = false;
 const STRINGS: Record<Lang, Record<TKey, string>> = { en, am };
 
 export function isKey(text: string): text is TKey {
@@ -21,6 +24,7 @@ export function translate(lang: Lang, key: TKey, vars?: TVars): string {
 }
 
 function readLang(): Lang {
+  if (!AMHARIC_ENABLED) return 'en';
   try {
     return localStorage.getItem(STORAGE_KEY) === 'am' ? 'am' : 'en';
   } catch {
