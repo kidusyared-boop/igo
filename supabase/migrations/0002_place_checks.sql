@@ -1,4 +1,4 @@
--- Local checks of the place catalogue. Run once in the Supabase SQL editor.
+-- Local checks of the place catalogue. Run in the Supabase SQL editor; safe to run again.
 
 -- People allowed to check places. Add a row per local reviewer:
 --   insert into public.reviewers (email, name) values ('someone@example.com', 'Abebe, Addis Ababa');
@@ -9,6 +9,7 @@ create table if not exists public.reviewers (
 
 alter table public.reviewers enable row level security;
 
+drop policy if exists "Reviewers can see themselves" on public.reviewers;
 create policy "Reviewers can see themselves" on public.reviewers
   for select to authenticated using (lower(email) = lower(auth.jwt() ->> 'email'));
 
@@ -26,6 +27,7 @@ create index if not exists place_reviews_key on public.place_reviews (place_key,
 
 alter table public.place_reviews enable row level security;
 
+drop policy if exists "Reviewers add checks" on public.place_reviews;
 create policy "Reviewers add checks" on public.place_reviews
   for insert to authenticated
   with check (
@@ -33,6 +35,7 @@ create policy "Reviewers add checks" on public.place_reviews
     and exists (select 1 from public.reviewers r where lower(r.email) = lower(auth.jwt() ->> 'email'))
   );
 
+drop policy if exists "Reviewers read checks" on public.place_reviews;
 create policy "Reviewers read checks" on public.place_reviews
   for select to authenticated
   using (exists (select 1 from public.reviewers r where lower(r.email) = lower(auth.jwt() ->> 'email')));
