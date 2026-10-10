@@ -40,3 +40,19 @@ describe('mergeTrips', () => {
     expect(mergeTrips([t], [], [row(t)]).push).toHaveLength(0);
   });
 });
+
+describe('local place checks', () => {
+  it('stops suggesting places a local reported closed', async () => {
+    const { generatePlan } = await import('../features/planner/generatePlan');
+    const { closedPlaces } = await import('../services/placeChecks');
+    const t: Trip = { ...sampleTrip(), id: 'x', startDate: '2026-11-02', endDate: '2026-11-06', stops: [], cityId: 'addis', interests: ['history'] };
+    const names = (closed: Set<string>) => generatePlan(t, closed).pickedSpots.map((p) => p.spot.name);
+    expect(names(new Set())).toContain('National Museum (Lucy)');
+    const closed = closedPlaces(new Map([
+      ['addis:national-museum-lucy', { verdict: 'gone' as const, checkedAt: '2026-10-10T00:00:00Z' }],
+      ['addis:merkato', { verdict: 'ok' as const, checkedAt: '2026-10-10T00:00:00Z' }],
+    ]));
+    expect([...closed]).toEqual(['addis:national-museum-lucy']);
+    expect(names(closed)).not.toContain('National Museum (Lucy)');
+  });
+});

@@ -26,7 +26,7 @@ const KIND_LABEL: Record<DayPlan['kind'], string> = {
  * Pure function: the same trip always produces the same task ids, so done
  * and hidden state stored on the trip survives every regeneration.
  */
-export function generatePlan(trip: Trip): TripPlan {
+export function generatePlan(trip: Trip, closed: ReadonlySet<string> = new Set()): TripPlan {
   const country = findCountry(trip.countryCode);
   if (!country || !findCity(trip.countryCode, trip.cityId)) return { preTrip: [], days: [], unscheduledSpots: [], pickedSpots: [] };
   const cityOf = (id: string) => findCity(trip.countryCode, id) ?? findCity(trip.countryCode, trip.cityId)!;
@@ -43,7 +43,7 @@ export function generatePlan(trip: Trip): TripPlan {
       sun: sunTimes(date, city.lat, city.lon, city.timeZone),
     };
   });
-  const picked = pickPlaces(trip, skeletons, cityOf);
+  const picked = pickPlaces(trip, skeletons, cityOf, closed);
   const { byDate, unscheduled } = assignSpots(trip, skeletons, picked);
 
   const hidden = new Set(trip.hiddenIds);

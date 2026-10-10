@@ -35,11 +35,12 @@ General planners (Wanderlog, GetYourGuide, Visit A City, Culture Trip) cover Eth
 5. **Preferences**: budget (tight, mid-range, comfortable), diet (vegetarian, vegan, halal, Orthodox fasting), easy access and travel with young children. They filter the 149-place catalogue across 11 destinations (Hawassa added) and add tasks such as ordering yetsom, asking for "ye Islam" meat, ground-floor rooms, child seats and a midday break for kids.
 6. **Diaspora mode** for Ethiopians and people of Ethiopian origin visiting home. They choose how they enter (Origin ID, Ethiopian passport or visa), and Origin ID or passport holders skip the e-Visa steps. They get prep for money transfers and diaspora accounts, customs allowances for gifts, baggage weight and an old Ethio Telecom number. Optional family afternoons (15:00 to 19:00) are kept free of places, and holidays get a "holiday at home" task.
 7. **Accounts and sync (Supabase)**. igo is local-first: trips always save on the device. Signing in with email and password syncs trips across devices; the newest edit of each trip wins, and deletions spread too. The example trip is never uploaded. Setup: run `supabase/migrations/0001_trips.sql` once in the Supabase SQL editor, and put the project URL and publishable key in `.env.local` (see `.env.example`).
-8. Your own tasks, hiding generated tasks, calendar export (.ics), works offline on a phone.
+8. **Local place checks.** People on the `reviewers` list see a "Check places" button after signing in. For each place they choose "Looks right", "Needs a fix" (with a note) or "Closed or gone". Confirmed places show "Checked by a local" with the date, places with a fix show as flagged, and places reported closed stop appearing in plans. Setup: run `supabase/migrations/0002_place_checks.sql`, then add reviewers with `insert into public.reviewers (email, name) values ('them@example.com', 'Name');`.
+9. Your own tasks, hiding generated tasks, calendar export (.ics), works offline on a phone.
 
 ## Not in the MVP
 
-- Local checks of the catalogue. All 149 places show "Not yet checked by a local" until someone in each city reviews them.
+- Actual local reviewers. The tool exists, but all 149 places stay "Not yet checked by a local" until people in each city use it. Fixes are stored as notes; someone still has to edit the catalogue by hand.
 
 - Amharic. The interface translation exists in `src/i18n/am.ts` but is switched off (`AMHARIC_ENABLED` in `src/i18n/index.tsx`) so the app ships in English only. It needs native review, and generated plans are not translated.
 - Live safety feeds, bookings, paid APIs.

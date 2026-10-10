@@ -1,4 +1,6 @@
 import { useMemo, useState } from 'react';
+import { usePlaceChecks } from '../../hooks/usePlaceChecks';
+import { closedPlaces } from '../../services/placeChecks';
 import type { Task, Trip } from '../../types';
 import type { TripDispatch } from '../../hooks/useTrips';
 import { findCity, findCountry } from '../../data/countries';
@@ -34,7 +36,9 @@ interface TripViewProps {
 
 export function TripView({ trip, dispatch, onBack, onEdit, notify }: TripViewProps) {
   const t = useT();
-  const plan = useMemo(() => generatePlan(trip), [trip]);
+  const { checks } = usePlaceChecks();
+  const closed = useMemo(() => closedPlaces(checks), [checks]);
+  const plan = useMemo(() => generatePlan(trip, closed), [trip, closed]);
   const country = findCountry(trip.countryCode);
   const city = findCity(trip.countryCode, trip.cityId);
   const today = todayIso();
