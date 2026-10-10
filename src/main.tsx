@@ -4,6 +4,7 @@ import { App } from './App';
 import { LanguageProvider } from './i18n';
 import { PlaceChecksProvider } from './hooks/usePlaceChecks';
 import './styles.css';
+import { Capacitor } from '@capacitor/core';
 
 const root = document.getElementById('root');
 if (root) {
@@ -18,7 +19,8 @@ if (root) {
   );
 }
 
-if ('serviceWorker' in navigator && import.meta.env.PROD && window.location.protocol !== 'blob:') {
+// The phone apps already ship every file, so they skip the service worker.
+if ('serviceWorker' in navigator && import.meta.env.PROD && window.location.protocol !== 'blob:' && !Capacitor.isNativePlatform()) {
   navigator.serviceWorker.register('./sw.js').catch(() => {
     // Offline support is optional; the app works without it.
   });
