@@ -2,6 +2,16 @@
 
 igo's phone apps are the same web app wrapped with [Capacitor](https://capacitorjs.com). The `android/` and `ios/` folders are the native projects; everything igo does still lives in `src/`.
 
+## Android without a computer
+
+Every pull request and every merge to `main` builds an Android app on GitHub (`.github/workflows/android.yml`). To install it on an Android phone:
+
+1. Open the repo on GitHub, tap **Actions**, then the latest green **Android build** run.
+2. Under **Artifacts**, download `igo-debug-apk` (a zip) and unzip it.
+3. Open `app-debug.apk` and allow installing from this source when asked.
+
+This is a test build, not a store build. iPhones can't install it; iOS needs a Mac.
+
 ## Build on your computer
 
 You need Node 22 and:
