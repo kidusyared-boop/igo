@@ -2,6 +2,7 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { App } from './App';
 import { LanguageProvider } from './i18n';
+import { PlaceChecksProvider } from './hooks/usePlaceChecks';
 import './styles.css';
 
 const root = document.getElementById('root');
@@ -9,7 +10,9 @@ if (root) {
   createRoot(root).render(
     <StrictMode>
       <LanguageProvider>
-        <App />
+        <PlaceChecksProvider>
+          <App />
+        </PlaceChecksProvider>
       </LanguageProvider>
     </StrictMode>,
   );

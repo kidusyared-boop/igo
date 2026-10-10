@@ -6,9 +6,11 @@ import { isKey, useT } from '../../i18n';
 interface AccountPanelProps {
   sync: SyncState;
   onSyncNow: () => void;
+  /** Set for people on the reviewers list. */
+  onReview?: () => void;
 }
 
-export function AccountPanel({ sync, onSyncNow }: AccountPanelProps) {
+export function AccountPanel({ sync, onSyncNow, onReview }: AccountPanelProps) {
   const t = useT();
   const [open, setOpen] = useState(false);
   const [email, setEmail] = useState('');
@@ -86,6 +88,7 @@ export function AccountPanel({ sync, onSyncNow }: AccountPanelProps) {
       <div className="row" style={{ justifyContent: 'space-between', flexWrap: 'wrap' }}>
         <span className="muted">{sync.email} · <span role="status">{status}</span></span>
         <div className="row">
+          {onReview && <button type="button" className="btn small primary" onClick={onReview}>{t('account.checkPlaces')}</button>}
           <button type="button" className="btn small" onClick={onSyncNow} disabled={sync.status === 'syncing'}>{t('account.syncNow')}</button>
           <button type="button" className="btn small ghost" onClick={() => void supabase?.auth.signOut()}>{t('account.signOut')}</button>
         </div>

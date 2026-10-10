@@ -84,9 +84,9 @@ export function scorePlace(place: SuggestedSpot, prefs: Preferences): { score: n
 }
 
 /** Places igo adds to fill each city's days, best match first. */
-export function pickPlaces(trip: Trip, days: DaySkeleton[], cityOf: (id: string) => City): Spot[] {
+export function pickPlaces(trip: Trip, days: DaySkeleton[], cityOf: (id: string) => City, closed: ReadonlySet<string> = new Set()): Spot[] {
   const picked: Spot[] = [];
-  const dismissed = new Set(trip.dismissedPlaces);
+  const dismissed = new Set([...trip.dismissedPlaces, ...closed]);
   const userNames = new Set(trip.spots.map((s) => s.name.toLowerCase()));
   const cityIds = [...new Set(days.map((d) => d.cityId))];
 

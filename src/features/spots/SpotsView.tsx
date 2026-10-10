@@ -7,6 +7,7 @@ import { routeCities } from '../planner/route';
 import { placeKey } from '../planner/personalize';
 import { SpotForm } from './SpotForm';
 import { useT } from '../../i18n';
+import { usePlaceChecks } from '../../hooks/usePlaceChecks';
 
 interface SpotsViewProps {
   trip: Trip;
@@ -20,6 +21,7 @@ interface SpotsViewProps {
 export function SpotsView({ trip, plan, onSave, onRemove, onDismiss, onRestore }: SpotsViewProps) {
   const t = useT();
   const [editing, setEditing] = useState<string | null>(null);
+  const { checks } = usePlaceChecks();
   const placed = new Map<string, string>();
   for (const day of plan.days) {
     for (const task of day.tasks) {
@@ -49,7 +51,12 @@ export function SpotsView({ trip, plan, onSave, onRemove, onDismiss, onRestore }
               <strong>{spot.name}</strong>
               <span className="meta">{cityName(spot.cityId)} · {t(`light.${spot.light}`)} · {formatDay(date)}</span>
               {spot.pickedFor && spot.pickedFor.length > 0 && <span className="why">{t('spots.because', { list: spot.pickedFor.map((i) => t(`interest.${i}`).toLowerCase()).join(t('list.sep')) })}</span>}
-              <span className="meta">{spot.checked ? t('spots.checked', { date: formatDay(spot.checked) }) : t('spots.unchecked')}</span>
+              {(() => {
+                const check = checks.get(placeKey(spot.cityId ?? trip.cityId, spot.name));
+                if (check?.verdict === 'ok') return <span className="meta checked">{t('spots.checked', { date: formatDay(check.checkedAt.slice(0, 10)) })}</span>;
+                if (check?.verdict === 'fix') return <span className="meta">{t('spots.flagged')}</span>;
+                return <span className="meta">{spot.checked ? t('spots.checked', { date: formatDay(spot.checked) }) : t('spots.unchecked')}</span>;
+              })()}
             </div>
             <div className="row" style={{ alignItems: 'start' }}>
               <button type="button" className="btn small" onClick={() => onDismiss(placeKey(spot.cityId ?? trip.cityId, spot.name))}>{t('spots.notForMe')}</button>
