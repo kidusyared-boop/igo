@@ -4,9 +4,9 @@ import { ethiopianDayNotes } from './holidays';
 import { PLACES } from './places';
 
 const AMHARA_SAFETY =
-  'Amhara region: armed conflict since 2023 and several governments advise against travel. Check your government\'s advice and local news the day before; flying in and out is usually safer than road travel.';
+  'Amhara region: armed conflict since 2023. As of October 2026 the UK and US advise against all travel here, and flights to Lalibela were suspended in September 2026 after fighting near the town. Check your government\'s advice before booking.';
 const TIGRAY_SAFETY =
-  'Tigray region: tense after the 2020 to 2022 war. Check travel advice before booking; internet and access can be cut with little notice.';
+  'Tigray region: as of October 2026 civilian flights are suspended, foreigners have been barred since May 2025, and the UK and US advise against all travel. Do not plan a visit until this changes.';
 const SOUTH_NOTE = 'Lowland area with malaria risk: use repellent and ask a doctor about prophylaxis.';
 
 export const ETHIOPIA: CountryPack = {
@@ -103,7 +103,7 @@ export const ETHIOPIA: CountryPack = {
     {
       id: 'danakil', name: 'Danakil Depression (via Semera)', region: 'Afar', lat: 11.792, lon: 41.006, timeZone: 'Africa/Addis_Ababa', altitudeM: 430,
       access: 'Fly to Semera, then a multi-day tour with an operator and escort.',
-      safety: 'Afar region: tours only, with an operator and escort. Daytime heat passes 45 °C; check advice for the Afar and Tigray border.',
+      safety: 'Afar region: as of October 2026 foreigners cannot fly into Afar airports, and the UK advises against travel near the Tigray and Eritrea borders, which includes Dallol. Tours only, with an operator and escort; daytime heat passes 45 °C.',
       suggestedSpots: PLACES['danakil'] ?? [],
     },
   ],
