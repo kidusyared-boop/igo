@@ -1,0 +1,70 @@
+name: iPhone simulator check
+
+# Mac runners use 10x the free minutes on a private repo, so this runs on demand
+# and only on changes to the iPhone project or this check itself.
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'ios/**'
+      - '.github/workflows/ios.yml'
+      - 'scripts/ios-shots.py'
+
+permissions:
+  contents: write
+
+jobs:
+  simulator:
+    runs-on: macos-15
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: npm ci
+      - run: npm run build
+        env:
+          VITE_SUPABASE_URL: ${{ vars.VITE_SUPABASE_URL || 'https://gufcxowuyrcxmvebtygy.supabase.co' }}
+          VITE_SUPABASE_PUBLISHABLE_KEY: ${{ vars.VITE_SUPABASE_PUBLISHABLE_KEY || 'sb_publishable_EnWF2aN2gOT3ZtmgrvTOLw_A2_FcbUn' }}
+      - run: npx cap sync ios
+      - name: Build for the simulator
+        run: >
+          xcodebuild -workspace ios/App/App.xcworkspace -scheme App -configuration Debug
+          -sdk iphonesimulator -destination 'generic/platform=iOS Simulator'
+          -derivedDataPath build CODE_SIGNING_ALLOWED=NO -quiet
+      - name: Start an iPhone simulator and install igo
+        run: |
+          UDID=$(xcrun simctl list devices available -j | python3 -c "
+          import json,sys
+          ds=[d for k,v in json.load(sys.stdin)['devices'].items() if 'iOS' in k for d in v if d['name'].startswith('iPhone') and 'Pro Max' not in d['name'] and 'Plus' not in d['name']]
+          print(ds[-1]['udid'])")
+          xcrun simctl boot "$UDID"
+          xcrun simctl bootstatus "$UDID" -b
+          xcrun simctl install "$UDID" build/Build/Products/Debug-iphonesimulator/App.app
+          xcrun simctl list devices booted
+      - name: Install idb for taps
+        run: |
+          brew tap facebook/fb
+          brew install idb-companion
+          pip install fb-idb
+      - name: Walk through igo and take screenshots
+        run: |
+          mkdir -p shots
+          python3 scripts/ios-shots.py shots
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: igo-iphone-screenshots
+          path: shots
+      - name: Publish screenshots to the ci/ios-screenshots branch
+        if: always()
+        run: |
+          cd shots
+          git init -q && git checkout -q -b ci/ios-screenshots
+          git add . && git -c user.name=igo-ci -c user.email=ci@igo.invalid commit -qm "iPhone screenshots for ${{ github.sha }}"
+          git push -qf "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}" ci/ios-screenshots
