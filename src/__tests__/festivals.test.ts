@@ -35,6 +35,8 @@ describe('festivals', () => {
     expect(clash).toEqual([]);
     expect(eve.tasks.find((t) => t.id.endsWith(':edit'))?.time).toBe('20:30');
     expect(pre(plan, 'fest-book-timkat')?.title).toMatch(/Gondar/);
+    // The bath is the feast itself, so it is not planned again as a separate visit.
+    expect(plan.days.flatMap((d) => d.tasks).filter((t) => /Fasilides Bath/.test(t.title) && !t.id.includes(':fest-'))).toEqual([]);
   });
 
   it('says so when the route leaves a festival city just before the feast', () => {

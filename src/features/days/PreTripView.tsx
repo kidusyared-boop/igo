@@ -28,10 +28,10 @@ export function PreTripView({ tasks, startDate, doneIds, onToggle, onRemove, onA
       </div>
       {[...groups.entries()].map(([date, list]) => (
         <div key={date}>
-          <div className="date-head">{formatDay(date)} · {t('pre.daysBefore', { n: daysBetween(date, startDate) })}</div>
+          <div className="date-head">{formatDay(date)} · {t(daysBetween(date, startDate) === 1 ? 'pre.dayBefore' : 'pre.daysBefore', { n: daysBetween(date, startDate) })}</div>
           <ul className="task-list">
             {list.map((task) => (
-              <TaskRow key={task.id} task={task} done={doneIds.has(task.id)} onToggle={() => onToggle(task.id)} onRemove={() => onRemove(task)} />
+              <TaskRow key={task.id} timeless task={task} done={doneIds.has(task.id)} onToggle={() => onToggle(task.id)} onRemove={() => onRemove(task)} />
             ))}
           </ul>
         </div>

@@ -27,7 +27,7 @@ export function loadTrips(): Trip[] | null {
         dismissedPlaces: t.dismissedPlaces ?? [],
       }))
       .filter((t) => findCity(t.countryCode, t.cityId));
-    return trips.length ? trips : null;
+    return trips;
   } catch {
     return null;
   }

@@ -16,7 +16,7 @@ export const am: Record<keyof typeof en, string> = {
 
   'list.title': 'የእርስዎ ጉዞዎች',
   'list.new': 'አዲስ ጉዞ',
-  'list.empty': 'እስካሁን ምንም ጉዞ የለም። የሚቀጥለውን ሀገርዎን ያክሉ፤ igo ለእያንዳንዱ ቀን የሚሠሩ ነገሮችን ዝርዝር ያዘጋጃል።',
+  'list.empty': 'እስካሁን ምንም ጉዞ የለም። የኢትዮጵያ ጉዞዎን ያክሉ፤ igo ለእያንዳንዱ ቀን የሚሠሩ ነገሮችን ዝርዝር ያዘጋጃል።',
   'list.example': 'ምሳሌ',
   'list.day': '{n} ቀን',
   'list.days': '{n} ቀናት',
@@ -187,6 +187,7 @@ export const am: Record<keyof typeof en, string> = {
   'pre.title': 'ከመሄድዎ በፊት',
   'pre.done': '{done}/{total} ተጠናቋል',
   'pre.daysBefore': 'ከ{n} ቀን በፊት',
+  'pre.dayBefore': 'ከ{n} ቀን በፊት',
 
   'spots.title': 'ቦታዎች',
   'spots.picked': 'ለእርስዎ የተመረጡ',

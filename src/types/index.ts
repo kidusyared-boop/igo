@@ -110,6 +110,8 @@ export interface FestivalEvent {
   end: string;
   title: string;
   detail: string;
+  /** A catalogue place the event already covers, so it is not planned again. */
+  place?: string;
 }
 
 export interface Festival {

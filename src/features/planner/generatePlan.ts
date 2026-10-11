@@ -6,7 +6,7 @@ import { assignSpots, freeWindow, type DaySkeleton } from './assignSpots';
 import { buildDayTasks, sortTasks } from './dayTasks';
 import { buildPreTripTasks } from './preTrip';
 import { cityForDate, travelDetail } from './route';
-import { pickPlaces } from './personalize';
+import { pickPlaces, placeKey } from './personalize';
 import { festivalEventsByDate } from './festivals';
 
 function dayKind(index: number, total: number): DayPlan['kind'] {
@@ -50,7 +50,9 @@ export function generatePlan(trip: Trip, closed: ReadonlySet<string> = new Set()
     const fit = (events.get(date) ?? []).filter((e) => toMinutes(e.start) >= free && toMinutes(e.end) <= leave);
     return fit.length ? { ...day, events: fit } : day;
   });
-  const picked = pickPlaces(trip, skeletons, cityOf, closed);
+  // A place a festival event already takes the traveler to is not planned a second time.
+  const covered = skeletons.flatMap((d) => d.events ?? []).filter((e) => e.place).map((e) => placeKey(e.cityId, e.place!));
+  const picked = pickPlaces(trip, skeletons, cityOf, covered.length ? new Set([...closed, ...covered]) : closed);
   const { byDate, unscheduled } = assignSpots(trip, skeletons, picked);
 
   const hidden = new Set(trip.hiddenIds);
