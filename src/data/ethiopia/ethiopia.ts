@@ -1,6 +1,6 @@
 import type { CountryPack } from '../../types';
 import { formatEthiopian, toEthiopianClock } from '../../utils/ethiopian';
-import { ethiopianDayNotes } from './holidays';
+import { ethiopianDayNotes, festivals } from './holidays';
 import { PLACES } from './places';
 
 const AMHARA_SAFETY =
@@ -36,6 +36,7 @@ export const ETHIOPIA: CountryPack = {
   localClock: toEthiopianClock,
   localDate: formatEthiopian,
   dayNotes: ethiopianDayNotes,
+  festivals,
   extraPrep: [
     { daysBefore: 45, key: 'route-safety', title: 'Check your government\'s travel advice for every region on your route', detail: 'Parts of Amhara, Tigray, Oromia and the border areas carry "do not travel" advice from several governments, and travel insurance can be void there.' },
     { daysBefore: 30, key: 'health', title: 'Check vaccinations and malaria needs', detail: 'A yellow fever certificate is required if you arrive from a country with yellow fever risk. Lowlands (Omo Valley, Arba Minch, the Danakil) have malaria; Addis Ababa does not.' },

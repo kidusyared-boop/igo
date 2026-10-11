@@ -4,6 +4,7 @@ import { findCity } from '../../data/countries';
 import { routeCities } from './route';
 import { preferencePrep } from './preferences';
 import { diasporaPrep, needsVisa } from './diaspora';
+import { festivalPrep } from './festivals';
 
 function task(trip: Trip, daysBefore: number, key: string, fields: Omit<Task, 'id' | 'date' | 'source'>): Task {
   const date = addDays(trip.startDate, -daysBefore);
@@ -59,7 +60,7 @@ export function buildPreTripTasks(trip: Trip, country: CountryPack, city: City):
     tasks.push(task(trip, extra.daysBefore, extra.key, { title: extra.title, detail: extra.detail, category: 'prep' }));
   }
 
-  for (const pref of [...preferencePrep(trip), ...diasporaPrep(trip)]) {
+  for (const pref of [...preferencePrep(trip), ...diasporaPrep(trip), ...festivalPrep(trip, country)]) {
     tasks.push(task(trip, pref.daysBefore, pref.key, { title: pref.title, detail: pref.detail, category: 'prep' }));
   }
 
