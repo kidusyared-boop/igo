@@ -117,7 +117,7 @@ export const en = {
   'entryDoc.visa.hint': 'Foreign passport without an Origin ID: you need an e-Visa like any visitor.',
 
   'trip.allTrips': 'All trips',
-  'trip.menu': 'Trip',
+  'trip.menu': 'Trip options',
   'trip.unsupported': "This trip's country is no longer supported.",
   'trip.back': 'Back to trips',
   'toast.calendar': 'Calendar file downloaded',
