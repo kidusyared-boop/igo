@@ -1,4 +1,4 @@
-import type { Trip } from '../../types';
+import type { City, CountryPack, Trip } from '../../types';
 
 /** City for a date: the latest stop on or before it, otherwise the first city. */
 export function cityForDate(trip: Trip, date: string): string {
@@ -17,4 +17,16 @@ export function routeCities(trip: Trip): { cityId: string; from: string }[] {
     if (legs.at(-1)?.cityId !== stop.cityId) legs.push({ cityId: stop.cityId, from: stop.date });
   }
   return legs;
+}
+
+/**
+ * How to get from one city to the next. Each city's access note describes the
+ * trip from the main hub, so a move between two other cities usually goes
+ * back through the hub.
+ */
+export function travelDetail(from: City, to: City, country: Pick<CountryPack, 'cities'>): string | undefined {
+  const hub = country.cities[0];
+  if (!hub || from.id === hub.id) return to.access;
+  if (to.id === hub.id) return from.access ? `The way you came, in reverse: ${from.access}` : undefined;
+  return `Check for a direct flight first. Most routes go back through ${hub.name}, so allow the whole day. ${hub.name} to ${to.name}: ${to.access ?? ''}`.trim();
 }

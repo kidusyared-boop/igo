@@ -5,7 +5,7 @@ import { sunTimes } from '../../utils/solar';
 import { assignSpots, type DaySkeleton } from './assignSpots';
 import { buildDayTasks, sortTasks } from './dayTasks';
 import { buildPreTripTasks } from './preTrip';
-import { cityForDate } from './route';
+import { cityForDate, travelDetail } from './route';
 import { pickPlaces } from './personalize';
 
 function dayKind(index: number, total: number): DayPlan['kind'] {
@@ -55,7 +55,7 @@ export function generatePlan(trip: Trip, closed: ReadonlySet<string> = new Set()
     const fromCity = day.movedFrom ? cityOf(day.movedFrom) : undefined;
     const auto = buildDayTasks({ trip, country, city, fromCity, day, spots: byDate.get(day.date) ?? [] });
     const notes: DayNote[] = [
-      ...(fromCity ? [{ kind: 'move' as const, text: `Moving from ${fromCity.name} to ${city.name}. ${city.access ?? ''}`.trim() }] : []),
+      ...(fromCity ? [{ kind: 'move' as const, text: `Moving from ${fromCity.name} to ${city.name}. ${travelDetail(fromCity, city, country) ?? ''}`.trim() }] : []),
       ...(country.dayNotes?.(day.date) ?? []),
       ...(city.safety ? [{ kind: 'safety' as const, text: city.safety }] : []),
     ];

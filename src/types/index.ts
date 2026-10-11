@@ -68,6 +68,10 @@ export interface SuggestedSpot {
   diets?: Diet[];
   /** ISO date a local last checked this entry. Absent means not yet checked. */
   checked?: string;
+  /** Far enough out of town to take the whole day. */
+  allDay?: boolean;
+  /** Days it happens, 0 Sunday to 6 Saturday, for markets held on fixed days. */
+  weekdays?: number[];
 }
 
 export interface CountryPack {
@@ -127,6 +131,8 @@ export interface Spot {
   /** Copied from the catalogue for places igo picked. */
   effort?: SuggestedSpot['effort'];
   checked?: string;
+  allDay?: boolean;
+  weekdays?: number[];
 }
 
 export interface Trip {
