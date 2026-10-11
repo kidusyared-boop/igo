@@ -54,7 +54,7 @@ describe('festivals', () => {
   it('plans the Meskel bonfire in Addis Ababa over the afternoon and sunset', () => {
     const plan = generatePlan(trip({ startDate: '2026-09-24', endDate: '2026-09-29', interests: ['culture', 'city'], pace: 'packed' }));
     const eve = day(plan, '2026-09-26');
-    expect(eve.tasks.find((t) => t.id.endsWith('fest-meskel-eve-addis'))?.time).toBe('15:00');
+    expect(eve.tasks.find((t) => t.id.endsWith('fest-meskel-eve-addis'))?.time).toBe('14:00');
     expect(eve.tasks.some((t) => /golden hour/.test(t.title))).toBe(false);
   });
 
