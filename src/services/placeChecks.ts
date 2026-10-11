@@ -7,14 +7,40 @@ export interface PlaceCheck {
   checkedAt: string;
 }
 
-/** Latest local verdict per place key. Empty when Supabase is off or unreachable. */
+const CACHE_KEY = 'igo.placeChecks.v1';
+
+/** The last checks fetched on this device, so closed places stay out of plans with no internet. */
+export function loadCachedChecks(): Map<string, PlaceCheck> {
+  try {
+    const parsed: unknown = JSON.parse(window.localStorage.getItem(CACHE_KEY) ?? '[]');
+    return new Map(Array.isArray(parsed) ? (parsed as [string, PlaceCheck][]) : []);
+  } catch {
+    return new Map();
+  }
+}
+
+function cacheChecks(checks: Map<string, PlaceCheck>): void {
+  try {
+    window.localStorage.setItem(CACHE_KEY, JSON.stringify([...checks]));
+  } catch {
+    // The next fetch fills it again.
+  }
+}
+
+/** Latest local verdict per place key. Falls back to this device's last copy when the server is unreachable. */
 export async function fetchPlaceChecks(): Promise<Map<string, PlaceCheck>> {
   if (!supabase) return new Map();
-  const { data, error } = await supabase.from('place_checks').select('place_key, verdict, checked_at');
-  if (error || !data) return new Map();
-  return new Map(
-    (data as { place_key: string; verdict: Verdict; checked_at: string }[]).map((r) => [r.place_key, { verdict: r.verdict, checkedAt: r.checked_at }]),
-  );
+  try {
+    const { data, error } = await supabase.from('place_checks').select('place_key, verdict, checked_at');
+    if (error || !data) return loadCachedChecks();
+    const checks = new Map(
+      (data as { place_key: string; verdict: Verdict; checked_at: string }[]).map((r) => [r.place_key, { verdict: r.verdict, checkedAt: r.checked_at }]),
+    );
+    cacheChecks(checks);
+    return checks;
+  } catch {
+    return loadCachedChecks();
+  }
 }
 
 /** Whether the signed-in person is on the reviewers list. */
