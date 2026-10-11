@@ -42,7 +42,7 @@ export function App() {
 
   return (
     <div className="app">
-      {screen.name !== 'trip' && (
+      {screen.name !== 'trip' && screen.name !== 'form' && (
         <header className="topbar">
           <span className="brand">i<span>go</span></span>
           <span className="eyebrow tagline">{t('app.tagline')}</span>

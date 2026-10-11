@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { usePlaceChecks } from '../../hooks/usePlaceChecks';
 import { closedPlaces } from '../../services/placeChecks';
 import type { Task, Trip } from '../../types';
@@ -14,6 +14,7 @@ import { SpotsView } from '../spots/SpotsView';
 import { CountryBrief } from '../country/CountryBrief';
 import { TabBar, type TripTab } from './TabBar';
 import { TripMenu } from './TripMenu';
+import { BackIcon, MoreIcon } from '../../components/ui/Icons';
 import { useT, type TFunction } from '../../i18n';
 
 /** Short labels for the "Planned for" line, translated. */
@@ -46,6 +47,7 @@ export function TripView({ trip, dispatch, onBack, onEdit, notify }: TripViewPro
   const [selected, setSelected] = useState(today >= trip.startDate && today <= trip.endDate ? today : trip.startDate);
   const [menuOpen, setMenuOpen] = useState(false);
   const doneIds = useMemo(() => new Set(trip.doneIds), [trip.doneIds]);
+  const closeMenu = useCallback(() => setMenuOpen(false), []);
 
   if (!country || !city) {
     return <div className="empty"><p>{t('trip.unsupported')}</p><button className="btn" onClick={onBack}>{t('trip.back')}</button></div>;
@@ -71,28 +73,30 @@ export function TripView({ trip, dispatch, onBack, onEdit, notify }: TripViewPro
   return (
     <>
       <header className="topbar">
-        <button type="button" className="icon-btn" onClick={onBack} aria-label={t('trip.allTrips')}>‹</button>
+        <button type="button" className="icon-btn" onClick={onBack} aria-label={t('trip.allTrips')}><BackIcon /></button>
         <h1>{trip.name}</h1>
-        <button type="button" className="btn small" aria-expanded={menuOpen} onClick={() => setMenuOpen((o) => !o)}>{t('trip.menu')}</button>
+        <button type="button" className="icon-btn" aria-label={t('trip.menu')} aria-haspopup="dialog" aria-expanded={menuOpen} onClick={() => setMenuOpen(true)}><MoreIcon /></button>
       </header>
       {menuOpen && (
-        <div style={{ paddingTop: 12 }}>
-          <TripMenu
-            hiddenCount={trip.hiddenIds.length}
-            onEdit={onEdit}
-            onExport={exportIcs}
-            onRestore={() => dispatch({ type: 'restoreHidden', tripId: id })}
-            onDelete={() => { dispatch({ type: 'remove', tripId: id }); onBack(); }}
-          />
-        </div>
+        <TripMenu
+          title={trip.name}
+          hiddenCount={trip.hiddenIds.length}
+          onClose={closeMenu}
+          onEdit={onEdit}
+          onExport={exportIcs}
+          onRestore={() => dispatch({ type: 'restoreHidden', tripId: id })}
+          onDelete={() => { dispatch({ type: 'remove', tripId: id }); onBack(); }}
+        />
       )}
       {tab === 'days' && day && (
         <>
           <div className="profile-line">
-            <span>{t('chips.plannedFor')}</span>
-            {trip.interests.length === 0 && <span className="tag">{t('chips.popular')}</span>}
-            {trip.interests.map((i) => <span key={i} className="tag">{t(`interest.${i}`).toLowerCase()}</span>)}
-            {profileLabels(trip, t).map((l) => <span key={l} className="tag">{l}</span>)}
+            <div className="profile-chips">
+              <span>{t('chips.plannedFor')}</span>
+              {trip.interests.length === 0 && <span className="tag">{t('chips.popular')}</span>}
+              {trip.interests.map((i) => <span key={i} className="tag">{t(`interest.${i}`).toLowerCase()}</span>)}
+              {profileLabels(trip, t).map((l) => <span key={l} className="tag">{l}</span>)}
+            </div>
             <button type="button" className="btn small ghost" onClick={onEdit}>{t('common.change')}</button>
           </div>
           <DayStrip days={plan.days} selected={day.date} doneIds={doneIds} onSelect={setSelected} />

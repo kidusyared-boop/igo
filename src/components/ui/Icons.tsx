@@ -35,3 +35,30 @@ export function CountryIcon() {
     </svg>
   );
 }
+
+export function BackIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" {...common}>
+      <path d="M15 5l-7 7 7 7" />
+    </svg>
+  );
+}
+
+export function MoreIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" {...common}>
+      <circle cx="12" cy="5.5" r="1.2" fill="currentColor" />
+      <circle cx="12" cy="12" r="1.2" fill="currentColor" />
+      <circle cx="12" cy="18.5" r="1.2" fill="currentColor" />
+    </svg>
+  );
+}
+
+export function PlaneIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" {...common}>
+      <path d="M10.5 13.5 3 11l1.5-1.5 8 .5 4-4.5a2 2 0 0 1 3 3l-4.5 4 .5 8L14 21l-2.5-7.5" />
+      <path d="M6 18l2-2" />
+    </svg>
+  );
+}

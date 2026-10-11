@@ -51,13 +51,13 @@ export function AccountPanel({ sync, onSyncNow, onReview }: AccountPanelProps) {
     return (
       <div className="account section">
         {!open && (
-          <div className="row" style={{ justifyContent: 'space-between' }}>
+          <div className="panel account-bar">
             <span className="muted">{t('account.deviceOnly')}</span>
             <button type="button" className="btn small" onClick={() => setOpen(true)}>{t('account.signInToSync')}</button>
           </div>
         )}
         {open && (
-          <form className="form" onSubmit={submit} noValidate>
+          <form className="form form-card" onSubmit={submit} noValidate>
             <label className="field" htmlFor="acct-email">
               <span className="label">{t('account.email')}</span>
               <input id="acct-email" type="email" className="input" autoComplete="email" value={email} onChange={(e) => setEmail(e.target.value)} />
@@ -85,7 +85,7 @@ export function AccountPanel({ sync, onSyncNow, onReview }: AccountPanelProps) {
         : say(sync.message);
   return (
     <div className="account section">
-      <div className="row" style={{ justifyContent: 'space-between', flexWrap: 'wrap' }}>
+      <div className="panel account-bar">
         <span className="muted">{sync.email} · <span role="status">{status}</span></span>
         <div className="row">
           {onReview && <button type="button" className="btn small primary" onClick={onReview}>{t('account.checkPlaces')}</button>}

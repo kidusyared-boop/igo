@@ -18,7 +18,7 @@ export function TabBar({ tab, onChange }: { tab: TripTab; onChange: (t: TripTab)
       <div className="tabbar-inner">
         {TABS.map((item) => (
           <button key={item.id} type="button" aria-current={item.id === tab ? 'page' : undefined} onClick={() => onChange(item.id)}>
-            {item.icon}
+            <span className="tab-icon">{item.icon}</span>
             {t(`tabs.${item.id}`)}
           </button>
         ))}
