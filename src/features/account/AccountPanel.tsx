@@ -28,7 +28,10 @@ export function AccountPanel({ sync, onSyncNow, onReview }: AccountPanelProps) {
       const { error, data } = kind === 'in'
         ? await supabase.auth.signInWithPassword({ email, password })
         : await supabase.auth.signUp({ email, password });
-      if (error) return setMessage(explain(error.message));
+      if (error) {
+        const why = explain(error.message);
+        return setMessage(why === 'sync.offline' ? 'account.unreachable' : why);
+      }
       if (kind === 'up' && !data.session) return setMessage('account.confirmEmail');
       setOpen(false);
       setPassword('');
