@@ -13,7 +13,7 @@ export const en = {
 
   'list.title': 'Your trips',
   'list.new': 'New trip',
-  'list.empty': "No trips yet. Add your next country and igo builds every day's to-do list.",
+  'list.empty': "No trips yet. Add your Ethiopia trip and igo builds every day's to-do list.",
   'list.example': 'Example',
   'list.day': '{n} day',
   'list.days': '{n} days',
@@ -184,6 +184,7 @@ export const en = {
   'pre.title': 'Before you go',
   'pre.done': '{done}/{total} done',
   'pre.daysBefore': '{n} days before',
+  'pre.dayBefore': '{n} day before',
 
   'spots.title': 'Places',
   'spots.picked': 'Picked for you',

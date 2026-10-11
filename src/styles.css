@@ -266,6 +266,7 @@ h1, h2, h3 { text-wrap: balance; margin: 0; }
   padding: 14px 0; border-bottom: 1px solid var(--line);
 }
 .task .icon-btn { width: 40px; height: 44px; margin: -10px -8px 0 0; font-size: 22px; }
+.task.untimed { grid-template-columns: 24px minmax(0, 1fr) 40px; }
 .task .time { font: 500 14px/22px var(--font-mono); font-variant-numeric: tabular-nums; color: var(--muted); }
 .task input[type='checkbox'] { width: 24px; height: 24px; margin: -1px 0 0; accent-color: var(--c-explore); cursor: pointer; }
 .task .body { min-width: 0; display: grid; gap: 4px; cursor: pointer; }
