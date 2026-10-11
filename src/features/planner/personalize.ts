@@ -111,6 +111,8 @@ export function pickPlaces(trip: Trip, days: DaySkeleton[], cityOf: (id: string)
         pickedFor: r.fit?.matched ?? [],
         effort: r.place.effort,
         checked: r.place.checked,
+        allDay: r.place.allDay,
+        weekdays: r.place.weekdays,
       });
     }
   }

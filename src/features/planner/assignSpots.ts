@@ -1,6 +1,6 @@
 import type { DayPlan, Light, Spot, Trip } from '../../types';
 import { dayCapacity, isMealSpot } from './personalize';
-import { toMinutes } from '../../utils/dates';
+import { addDays, toMinutes } from '../../utils/dates';
 
 export type DaySkeleton = Pick<DayPlan, 'date' | 'kind' | 'sun' | 'cityId' | 'movedFrom'>;
 
@@ -12,6 +12,14 @@ const CAPACITY: Record<Light, number> = { sunrise: 1, any: 2, lunch: 1, sunset: 
 /** Start times for daytime places: one in the morning, one in the afternoon. */
 export const ANY_SLOTS = ['09:30', '14:30'];
 
+/** Flights before 06:00 mean leaving for the airport the night before. */
+export const EARLY_FLIGHT = toMinutes('06:00');
+
+/** The last evening before a flight that leaves in the small hours. */
+export function isEveOfEarlyFlight(day: Pick<DaySkeleton, 'date'>, trip: Trip): boolean {
+  return toMinutes(trip.departureTime) < EARLY_FLIGHT && trip.endDate > trip.startDate && day.date === addDays(trip.endDate, -1);
+}
+
 /** Earliest and latest minute a day leaves free for places, given flights and moves. */
 export function freeWindow(day: DaySkeleton, trip: Trip): [number, number] {
   const start =
@@ -20,9 +28,16 @@ export function freeWindow(day: DaySkeleton, trip: Trip): [number, number] {
       : day.movedFrom
         ? toMinutes(MOVE_CHECK_IN) + 60
         : 0;
-  const end = day.kind === 'departure' || day.kind === 'single' ? toMinutes(trip.departureTime) - 240 : 24 * 60;
+  const end =
+    day.kind === 'departure' || day.kind === 'single'
+      ? toMinutes(trip.departureTime) - 240
+      : isEveOfEarlyFlight(day, trip)
+        ? toMinutes('19:00')
+        : 24 * 60;
   return [start, end];
 }
+
+const weekday = (iso: string) => new Date(`${iso}T12:00:00Z`).getUTCDay();
 
 /** Afternoons kept free for family: 15:00 to 19:00 on full days in one place. */
 const FAMILY_FROM = toMinutes('15:00');
@@ -80,13 +95,30 @@ export function assignSpots(
 
   const inCity = (spot: Spot, day: DaySkeleton) => (spot.cityId ?? trip.cityId) === day.cityId;
   const used = (date: string, light: Light) => (byDate.get(date) ?? []).filter((s) => s.light === light).length;
-  const count = (date: string) => (byDate.get(date) ?? []).filter((s) => !isMealSpot(s)).length;
+  // A whole-day trip counts as two places against the pace limit.
+  const weight = (spot: Spot) => (spot.allDay ? 2 : 1);
+  const count = (date: string) => (byDate.get(date) ?? []).filter((s) => !isMealSpot(s)).reduce((n, s) => n + weight(s), 0);
+  const awayAllDay = (date: string) => (byDate.get(date) ?? []).some((s) => s.allDay);
   const order = (d: DaySkeleton) => (d.kind === 'full' && !d.movedFrom ? 0 : 1);
+
+  // Whole-day trips need a full day in one place with nothing else in daylight.
+  const roomFor = (spot: Spot, d: DaySkeleton) => {
+    if (spot.weekdays && !spot.weekdays.includes(weekday(d.date))) return false;
+    if (spot.allDay) {
+      return d.kind === 'full' && !d.movedFrom && anySlots(d, trip).length === ANY_SLOTS.length && used(d.date, 'any') === 0 && used(d.date, 'sunset') === 0;
+    }
+    if (awayAllDay(d.date) && (spot.light === 'any' || spot.light === 'sunset')) return false;
+    return used(d.date, spot.light) < (spot.light === 'any' ? anySlots(d, trip).length : CAPACITY[spot.light]);
+  };
+  const underPace = (spot: Spot, d: DaySkeleton) => {
+    const n = count(d.date);
+    return n === 0 || n + weight(spot) <= dayCapacity(d, trip.pace, trip.withKids);
+  };
 
   const place = (spot: Spot, respectPace: boolean): boolean => {
     const pick = days
-      .filter((d) => inCity(spot, d) && used(d.date, spot.light) < (spot.light === 'any' ? anySlots(d, trip).length : CAPACITY[spot.light]) && slotFits(d, spot.light, trip))
-      .filter((d) => !respectPace || isMealSpot(spot) || count(d.date) < dayCapacity(d, trip.pace, trip.withKids))
+      .filter((d) => inCity(spot, d) && roomFor(spot, d) && slotFits(d, spot.light, trip))
+      .filter((d) => !respectPace || isMealSpot(spot) || underPace(spot, d))
       .sort((a, b) => order(a) - order(b) || count(a.date) - count(b.date))[0];
     if (pick) byDate.get(pick.date)?.push(spot);
     return Boolean(pick);
