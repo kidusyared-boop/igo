@@ -34,8 +34,12 @@ After any change in `src/`, run `npm run cap:sync` before building again.
 - Supabase keys come from `.env.local` at build time, the same as the website.
 - The service worker is skipped inside the apps; they ship every file already.
 
+## Icon, splash screen and back button
+
+- Source images are in `assets/`. After changing them, run `npx capacitor-assets generate --android --ios --iconBackgroundColor '#14213d' --splashBackgroundColor '#14213d'`.
+- On Android the back button steps back one screen and closes igo from the trip list (`src/hooks/useBackButton.ts`).
+
 ## Not done yet
 
-- App icon and splash screen (still Capacitor's defaults).
 - Calendar export (.ics) uses a browser download, which may not work inside the apps.
 - Store listings, signing keys and privacy policy.
