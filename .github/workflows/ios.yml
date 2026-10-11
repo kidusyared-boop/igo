@@ -8,7 +8,7 @@ on:
     paths:
       - 'ios/**'
       - '.github/workflows/ios.yml'
-      - 'scripts/ios-shots.py'
+      - 'scripts/ios-*'
 
 permissions:
   contents: write
@@ -23,21 +23,23 @@ jobs:
         with:
           node-version: 22
           cache: npm
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
       - run: npm ci
       - run: npm run build
         env:
           VITE_SUPABASE_URL: ${{ vars.VITE_SUPABASE_URL || 'https://gufcxowuyrcxmvebtygy.supabase.co' }}
           VITE_SUPABASE_PUBLISHABLE_KEY: ${{ vars.VITE_SUPABASE_PUBLISHABLE_KEY || 'sb_publishable_EnWF2aN2gOT3ZtmgrvTOLw_A2_FcbUn' }}
+      - name: Add the screen tour to this build only
+        run: |
+          cp scripts/ios-tour.js dist/
+          sed -i '' 's#</body>#<script src="/ios-tour.js"></script></body>#' dist/index.html
+          grep -q ios-tour.js dist/index.html
       - run: npx cap sync ios
       - name: Build for the simulator
         run: >
           xcodebuild -workspace ios/App/App.xcworkspace -scheme App -configuration Debug
           -sdk iphonesimulator -destination 'generic/platform=iOS Simulator'
           -derivedDataPath build CODE_SIGNING_ALLOWED=NO -quiet
-      - name: Start an iPhone simulator and install igo
+      - name: Start an iPhone simulator, install igo and take screenshots
         run: |
           UDID=$(xcrun simctl list devices available -j | python3 -c "
           import json,sys
@@ -47,25 +49,13 @@ jobs:
           xcrun simctl bootstatus "$UDID" -b
           xcrun simctl install "$UDID" build/Build/Products/Debug-iphonesimulator/App.app
           xcrun simctl list devices booted
-          # One screenshot without taps, in case the tapping tool fails later.
-          mkdir -p shots
-          xcrun simctl launch "$UDID" app.igo.ethiopia
-          sleep 8
-          xcrun simctl io "$UDID" screenshot shots/00-launch.png
-      - name: Install idb for taps
-        run: |
-          brew tap facebook/fb
-          # Newer Homebrew refuses third-party taps until they are trusted.
-          brew trust facebook/fb || true
-          brew install idb-companion
-          pip install fb-idb
-      - name: Walk through igo and take screenshots
-        run: python3 scripts/ios-shots.py shots
+          scripts/ios-shots.sh "$UDID" shots
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: igo-iphone-screenshots
           path: shots
+          if-no-files-found: error
       - name: Publish screenshots to the ci/ios-screenshots branch
         if: always()
         run: |
