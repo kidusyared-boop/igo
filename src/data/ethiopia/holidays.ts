@@ -73,7 +73,11 @@ type EventDraft = Omit<FestivalEvent, 'date'> & { dayOffset: number };
 
 const CONFIRM = 'Times shift each year, so confirm with your hotel or guide the day before.';
 
-/** The big three, with the cities where they are worth being for. Times are typical, not fixed. */
+/**
+ * The big three, with the cities where they are worth being for. Times are
+ * typical, checked against travel guides and tour operators in October 2026.
+ * Irreecha is left out: Abbaa Gadaa leaders announce its date each year.
+ */
 const FESTIVALS: { key: string; name: string; date: (y: number) => string; cityIds: string[]; events: EventDraft[] }[] = [
   {
     key: 'timkat',
@@ -81,8 +85,8 @@ const FESTIVALS: { key: string; name: string; date: (y: number) => string; cityI
     date: ethiopianFeast(5, 11),
     cityIds: ['gondar', 'lalibela', 'addis'],
     events: [
-      { key: 'timkat-eve-gondar', cityId: 'gondar', dayOffset: -1, start: '13:00', end: '16:30', title: 'Timkat eve: follow the procession to Fasilides Bath', detail: `Priests carry the tabots from the city's churches to the bath with drums and singing. Find a spot on the route by noon. ${CONFIRM}` },
-      { key: 'timkat-gondar', cityId: 'gondar', dayOffset: 0, start: '06:00', end: '11:00', title: 'Timkat at Fasilides Bath: the water blessing, then the jump', detail: 'Be inside by 06:00 to get a place on the walls. After the blessing, crowds leap into the pool. Keep your camera in a dry bag and watch for pickpockets.' },
+      { key: 'timkat-eve-gondar', cityId: 'gondar', dayOffset: -1, start: '13:00', end: '17:30', title: 'Timkat eve: follow the procession to Fasilides Bath', detail: `Roads close around 13:00, so be on the route by then. The procession leaves the city centre around 14:00 and reaches the bath around 17:00, with drums and singing. ${CONFIRM}` },
+      { key: 'timkat-gondar', cityId: 'gondar', dayOffset: 0, start: '06:00', end: '11:00', title: 'Timkat at Fasilides Bath: the water blessing, then the jump', detail: 'Mass runs through the night until about 07:00, then the archbishop blesses the pool and hundreds jump in. Be inside by 06:00 to get a place on the walls. Keep your camera in a dry bag and watch for pickpockets.' },
       { key: 'timkat-eve-lalibela', cityId: 'lalibela', dayOffset: -1, start: '13:00', end: '16:30', title: 'Timkat eve: the tabots go down to the pool', detail: `Priests in full robes lead the procession from the churches. Stand on higher ground for the best view. ${CONFIRM}` },
       { key: 'timkat-lalibela', cityId: 'lalibela', dayOffset: 0, start: '06:00', end: '10:30', title: 'Timkat morning: the water blessing and the walk back to the churches', detail: 'Be at the pool by 06:00. Pilgrims crowd the paths afterwards, so plan to walk, not drive.' },
       { key: 'timkat-eve-addis', cityId: 'addis', dayOffset: -1, start: '13:00', end: '16:30', title: 'Timkat eve: processions to Jan Meda', detail: `Tabots from churches across the city converge on Jan Meda. Roads close, so go on foot for the last part. ${CONFIRM}` },
@@ -96,7 +100,7 @@ const FESTIVALS: { key: string; name: string; date: (y: number) => string; cityI
     cityIds: ['lalibela'],
     events: [
       { key: 'genna-eve-lalibela', cityId: 'lalibela', dayOffset: -1, start: '18:00', end: '22:00', title: 'Genna eve: the night service around Bete Maryam', detail: `Thousands of pilgrims in white keep vigil through the night. Bring a warm layer and a head torch. ${CONFIRM}` },
-      { key: 'genna-lalibela', cityId: 'lalibela', dayOffset: 0, start: '05:30', end: '09:30', title: 'Genna morning: priests chant on the rim above Bete Maryam', detail: 'Get a place on the rock above the courtyard before dawn. No flash, and ask before photographing people at prayer.' },
+      { key: 'genna-lalibela', cityId: 'lalibela', dayOffset: 0, start: '05:30', end: '09:30', title: 'Genna morning: priests chant on the rim above Bete Maryam', detail: 'The ceremony starts around sunrise and lasts two to three hours. The rim is kept for priests and officials, so watch from the slopes around the church, and hire a local guide for the crowded passages. No flash, and ask before photographing people at prayer.' },
     ],
   },
   {
@@ -105,7 +109,7 @@ const FESTIVALS: { key: string; name: string; date: (y: number) => string; cityI
     date: ethiopianFeast(1, 17),
     cityIds: ['addis'],
     events: [
-      { key: 'meskel-eve-addis', cityId: 'addis', dayOffset: -1, start: '15:00', end: '20:00', title: 'Demera: the Meskel bonfire at Meskel Square', detail: `Choirs and processions fill the square from mid-afternoon and the bonfire is lit after dark. Arrive by 15:00 for a filming spot. ${CONFIRM}` },
+      { key: 'meskel-eve-addis', cityId: 'addis', dayOffset: -1, start: '14:00', end: '20:00', title: 'Demera: the Meskel bonfire at Meskel Square', detail: `Processions converge on the square from early afternoon and the bonfire is lit at nightfall. Arrive by 14:00 for a filming spot. ${CONFIRM}` },
     ],
   },
 ];
