@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 import type { Trip } from './types';
 import { useTrips } from './hooks/useTrips';
 import { useSync } from './hooks/useSync';
@@ -31,7 +31,11 @@ export function App() {
   const { trips, tombstones, dispatch, saved } = useTrips();
   const sync = useSync(trips, tombstones, dispatch);
   const t = useT();
-  const [screen, setScreen] = useState<Screen>(() => (trips.length === 1 && trips[0] ? { name: 'trip', id: trips[0].id } : { name: 'list' }));
+  // The example trip waits on the list, where it is labeled, instead of opening as if it were yours.
+  const [screen, setScreen] = useState<Screen>(() =>
+    trips.length === 1 && trips[0] && !trips[0].id.startsWith('example') ? { name: 'trip', id: trips[0].id } : { name: 'list' },
+  );
+  const [fresh, setFresh] = useState<string | null>(null);
   const [toast, setToast] = useState<string | null>(null);
   const [reviewer, setReviewer] = useState(false);
   const signedInAs = 'email' in sync.state ? sync.state.email : null;
@@ -57,6 +61,9 @@ export function App() {
     return () => clearTimeout(timer);
   }, [toast]);
 
+  // Every new screen starts at the top, not where the last one was scrolled to.
+  useLayoutEffect(() => window.scrollTo(0, 0), [screen]);
+
   const openTrip = screen.name === 'trip' ? trips.find((t) => t.id === screen.id) : undefined;
 
   return (
@@ -78,13 +85,14 @@ export function App() {
           initial={screen.trip}
           isNew={screen.isNew}
           onCancel={() => setScreen(parentScreen(screen) ?? { name: 'list' })}
-          onSave={(trip) => { dispatch({ type: 'upsert', trip }); setScreen({ name: 'trip', id: trip.id }); }}
+          onSave={(trip) => { dispatch({ type: 'upsert', trip }); if (screen.isNew) setFresh(trip.id); setScreen({ name: 'trip', id: trip.id }); }}
         />
       )}
       {screen.name === 'trip' && openTrip && (
         <TripView
           key={openTrip.id}
           trip={openTrip}
+          justCreated={fresh === openTrip.id}
           dispatch={dispatch}
           onBack={() => setScreen({ name: 'list' })}
           onEdit={() => setScreen({ name: 'form', trip: openTrip, isNew: false })}

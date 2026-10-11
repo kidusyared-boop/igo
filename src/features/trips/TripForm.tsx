@@ -85,6 +85,22 @@ export function TripForm({ initial, isNew, onSave, onCancel }: TripFormProps) {
         </div>
       </div>
       <div className="form-card">
+        <Segmented label={t('form.planFor')} value={trip.mode} options={MODES.map((m) => ({ value: m, label: t(`mode.${m}`) }))} onChange={(v) => set('mode', v)} />
+        {trip.mode === 'creator' && (
+          <>
+            <Field id="trip-audience" label={t('form.audience')} hint={t('form.audienceHint')}>
+              <select id="trip-audience" className="select" value={trip.audienceTimeZone} onChange={(e) => set('audienceTimeZone', e.target.value)}>
+                {zones.map((z) => <option key={z.value} value={z.value}>{z.label}</option>)}
+              </select>
+            </Field>
+            <label className="check" htmlFor="trip-drone">
+              <input id="trip-drone" type="checkbox" checked={trip.flyingDrone} onChange={(e) => set('flyingDrone', e.target.checked)} />
+              {t('form.drone')}
+            </label>
+          </>
+        )}
+      </div>
+      <div className="form-card">
         <RouteEditor
           cities={country?.cities ?? []}
           firstCityId={trip.cityId}
@@ -121,22 +137,6 @@ export function TripForm({ initial, isNew, onSave, onCancel }: TripFormProps) {
           onEntryDoc={(entryDoc) => set('entryDoc', entryDoc)}
           onFamilyTime={(familyTime) => set('familyTime', familyTime)}
         />
-      </div>
-      <div className="form-card">
-        <Segmented label={t('form.planFor')} value={trip.mode} options={MODES.map((m) => ({ value: m, label: t(`mode.${m}`) }))} onChange={(v) => set('mode', v)} />
-        {trip.mode === 'creator' && (
-          <>
-            <Field id="trip-audience" label={t('form.audience')} hint={t('form.audienceHint')}>
-              <select id="trip-audience" className="select" value={trip.audienceTimeZone} onChange={(e) => set('audienceTimeZone', e.target.value)}>
-                {zones.map((z) => <option key={z.value} value={z.value}>{z.label}</option>)}
-              </select>
-            </Field>
-            <label className="check" htmlFor="trip-drone">
-              <input id="trip-drone" type="checkbox" checked={trip.flyingDrone} onChange={(e) => set('flyingDrone', e.target.checked)} />
-              {t('form.drone')}
-            </label>
-          </>
-        )}
       </div>
       <div className="form-actions">
         {error && <p className="error" role="alert">{t(error, { max: MAX_TRIP_DAYS })}</p>}

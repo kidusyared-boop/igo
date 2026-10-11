@@ -31,11 +31,13 @@ interface TripViewProps {
   trip: Trip;
   dispatch: TripDispatch;
   onBack: () => void;
+  /** Show the plan just built, not the prep list. */
+  justCreated?: boolean;
   onEdit: () => void;
   notify: (message: string) => void;
 }
 
-export function TripView({ trip, dispatch, onBack, onEdit, notify }: TripViewProps) {
+export function TripView({ trip, dispatch, onBack, onEdit, notify, justCreated = false }: TripViewProps) {
   const t = useT();
   const { checks } = usePlaceChecks();
   const closed = useMemo(() => closedPlaces(checks), [checks]);
@@ -43,7 +45,7 @@ export function TripView({ trip, dispatch, onBack, onEdit, notify }: TripViewPro
   const country = findCountry(trip.countryCode);
   const city = findCity(trip.countryCode, trip.cityId);
   const today = todayIso();
-  const [tab, setTab] = useState<TripTab>(today < trip.startDate ? 'before' : 'days');
+  const [tab, setTab] = useState<TripTab>(today < trip.startDate && !justCreated ? 'before' : 'days');
   const [selected, setSelected] = useState(today >= trip.startDate && today <= trip.endDate ? today : trip.startDate);
   const [menuOpen, setMenuOpen] = useState(false);
   const doneIds = useMemo(() => new Set(trip.doneIds), [trip.doneIds]);
@@ -123,7 +125,7 @@ export function TripView({ trip, dispatch, onBack, onEdit, notify }: TripViewPro
         />
       )}
       {tab === 'country' && <CountryBrief country={country} trip={trip} />}
-      <TabBar tab={tab} onChange={setTab} />
+      <TabBar tab={tab} onChange={(next) => { setTab(next); window.scrollTo(0, 0); }} />
     </>
   );
 }

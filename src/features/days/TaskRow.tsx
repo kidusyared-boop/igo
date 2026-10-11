@@ -8,17 +8,21 @@ interface TaskRowProps {
   localClock?: (hhmm: string) => string;
   onToggle: () => void;
   onRemove: () => void;
+  /** Leave out the time column, as in the prep list where nothing has a time. */
+  timeless?: boolean;
 }
 
-export function TaskRow({ task, done, localClock, onToggle, onRemove }: TaskRowProps) {
+export function TaskRow({ task, done, localClock, onToggle, onRemove, timeless = false }: TaskRowProps) {
   const t = useT();
   const checkId = `chk-${task.id}`;
   return (
-    <li className={`task${done ? ' done' : ''}`}>
-      <span className="time">
-        {task.time ?? '—'}
-        {task.time && localClock && <small title={t('task.localTime')}>{localClock(task.time)}</small>}
-      </span>
+    <li className={`task${done ? ' done' : ''}${timeless ? ' untimed' : ''}`}>
+      {!timeless && (
+        <span className="time">
+          {task.time ?? '—'}
+          {task.time && localClock && <small title={t('task.localTime')}>{localClock(task.time)}</small>}
+        </span>
+      )}
       <input id={checkId} type="checkbox" checked={done} onChange={onToggle} />
       <label htmlFor={checkId} className="body">
         <span className={`cat cat-${task.category}`}>{t(`category.${task.category}`)}</span>
