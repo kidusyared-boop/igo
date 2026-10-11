@@ -1,8 +1,20 @@
-import type { DayPlan, Light, Spot, Trip } from '../../types';
+import type { DayPlan, FestivalEvent, Light, Spot, Trip } from '../../types';
 import { dayCapacity, isMealSpot } from './personalize';
 import { addDays, toMinutes } from '../../utils/dates';
+import { eventWindow } from './festivals';
 
-export type DaySkeleton = Pick<DayPlan, 'date' | 'kind' | 'sun' | 'cityId' | 'movedFrom'>;
+export type DaySkeleton = Pick<DayPlan, 'date' | 'kind' | 'sun' | 'cityId' | 'movedFrom'> & {
+  /** Festival events the traveler is in town for; nothing else is planned over them. */
+  events?: FestivalEvent[];
+};
+
+/** Whether a stretch of the day clashes with a festival event. */
+export function clashesWithEvent(day: Pick<DaySkeleton, 'events'>, start: number, end: number): boolean {
+  return (day.events ?? []).some((e) => {
+    const [from, to] = eventWindow(e);
+    return start < to && end > from;
+  });
+}
 
 export const MOVE_CHECK_IN = '14:00';
 
@@ -54,7 +66,7 @@ export function anySlots(day: DaySkeleton, trip: Trip): string[] {
   return ANY_SLOTS.filter((t) => {
     const start = toMinutes(t);
     const end = start + 120;
-    return start >= free && end <= leave && !(family && end > FAMILY_FROM && start < FAMILY_TO);
+    return start >= free && end <= leave && !(family && end > FAMILY_FROM && start < FAMILY_TO) && !clashesWithEvent(day, start, end);
   });
 }
 
@@ -64,7 +76,8 @@ export function slotFits(day: DaySkeleton, light: Light, trip: Trip): boolean {
   const sunset = toMinutes(day.sun?.sunset ?? '18:30');
   const [free, leave] = freeWindow(day, trip);
   const family = isFamilyDay(day, trip);
-  const fits = ([start, end]: [number, number]) => start >= free && end <= leave && !(family && end > FAMILY_FROM && start < FAMILY_TO);
+  const fits = ([start, end]: [number, number]) =>
+    start >= free && end <= leave && !(family && end > FAMILY_FROM && start < FAMILY_TO) && !clashesWithEvent(day, start, end);
   switch (light) {
     case 'sunrise': return fits([sunrise - 30, sunrise + 60]);
     case 'any': return anySlots(day, trip).length > 0;
@@ -105,7 +118,7 @@ export function assignSpots(
   const roomFor = (spot: Spot, d: DaySkeleton) => {
     if (spot.weekdays && !spot.weekdays.includes(weekday(d.date))) return false;
     if (spot.allDay) {
-      return d.kind === 'full' && !d.movedFrom && anySlots(d, trip).length === ANY_SLOTS.length && used(d.date, 'any') === 0 && used(d.date, 'sunset') === 0;
+      return d.kind === 'full' && !d.movedFrom && !d.events?.length && anySlots(d, trip).length === ANY_SLOTS.length && used(d.date, 'any') === 0 && used(d.date, 'sunset') === 0;
     }
     if (awayAllDay(d.date) && (spot.light === 'any' || spot.light === 'sunset')) return false;
     return used(d.date, spot.light) < (spot.light === 'any' ? anySlots(d, trip).length : CAPACITY[spot.light]);

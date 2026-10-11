@@ -1,7 +1,7 @@
 import type { City, CountryPack, Spot, Task, Trip } from '../../types';
 import { fromMinutes, shiftTime, toMinutes } from '../../utils/dates';
 import { utcToZoned, zonedToUtc } from '../../utils/timezone';
-import { ANY_SLOTS, EARLY_FLIGHT, MOVE_CHECK_IN, anySlots, isEveOfEarlyFlight, type DaySkeleton } from './assignSpots';
+import { ANY_SLOTS, EARLY_FLIGHT, MOVE_CHECK_IN, anySlots, clashesWithEvent, isEveOfEarlyFlight, type DaySkeleton } from './assignSpots';
 import { travelDetail } from './route';
 import { interestLabel } from './personalize';
 import { needsVisa } from './diaspora';
@@ -202,6 +202,14 @@ function creatorRoutine(ctx: DayContext, hasAnySpot: boolean): Draft[] {
   return drafts;
 }
 
+/** Tasks that only fill spare time, dropped when a festival event takes that time. */
+const FILLERS = new Set(['broll', 'midday', 'explore', 'scout', 'kids-break', 'family']);
+
+function festivalDrafts(ctx: DayContext): Draft[] {
+  const category = ctx.trip.mode === 'creator' ? 'shoot' : 'explore';
+  return (ctx.day.events ?? []).map((e) => ({ key: `fest-${e.key}`, time: e.start, title: e.title, detail: e.detail, category }));
+}
+
 export function buildDayTasks(ctx: DayContext): Task[] {
   const { trip, day } = ctx;
   const sunrise = day.sun?.sunrise ?? '06:30';
@@ -240,6 +248,13 @@ export function buildDayTasks(ctx: DayContext): Task[] {
     if (free <= toMinutes(sunset) - 60) {
       drafts.push({ key: 'scout', time: shiftTime(sunset, -60), title: 'Scout nearby and film arrival B-roll at golden hour', category: 'shoot' });
     }
+  }
+
+  if (day.events?.length) {
+    drafts = drafts
+      .filter((t) => !(FILLERS.has(t.key) && t.time && clashesWithEvent(day, toMinutes(t.time), toMinutes(t.time) + 90)))
+      .map((t) => (t.key === 'edit' && t.time && clashesWithEvent(day, toMinutes(t.time), toMinutes(t.time) + 90) ? { ...t, time: '20:30' } : t));
+    drafts.push(...festivalDrafts(ctx));
   }
 
   if (day.kind === 'departure') {

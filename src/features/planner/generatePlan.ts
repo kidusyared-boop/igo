@@ -1,12 +1,13 @@
 import type { DayNote, DayPlan, Task, Trip, TripPlan } from '../../types';
 import { findCity, findCountry } from '../../data/countries';
-import { dateRange, formatDay } from '../../utils/dates';
+import { dateRange, formatDay, toMinutes } from '../../utils/dates';
 import { sunTimes } from '../../utils/solar';
-import { assignSpots, type DaySkeleton } from './assignSpots';
+import { assignSpots, freeWindow, type DaySkeleton } from './assignSpots';
 import { buildDayTasks, sortTasks } from './dayTasks';
 import { buildPreTripTasks } from './preTrip';
 import { cityForDate, travelDetail } from './route';
 import { pickPlaces } from './personalize';
+import { festivalEventsByDate } from './festivals';
 
 function dayKind(index: number, total: number): DayPlan['kind'] {
   if (total === 1) return 'single';
@@ -32,16 +33,22 @@ export function generatePlan(trip: Trip, closed: ReadonlySet<string> = new Set()
   const cityOf = (id: string) => findCity(trip.countryCode, id) ?? findCity(trip.countryCode, trip.cityId)!;
 
   const dates = dateRange(trip.startDate, trip.endDate);
+  const events = festivalEventsByDate(trip, country);
   const skeletons: DaySkeleton[] = dates.map((date, i) => {
     const city = cityOf(cityForDate(trip, date));
     const prev = i > 0 ? cityForDate(trip, dates[i - 1]!) : city.id;
-    return {
+    const kind = dayKind(i, dates.length);
+    const day: DaySkeleton = {
       date,
       cityId: city.id,
       movedFrom: prev !== city.id ? prev : undefined,
-      kind: dayKind(i, dates.length),
+      kind,
       sun: sunTimes(date, city.lat, city.lon, city.timeZone),
     };
+    // Only events the day's flights and moves leave time for.
+    const [free, leave] = freeWindow(day, trip);
+    const fit = (events.get(date) ?? []).filter((e) => toMinutes(e.start) >= free && toMinutes(e.end) <= leave);
+    return fit.length ? { ...day, events: fit } : day;
   });
   const picked = pickPlaces(trip, skeletons, cityOf, closed);
   const { byDate, unscheduled } = assignSpots(trip, skeletons, picked);

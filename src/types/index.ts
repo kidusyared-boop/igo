@@ -97,6 +97,29 @@ export interface CountryPack {
   localClock?: (hhmm: string) => string;
   localDate?: (iso: string) => string;
   dayNotes?: (iso: string) => DayNote[];
+  /** Festivals worth planning a route around, for dates from `from` to `to`. */
+  festivals?: (from: string, to: string) => Festival[];
+}
+
+/** One part of a festival in one city, such as the eve procession. */
+export interface FestivalEvent {
+  key: string;
+  cityId: string;
+  date: string;
+  start: string;
+  end: string;
+  title: string;
+  detail: string;
+}
+
+export interface Festival {
+  key: string;
+  name: string;
+  /** The main day. */
+  date: string;
+  /** Cities with the celebrations worth travelling for, best first. */
+  cityIds: string[];
+  events: FestivalEvent[];
 }
 
 export interface DayNote {
