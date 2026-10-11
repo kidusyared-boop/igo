@@ -41,21 +41,26 @@ jobs:
         run: |
           UDID=$(xcrun simctl list devices available -j | python3 -c "
           import json,sys
-          ds=[d for k,v in json.load(sys.stdin)['devices'].items() if 'iOS' in k for d in v if d['name'].startswith('iPhone') and 'Pro Max' not in d['name'] and 'Plus' not in d['name']]
+          ds=[d for k,v in json.load(sys.stdin)['devices'].items() if 'iOS' in k for d in v if d['name'].startswith('iPhone') and not any(x in d['name'] for x in ('Pro Max', 'Plus', 'SE', 'Air')) and not d['name'].endswith('e')]
           print(ds[-1]['udid'])")
           xcrun simctl boot "$UDID"
           xcrun simctl bootstatus "$UDID" -b
           xcrun simctl install "$UDID" build/Build/Products/Debug-iphonesimulator/App.app
           xcrun simctl list devices booted
+          # One screenshot without taps, in case the tapping tool fails later.
+          mkdir -p shots
+          xcrun simctl launch "$UDID" app.igo.ethiopia
+          sleep 8
+          xcrun simctl io "$UDID" screenshot shots/00-launch.png
       - name: Install idb for taps
         run: |
           brew tap facebook/fb
+          # Newer Homebrew refuses third-party taps until they are trusted.
+          brew trust facebook/fb || true
           brew install idb-companion
           pip install fb-idb
       - name: Walk through igo and take screenshots
-        run: |
-          mkdir -p shots
-          python3 scripts/ios-shots.py shots
+        run: python3 scripts/ios-shots.py shots
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -64,7 +69,7 @@ jobs:
       - name: Publish screenshots to the ci/ios-screenshots branch
         if: always()
         run: |
-          cd shots
+          mkdir -p shots && cd shots
           git init -q && git checkout -q -b ci/ios-screenshots
           git add . && git -c user.name=igo-ci -c user.email=ci@igo.invalid commit -qm "iPhone screenshots for ${{ github.sha }}"
           git push -qf "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}" ci/ios-screenshots
