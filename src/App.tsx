@@ -11,8 +11,21 @@ import { LanguageSwitch } from './components/ui/LanguageSwitch';
 import { useT } from './i18n';
 import { ReviewView } from './features/review/ReviewView';
 import { isReviewer } from './services/placeChecks';
+import { useBackButton } from './hooks/useBackButton';
 
 type Screen = { name: 'list' } | { name: 'review' } | { name: 'trip'; id: string } | { name: 'form'; trip: Trip; isNew: boolean };
+
+/** Where the back button goes from each screen; null means this is the first screen. */
+export function parentScreen(screen: Screen): Screen | null {
+  switch (screen.name) {
+    case 'list':
+      return null;
+    case 'form':
+      return screen.isNew ? { name: 'list' } : { name: 'trip', id: screen.trip.id };
+    default:
+      return { name: 'list' };
+  }
+}
 
 export function App() {
   const { trips, tombstones, dispatch, saved } = useTrips();
@@ -22,6 +35,12 @@ export function App() {
   const [toast, setToast] = useState<string | null>(null);
   const [reviewer, setReviewer] = useState(false);
   const signedInAs = 'email' in sync.state ? sync.state.email : null;
+
+  useBackButton(() => {
+    const parent = parentScreen(screen);
+    if (parent) setScreen(parent);
+    return parent !== null;
+  });
 
   useEffect(() => {
     if (!signedInAs) return setReviewer(false);
@@ -58,7 +77,7 @@ export function App() {
         <TripForm
           initial={screen.trip}
           isNew={screen.isNew}
-          onCancel={() => setScreen(screen.isNew ? { name: 'list' } : { name: 'trip', id: screen.trip.id })}
+          onCancel={() => setScreen(parentScreen(screen) ?? { name: 'list' })}
           onSave={(trip) => { dispatch({ type: 'upsert', trip }); setScreen({ name: 'trip', id: trip.id }); }}
         />
       )}

@@ -4,9 +4,13 @@ const config: CapacitorConfig = {
   appId: 'app.igo.ethiopia',
   appName: 'igo',
   webDir: 'dist',
-  android: {
-    // Android 15 draws apps under the status bar; this keeps igo's header below it.
-    adjustMarginsForEdgeToEdge: 'auto',
+  backgroundColor: '#14213d',
+  plugins: {
+    SplashScreen: {
+      launchShowDuration: 800,
+      backgroundColor: '#14213d',
+      showSpinner: false,
+    },
   },
 };
 
