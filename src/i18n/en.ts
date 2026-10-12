@@ -144,6 +144,8 @@ export const en = {
   'remind.turnOn': 'Turn on reminders',
   'remind.turnOff': 'Turn off reminders',
   'remind.notNow': 'Not now',
+  'remind.sampleTitle': 'Reminders are working',
+  'remind.sampleBody': 'Like this one, igo will remind you 30 minutes before each to-do on your trip.',
   'toast.remindersOn': 'Reminders are on for this phone',
   'toast.remindersOff': 'Reminders are off',
   'toast.remindersBlocked': "Notifications are blocked for igo. Allow them in your phone's settings.",

@@ -6,7 +6,10 @@ type Notify = (message: string) => void;
 function useToggle(notify: Notify) {
   const t = useT();
   return {
-    on: async () => notify(t((await turnOnReminders().catch(() => false)) ? 'toast.remindersOn' : 'toast.remindersBlocked')),
+    on: async () => {
+      const ok = await turnOnReminders({ title: t('remind.sampleTitle'), body: t('remind.sampleBody') }).catch(() => false);
+      notify(t(ok ? 'toast.remindersOn' : 'toast.remindersBlocked'));
+    },
     off: async () => {
       await turnOffReminders().catch(() => {});
       notify(t('toast.remindersOff'));

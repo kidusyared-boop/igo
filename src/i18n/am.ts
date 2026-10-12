@@ -147,6 +147,8 @@ export const am: Record<keyof typeof en, string> = {
   'remind.turnOn': 'ማስታወሻዎችን አብራ',
   'remind.turnOff': 'ማስታወሻዎችን አጥፋ',
   'remind.notNow': 'አሁን አይደለም',
+  'remind.sampleTitle': 'ማስታወሻዎች እየሰሩ ነው',
+  'remind.sampleBody': 'እንደዚህ ያለ ማስታወሻ igo በጉዞዎ ላይ ከእያንዳንዱ ተግባር 30 ደቂቃ በፊት ይልካል።',
   'toast.remindersOn': 'ማስታወሻዎች በዚህ ስልክ በርተዋል',
   'toast.remindersOff': 'ማስታወሻዎች ጠፍተዋል',
   'toast.remindersBlocked': 'ማሳወቂያዎች ለigo ታግደዋል። በስልክዎ ቅንብሮች ውስጥ ይፍቀዱ።',

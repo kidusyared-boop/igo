@@ -1,9 +1,11 @@
 import { useSyncExternalStore } from 'react';
 import { Capacitor } from '@capacitor/core';
 import { LocalNotifications } from '@capacitor/local-notifications';
-import type { Reminder } from '../features/reminders/buildReminders';
+import { reminderId, type Reminder } from '../features/reminders/buildReminders';
 
 const KEY = 'igo.reminders.v1';
+/** The sample sent on turning reminders on, kept apart from the trip reminders. */
+const SAMPLE_ID = reminderId('igo|sample');
 type Choice = 'on' | 'off' | 'later';
 
 /** Reminders need the phone app; the website can't wake you up. */
@@ -43,11 +45,17 @@ export function useReminderChoice(): Choice | null {
 
 export const askLater = () => save('later');
 
-/** Asks the phone for permission; false when the traveler or the phone says no. */
-export async function turnOnReminders(): Promise<boolean> {
+/**
+ * Asks the phone for permission and shows a sample a few seconds later, so the
+ * traveler sees reminders work. False when the traveler or the phone says no.
+ */
+export async function turnOnReminders(sample: { title: string; body: string }): Promise<boolean> {
   const { display } = await LocalNotifications.requestPermissions();
   if (display !== 'granted') return false;
   save('on');
+  await LocalNotifications.schedule({
+    notifications: [{ id: SAMPLE_ID, ...sample, schedule: { at: new Date(Date.now() + 5000), allowWhileIdle: true }, smallIcon: 'ic_stat_igo', iconColor: '#e8a317' }],
+  }).catch(() => {});
   return true;
 }
 
@@ -58,7 +66,8 @@ export async function turnOffReminders(): Promise<void> {
 
 async function clearPending() {
   const { notifications } = await LocalNotifications.getPending();
-  if (notifications.length) await LocalNotifications.cancel({ notifications: notifications.map(({ id }) => ({ id })) });
+  const ids = notifications.filter(({ id }) => id !== SAMPLE_ID).map(({ id }) => ({ id }));
+  if (ids.length) await LocalNotifications.cancel({ notifications: ids });
 }
 
 /** Replaces every pending reminder with `list`. Does nothing if permission was taken away in settings. */
