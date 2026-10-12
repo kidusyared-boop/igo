@@ -12,6 +12,7 @@ import { useT } from './i18n';
 import { ReviewView } from './features/review/ReviewView';
 import { isReviewer } from './services/placeChecks';
 import { useBackButton } from './hooks/useBackButton';
+import { useReminders } from './hooks/useReminders';
 
 type Screen = { name: 'list' } | { name: 'review' } | { name: 'trip'; id: string } | { name: 'form'; trip: Trip; isNew: boolean };
 
@@ -45,6 +46,9 @@ export function App() {
     if (parent) setScreen(parent);
     return parent !== null;
   });
+
+  // A tapped reminder opens its trip, unless that would throw away a form being filled in.
+  useReminders(trips, (id) => setScreen((s) => (s.name === 'form' ? s : { name: 'trip', id })));
 
   useEffect(() => {
     if (!signedInAs) return setReviewer(false);

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { LanguageSwitch } from '../../components/ui/LanguageSwitch';
 import { useT } from '../../i18n';
+import { ReminderMenuItem } from '../reminders/ReminderControls';
 
 interface TripMenuProps {
   title: string;
@@ -10,10 +11,11 @@ interface TripMenuProps {
   onExport: () => void;
   onRestore: () => void;
   onDelete: () => void;
+  notify: (message: string) => void;
 }
 
 /** Trip actions in a bottom sheet. Tapping outside it or pressing Escape closes it. */
-export function TripMenu({ title, hiddenCount, onClose, onEdit, onExport, onRestore, onDelete }: TripMenuProps) {
+export function TripMenu({ title, hiddenCount, onClose, onEdit, onExport, onRestore, onDelete, notify }: TripMenuProps) {
   const t = useT();
   const [confirming, setConfirming] = useState(false);
 
@@ -37,6 +39,7 @@ export function TripMenu({ title, hiddenCount, onClose, onEdit, onExport, onRest
           <div className="menu-list">
             <button type="button" className="menu-item" onClick={onEdit}>{t('form.edit')}</button>
             <button type="button" className="menu-item" onClick={then(onExport)}>{t('menu.export')}</button>
+            <ReminderMenuItem notify={notify} after={onClose} />
             {hiddenCount > 0 && <button type="button" className="menu-item" onClick={then(onRestore)}>{t('menu.showHidden', { n: hiddenCount })}</button>}
             <button type="button" className="menu-item danger" onClick={() => setConfirming(true)}>{t('menu.delete')}</button>
           </div>

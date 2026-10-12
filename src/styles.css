@@ -194,6 +194,9 @@ h1, h2, h3 { text-wrap: balance; margin: 0; }
 .empty-hero p { margin: 0; max-width: 30ch; }
 .panel.account-bar { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; padding: 10px 10px 10px 14px; }
 .account-bar > span { font-size: 13px; min-width: 0; flex: 1 1 140px; }
+.reminder-offer { margin-block: 12px; }
+.reminder-offer p { margin: 0; font-size: 14px; }
+.reminder-offer .row { justify-content: flex-end; }
 .example-tag { font: 600 10px/1 var(--font-mono); letter-spacing: 0.1em; text-transform: uppercase; background: var(--surface-2); border: 1px dashed var(--muted); color: var(--muted); padding: 3px 6px; border-radius: 4px; }
 
 /* Forms */
