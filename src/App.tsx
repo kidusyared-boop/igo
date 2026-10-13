@@ -13,6 +13,7 @@ import { ReviewView } from './features/review/ReviewView';
 import { isReviewer } from './services/placeChecks';
 import { useBackButton } from './hooks/useBackButton';
 import { useReminders } from './hooks/useReminders';
+import { ErrorBoundary } from './components/ErrorBoundary';
 
 type Screen = { name: 'list' } | { name: 'review' } | { name: 'trip'; id: string } | { name: 'form'; trip: Trip; isNew: boolean };
 
@@ -79,6 +80,17 @@ export function App() {
           <LanguageSwitch />
         </header>
       )}
+      <ErrorBoundary
+        resetKey={screen.name === 'trip' ? `trip:${screen.id}` : screen.name}
+        fallback={(error, reset) => (
+          <section className="panel crash" role="alert">
+            <h2>{t('crash.title')}</h2>
+            <p>{t('crash.body')}</p>
+            <pre className="crash-detail">{error.message}</pre>
+            <button type="button" className="btn primary" onClick={() => { setScreen({ name: 'list' }); reset(); }}>{t('crash.back')}</button>
+          </section>
+        )}
+      >
       {screen.name === 'list' && <AccountPanel sync={sync.state} onSyncNow={() => void sync.syncNow()} onReview={reviewer ? () => setScreen({ name: 'review' }) : undefined} />}
       {screen.name === 'review' && <ReviewView onBack={() => setScreen({ name: 'list' })} notify={setToast} />}
       {screen.name === 'list' && (
@@ -104,6 +116,7 @@ export function App() {
         />
       )}
       {screen.name === 'trip' && !openTrip && <TripList trips={trips} onOpen={(id) => setScreen({ name: 'trip', id })} onNew={() => setScreen({ name: 'form', trip: blankTrip(), isNew: true })} />}
+      </ErrorBoundary>
       {!saved && <p className="notice">{t('app.notSaving')}</p>}
       {toast && <div className="toast" role="status">{toast}</div>}
     </div>

@@ -386,3 +386,9 @@ h1, h2, h3 { text-wrap: balance; margin: 0; }
 .profile-line .tag { flex-shrink: 0; border: 1px solid var(--line); border-radius: 999px; padding: 4px 10px; background: var(--surface); color: var(--ink); }
 .profile-line .btn { flex-shrink: 0; }
 .why { font-size: 12px; color: var(--accent-ink); font-weight: 500; }
+
+/* Shown when a screen crashes, instead of a blank page. */
+.crash { margin: 16px; gap: 0; }
+.crash h2 { margin: 0 0 8px; font-size: 18px; }
+.crash p { margin: 0 0 12px; }
+.crash-detail { margin: 0 0 16px; padding: 8px; overflow-x: auto; white-space: pre-wrap; word-break: break-word; font-size: 12px; background: var(--surface-2); border: 1px solid var(--line); border-radius: 8px; }

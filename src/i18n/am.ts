@@ -4,6 +4,9 @@ import type { en } from './en';
 export const am: Record<keyof typeof en, string> = {
   'app.tagline': 'ለኢትዮጵያ ጉዞዎች የዕለት ዕቅዶች',
   'app.notSaving': 'ይህ አሳሽ መረጃ እያስቀመጠ አይደለም። ለውጦችዎ የሚቆዩት ገጹን እስኪዘጉ ድረስ ብቻ ነው።',
+  'crash.title': 'በዚህ ገጽ ላይ ችግር ተፈጥሯል',
+  'crash.body': 'ጉዞዎችዎ ደህና ናቸው። ወደ ጉዞዎችዎ ተመልሰው እንደገና ይሞክሩ። ችግሩ ከቀጠለ የዚህን መልእክት ፎቶ ይላኩ።',
+  'crash.back': 'ወደ ጉዞዎቼ ተመለስ',
   'lang.label': 'ቋንቋ',
   'list.sep': '፣ ',
 

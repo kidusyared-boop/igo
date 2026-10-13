@@ -1,6 +1,9 @@
 export const en = {
   'app.tagline': 'Daily plans for Ethiopia trips',
   'app.notSaving': 'This browser is not saving data. Your changes last until you close the page.',
+  'crash.title': 'Something went wrong on this screen',
+  'crash.body': 'Your trips are safe. Go back to your trips and try again. If it keeps happening, send a screenshot of this message.',
+  'crash.back': 'Back to my trips',
   'lang.label': 'Language',
   'list.sep': ', ',
 

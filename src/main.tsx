@@ -14,16 +14,29 @@ import '@fontsource/ibm-plex-mono/500';
 import '@fontsource/ibm-plex-mono/600';
 import './styles.css';
 import { Capacitor } from '@capacitor/core';
+import { ErrorBoundary } from './components/ErrorBoundary';
 
 const root = document.getElementById('root');
 if (root) {
   createRoot(root).render(
     <StrictMode>
+      {/* Last resort if the app itself breaks; each screen has its own, friendlier one. */}
+      <ErrorBoundary
+        fallback={(error) => (
+          <section className="panel crash" role="alert">
+            <h2>Something went wrong</h2>
+            <p>Your trips are safe. Restart igo. If it keeps happening, send a screenshot of this message.</p>
+            <pre className="crash-detail">{error.message}</pre>
+            <button type="button" className="btn primary" onClick={() => window.location.reload()}>Restart igo</button>
+          </section>
+        )}
+      >
       <LanguageProvider>
         <PlaceChecksProvider>
           <App />
         </PlaceChecksProvider>
       </LanguageProvider>
+      </ErrorBoundary>
     </StrictMode>,
   );
 }
