@@ -1,0 +1,64 @@
+name: Android emulator check
+
+# Builds the debug APK, runs it on a virtual Android phone, taps through the main
+# screens and keeps screenshots plus the app log. Runs on demand and on pull
+# requests that change the Android project or this check.
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'android/**'
+      - 'src/**'
+      - '.github/workflows/android-check.yml'
+      - 'scripts/android-*'
+
+permissions:
+  contents: write
+
+jobs:
+  emulator:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+      - run: npm ci
+      - run: npm run build
+        env:
+          VITE_SUPABASE_URL: ${{ vars.VITE_SUPABASE_URL || 'https://gufcxowuyrcxmvebtygy.supabase.co' }}
+          VITE_SUPABASE_PUBLISHABLE_KEY: ${{ vars.VITE_SUPABASE_PUBLISHABLE_KEY || 'sb_publishable_EnWF2aN2gOT3ZtmgrvTOLw_A2_FcbUn' }}
+      - run: npx cap sync android
+      - run: ./gradlew assembleDebug
+        working-directory: android
+      - name: Let the emulator use hardware acceleration
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+      - name: Run igo on a virtual Android phone
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 34
+          target: google_apis
+          arch: x86_64
+          disable-animations: true
+          script: bash scripts/android-shots.sh shots
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: igo-android-screenshots
+          path: shots
+      - name: Publish screenshots to the ci/android-screenshots branch
+        if: always()
+        run: |
+          mkdir -p shots && cd shots
+          git init -q && git checkout -q -b ci/android-screenshots
+          git add . && git -c user.name=igo-ci -c user.email=ci@igo.invalid commit -qm "Android screenshots for ${{ github.sha }}"
+          git push -qf "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}" ci/android-screenshots
