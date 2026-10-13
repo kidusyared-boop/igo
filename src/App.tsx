@@ -67,7 +67,11 @@ export function App() {
   }, [toast]);
 
   // Every new screen starts at the top, not where the last one was scrolled to.
-  useLayoutEffect(() => window.scrollTo(0, 0), [screen]);
+  // The braces matter: some phones' WebViews return a value from scrollTo, and React
+  // would later call that value as this effect's cleanup and crash on the next tap.
+  useLayoutEffect(() => {
+    window.scrollTo(0, 0);
+  }, [screen]);
 
   const openTrip = screen.name === 'trip' ? trips.find((t) => t.id === screen.id) : undefined;
 
