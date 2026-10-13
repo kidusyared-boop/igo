@@ -1,0 +1,489 @@
+10-13 11:44:34.762   522  2333 V SplashScreenExceptionList: SplashScreen checking exception for package app.igo.ethiopia (target sdk:35) -> false
+10-13 11:44:34.767   840   875 V WindowManagerShell: Transition requested: android.os.BinderProxy@9392b38 TransitionRequestInfo { type = OPEN, triggerTask = TaskInfo{userId=0 taskId=8 displayId=0 isRunning=true baseIntent=Intent { flg=0x10000000 cmp=app.igo.ethiopia/.MainActivity } baseActivity=ComponentInfo{app.igo.ethiopia/app.igo.ethiopia.MainActivity} topActivity=ComponentInfo{app.igo.ethiopia/app.igo.ethiopia.MainActivity} origActivity=null realActivity=ComponentInfo{app.igo.ethiopia/app.igo.ethiopia.MainActivity} numActivities=1 lastActiveTime=45841 supportsMultiWindow=true resizeMode=1 isResizeable=true minWidth=-1 minHeight=-1 defaultMinSize=220 token=WCT{android.window.IWindowContainerToken$Stub$Proxy@dd2a711} topActivityType=1 pictureInPictureParams=null shouldDockBigOverlays=false launchIntoPipHostTaskId=-1 lastParentTaskIdBeforePip=-1 displayCutoutSafeInsets=null topActivityInfo=ActivityInfo{9be8076 app.igo.ethiopia.MainActivity} launchCookies=[] positionInParent=Point(0, 0) parentTaskId=-1 isFocused=false isVisible=false isVisibleRequested=false isSleeping=false topActivityInSizeCompat=false topActivityEligibleForLetterboxEducation= false topActivityLetterboxed= false isFromDoubleTap= false topActivityLetterboxVerticalPosition= -1 topActivityLetterboxHorizontalPosition= -1 topActivityLetterboxWidth=-1 topActivityLetterboxHeight=-1 locusId=null displayAreaFeatureId=1 cameraCompatControlState=hidden}, remoteTransition = null, displayChange = null }
+10-13 11:44:34.774   522  2333 I ActivityTaskManager: START u0 {flg=0x10000000 cmp=app.igo.ethiopia/.MainActivity} with LAUNCH_SINGLE_TASK from uid 2000 (BAL_ALLOW_PERMISSION) result code=0
+10-13 11:44:34.840   522  1903 D CoreBackPreview: Window{5ec9a5b u0 Splash Screen app.igo.ethiopia}: Setting back callback OnBackInvokedCallbackInfo{mCallback=android.window.IOnBackInvokedCallback$Stub$Proxy@9cba640, mPriority=0, mIsAnimationCallback=false}
+10-13 11:44:34.932   522   552 I ActivityManager: Start proc 2894:app.igo.ethiopia/u0a192 for next-top-activity {app.igo.ethiopia/app.igo.ethiopia.MainActivity}
+10-13 11:44:35.265   522   541 V WindowManager: Sent Transition #6 createdAt=10-13 11:44:34.748 via request=TransitionRequestInfo { type = OPEN, triggerTask = TaskInfo{userId=0 taskId=8 displayId=0 isRunning=true baseIntent=Intent { flg=0x10000000 cmp=app.igo.ethiopia/.MainActivity } baseActivity=ComponentInfo{app.igo.ethiopia/app.igo.ethiopia.MainActivity} topActivity=ComponentInfo{app.igo.ethiopia/app.igo.ethiopia.MainActivity} origActivity=null realActivity=ComponentInfo{app.igo.ethiopia/app.igo.ethiopia.MainActivity} numActivities=1 lastActiveTime=45841 supportsMultiWindow=true resizeMode=1 isResizeable=true minWidth=-1 minHeight=-1 defaultMinSize=220 token=WCT{RemoteToken{90b747f Task{e9fca0a #8 type=standard A=10192:app.igo.ethiopia}}} topActivityType=1 pictureInPictureParams=null shouldDockBigOverlays=false launchIntoPipHostTaskId=-1 lastParentTaskIdBeforePip=-1 displayCutoutSafeInsets=null topActivityInfo=ActivityInfo{997c4c app.igo.ethiopia.MainActivity} launchCookies=[] positionInParent=Point(0, 0) parentTaskId=-1 isFocused=false isVisible=false isVisibleRequested=false isSleeping=false topActivityInSizeCompat=false topActivityEligibleForLetterboxEducation= false topActivityLetterboxed= false isFromDoubleTap= false topActivityLetterboxVerticalPosition= -1 topActivityLetterboxHorizontalPosition= -1 topActivityLetterboxWidth=-1 topActivityLetterboxHeight=-1 locusId=null displayAreaFeatureId=1 cameraCompatControlState=hidden}, remoteTransition = null, displayChange = null }
+10-13 11:44:35.265   522   541 V WindowManager:     info={id=6 t=OPEN f=0x0 trk=0 r=[0@Point(0, 0)] c=[{WCT{RemoteToken{90b747f Task{e9fca0a #8 type=standard A=10192:app.igo.ethiopia}}} m=OPEN f=NONE leash=Surface(name=Task=8)/@0xb83f901 sb=Rect(0, 0 - 320, 640) eb=Rect(0, 0 - 320, 640) d=0},{WCT{RemoteToken{4014495 Task{bbe08e1 #1 type=home}}} m=TO_BACK f=SHOW_WALLPAPER leash=Surface(name=Task=1)/@0xdea0635 sb=Rect(0, 0 - 320, 640) eb=Rect(0, 0 - 320, 640) d=0}]}
+10-13 11:44:35.307  2894  2894 I pp.igo.ethiopia: Late-enabling -Xcheck:jni
+10-13 11:44:35.325  2894  2894 I pp.igo.ethiopia: Using CollectorTypeCC GC.
+10-13 11:44:35.329  2894  2894 W pp.igo.ethiopia: Unexpected CPU variant for x86: x86_64.
+10-13 11:44:35.329  2894  2894 W pp.igo.ethiopia: Known variants: atom, sandybridge, silvermont, goldmont, goldmont-plus, tremont, kabylake, default
+10-13 11:44:35.401   845   845 I SafetyLabelChangedBroadcastReceiver: received broadcast packageName: app.igo.ethiopia, current user: UserHandle{0}, packageChangeEvent: NEW_INSTALL, intent user: UserHandle{0}
+10-13 11:44:35.424   522   810 I SdkSandboxManager: No SDKs used. Skipping SDK data reconcilation for CallingInfo{mUid=10192, mPackageName='app.igo.ethiopia, mAppProcessToken='null'}
+10-13 11:44:35.638  2894  2894 W ziparchive: Unable to open '/data/app/~~NQC-1ppxjJ01EzKcFnG86Q==/app.igo.ethiopia-3cuUByXf9DLvgGehc7SKkQ==/base.dm': No such file or directory
+10-13 11:44:35.638  2894  2894 W ziparchive: Unable to open '/data/app/~~NQC-1ppxjJ01EzKcFnG86Q==/app.igo.ethiopia-3cuUByXf9DLvgGehc7SKkQ==/base.dm': No such file or directory
+10-13 11:44:35.745  2894  2894 D nativeloader: Configuring clns-6 for other apk /data/app/~~NQC-1ppxjJ01EzKcFnG86Q==/app.igo.ethiopia-3cuUByXf9DLvgGehc7SKkQ==/base.apk. target_sdk_version=35, uses_libraries=, library_path=/data/app/~~NQC-1ppxjJ01EzKcFnG86Q==/app.igo.ethiopia-3cuUByXf9DLvgGehc7SKkQ==/lib/x86_64, permitted_path=/data:/mnt/expand:/data/user/0/app.igo.ethiopia
+10-13 11:44:35.763  2894  2894 V GraphicsEnvironment: ANGLE GameManagerService for app.igo.ethiopia: false
+10-13 11:44:35.763  2894  2894 V GraphicsEnvironment: app.igo.ethiopia is not listed in per-application setting
+10-13 11:44:36.205  2894  2894 W pp.igo.ethiopia: Accessing hidden method Landroid/view/ViewGroup;->makeOptionalFitsSystemWindows()V (unsupported, reflection, allowed)
+10-13 11:44:36.246  2894  2894 E pp.igo.ethiopia: Failed to open APK '/data/resource-cache/com.android.systemui-neutral-c7ld.frro': Invalid file
+10-13 11:44:36.246  2894  2894 E pp.igo.ethiopia: Failed to open APK '/data/resource-cache/com.android.systemui-accent-Mhyp.frro': Invalid file
+10-13 11:44:36.246  2894  2894 E pp.igo.ethiopia: Failed to open APK '/data/resource-cache/com.android.systemui-dynamic-O0u3.frro': Invalid file
+10-13 11:44:36.257  2894  2894 W pp.igo.ethiopia: Entry not found
+10-13 11:44:36.264   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{61d298c com.android.cts.priv.ctsshim/10175} BLOCKED
+10-13 11:44:36.264   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{b5b88d5 com.google.android.youtube/10139} BLOCKED
+10-13 11:44:36.264   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{36858ea com.android.internal.display.cutout.emulation.corner/10025} BLOCKED
+10-13 11:44:36.264   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{d8157db com.android.internal.display.cutout.emulation.double/10048} BLOCKED
+10-13 11:44:36.264   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{7395278 com.google.android.googlequicksearchbox/10131} BLOCKED
+10-13 11:44:36.264   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{b58dd51 com.google.android.onetimeinitializer/10126} BLOCKED
+10-13 11:44:36.264   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{5eb19b6 com.google.android.ext.shared/10100} BLOCKED
+10-13 11:44:36.264   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{fb396b7 com.android.internal.systemui.navbar.gestural_wide_back/10007} BLOCKED
+10-13 11:44:36.264   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{fed1e24 com.android.virtualmachine.res/10177} BLOCKED
+10-13 11:44:36.264   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{afcfd8d com.google.android.federatedcompute/10190} BLOCKED
+10-13 11:44:36.264   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{b071b42 com.android.managedprovisioning.auto_generated_rro_product__/10024} BLOCKED
+10-13 11:44:36.264   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{360e753 com.android.carrierconfig.auto_generated_rro_vendor__/10078} BLOCKED
+10-13 11:44:36.264   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{3eff890 com.android.systemui.emulation.pixel_3_xl/10034} BLOCKED
+10-13 11:44:36.264   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{a48e589 com.android.systemui.emulation.pixel_4_xl/10059} BLOCKED
+10-13 11:44:36.264   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{7efa98e com.android.systemui.emulation.pixel_fold/10009} BLOCKED
+10-13 11:44:36.264   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{888a5af com.android.simappdialog.auto_generated_rro_product__/10030} BLOCKED
+10-13 11:44:36.264   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{9040dbc com.android.htmlviewer/10115} BLOCKED
+10-13 11:44:36.264   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{e515145 com.google.android.health.connect.backuprestore/10180} BLOCKED
+10-13 11:44:36.270   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{fc0d09a com.android.systemui.auto_generated_rro_product__/10031} BLOCKED
+10-13 11:44:36.270   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{ebabcc1 com.google.android.apps.messaging/10130} BLOCKED
+10-13 11:44:36.270   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{94b5c66 com.google.android.soundpicker/10137} BLOCKED
+10-13 11:44:36.270   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{8219ba7 com.google.android.marvin.talkbackoverlay/10077} BLOCKED
+10-13 11:44:36.270   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{de65854 com.google.android.configupdater/10129} BLOCKED
+10-13 11:44:36.270   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{ef563fd com.android.internal.emulation.pixel_3a_xl/10044} BLOCKED
+10-13 11:44:36.270   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{5a0d8f2 com.android.internal.emulation.pixel_6_pro/10018} BLOCKED
+10-13 11:44:36.270   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{4c24b43 com.android.internal.emulation.pixel_7_pro/10004} BLOCKED
+10-13 11:44:36.270   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{27aa5c0 com.android.internal.emulation.pixel_8_pro/10058} BLOCKED
+10-13 11:44:36.270   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{f3942f9 com.android.internal.emulation.pixel_3a/10053} BLOCKED
+10-13 11:44:36.270   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{35f923e com.android.internal.emulation.pixel_4a/10011} BLOCKED
+10-13 11:44:36.270   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{834589f com.android.internal.emulation.pixel_6a/10023} BLOCKED
+10-13 11:44:36.270   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{b445dec com.android.internal.emulation.pixel_7a/10033} BLOCKED
+10-13 11:44:36.270   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{14215b5 com.google.android.overlay.googlewebview/10049} BLOCKED
+10-13 11:44:36.270   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{abe944a com.google.android.hotspot2.osulogin/10189} BLOCKED
+10-13 11:44:36.271   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{f8fdfbb com.android.simappdialog/10111} BLOCKED
+10-13 11:44:36.271   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{c0f6cd8 com.android.internal.display.cutout.emulation.hole/10073} BLOCKED
+10-13 11:44:36.271   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{ccb5831 com.android.internal.display.cutout.emulation.tall/10065} BLOCKED
+10-13 11:44:36.271   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{e59ab16 com.android.internal.systemui.navbar.threebutton/10068} BLOCKED
+10-13 11:44:36.271   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{752bc97 com.android.camera2/10147} BLOCKED
+10-13 11:44:36.271   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{77a7e84 com.android.systemui.auto_generated_rro_vendor__/10076} BLOCKED
+10-13 11:44:36.271   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{fcc466d com.google.android.deskclock/10153} BLOCKED
+10-13 11:44:36.271   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{cbd62a2 com.android.internal.systemui.navbar.twobutton/10020} BLOCKED
+10-13 11:44:36.271   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{bfc8b33 com.google.android.as/10125} BLOCKED
+10-13 11:44:36.271   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{962fef0 com.google.android.gm/10141} BLOCKED
+10-13 11:44:36.271   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{673dc69 com.android.internal.systemui.navbar.gestural_extra_wide_back/10045} BLOCKED
+10-13 11:44:36.271   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{eb306ee com.android.systemui.emulation.pixel_3/10015} BLOCKED
+10-13 11:44:36.271   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{86aa78f com.android.systemui.emulation.pixel_4/10037} BLOCKED
+10-13 11:44:36.271   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{c111a1c com.android.systemui.emulation.pixel_5/10071} BLOCKED
+10-13 11:44:36.271   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{6e4d625 com.android.systemui.emulation.pixel_6/10074} BLOCKED
+10-13 11:44:36.271   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{e4ca3fa com.android.systemui.emulation.pixel_7/10072} BLOCKED
+10-13 11:44:36.271   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{df42dab com.android.systemui.emulation.pixel_8/10070} BLOCKED
+10-13 11:44:36.271   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{423bc08 com.android.nfc.auto_generated_rro_product__/10027} BLOCKED
+10-13 11:44:36.271   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{cb1afa1 com.android.printspooler/10104} BLOCKED
+10-13 11:44:36.271   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{2b105c6 com.android.emergency.auto_generated_rro_product__/10041} BLOCKED
+10-13 11:44:36.271   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{245f987 com.google.android.connectivity.resources.goldfish.overlay/10079} BLOCKED
+10-13 11:44:36.271   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{f3c90b4 com.android.dreams.basic/10103} BLOCKED
+10-13 11:44:36.271   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{18a4dd com.google.android.networkstack.tethering.emulator/10022} BLOCKED
+10-13 11:44:36.271   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{ca7b852 com.android.providers.settings.auto_generated_rro_product__/10002} BLOCKED
+10-13 11:44:36.271   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{efea723 com.google.android.as.oss/10122} BLOCKED
+10-13 11:44:36.271   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{16c0420 com.android.traceur.auto_generated_rro_product__/10005} BLOCKED
+10-13 11:44:36.271   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{4ffb1d9 com.google.android.devicelockcontroller/10184} BLOCKED
+10-13 11:44:36.271   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{fe5079e com.google.android.dialer/10128} BLOCKED
+10-13 11:44:36.271   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{f0a927f com.android.internal.emulation.pixel_3/10046} BLOCKED
+10-13 11:44:36.271   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{d5d424c com.android.internal.emulation.pixel_4/10060} BLOCKED
+10-13 11:44:36.271   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{db09295 com.android.internal.emulation.pixel_5/10012} BLOCKED
+10-13 11:44:36.271   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{515ffaa com.android.internal.emulation.pixel_6/10038} BLOCKED
+10-13 11:44:36.271   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{5bfd79b com.android.internal.emulation.pixel_7/10067} BLOCKED
+10-13 11:44:36.271   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{3423738 com.android.internal.emulation.pixel_8/10039} BLOCKED
+10-13 11:44:36.271   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{d54c311 com.google.android.captiveportallogin/10114} BLOCKED
+10-13 11:44:36.271   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{ac6c76 com.android.musicfx/10088} BLOCKED
+10-13 11:44:36.271   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{bba5277 com.google.android.apps.docs/10155} BLOCKED
+10-13 11:44:36.271   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{73f7f6b com.google.android.apps.maps/10152} BLOCKED
+10-13 11:44:36.271   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{27f8ee4 com.google.android.modulemetadata/10146} BLOCKED
+10-13 11:44:36.271   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{6317f4d com.google.android.markup/10135} BLOCKED
+10-13 11:44:36.271   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{a6ada02 com.android.providers.settings.auto_generated_rro_vendor__/10080} BLOCKED
+10-13 11:44:36.271   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{d779f13 com.google.android.rkpdapp/10170} BLOCKED
+10-13 11:44:36.271   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{a18b550 com.google.android.contacts/10154} BLOCKED
+10-13 11:44:36.271   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{fa3c349 com.android.server.telecom.auto_generated_rro_product__/10032} BLOCKED
+10-13 11:44:36.271   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{1b0944e com.google.android.overlay.googleconfig/10055} BLOCKED
+10-13 11:44:36.271   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{7b3196f com.android.chrome/10150} BLOCKED
+10-13 11:44:36.271   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{3dbd67c com.android.bips.auto_generated_rro_product__/10035} BLOCKED
+10-13 11:44:36.271   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{fdc4b05 com.google.android.apps.customization.pixel/10144} BLOCKED
+10-13 11:44:36.271   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{a85a75a com.google.android.tag/10082} BLOCKED
+10-13 11:44:36.271   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{d81dd8b com.google.android.overlay.permissioncontroller/10003} BLOCKED
+10-13 11:44:36.271   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{64dde68 com.google.android.partnersetup/10124} BLOCKED
+10-13 11:44:36.271   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{55b9281 com.google.android.apps.wallpaper.nexus/10143} BLOCKED
+10-13 11:44:36.271   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{f66df26 com.google.android.apps.nexuslauncher/10169} BLOCKED
+10-13 11:44:36.271   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{42ec767 com.google.android.nearby.halfsheet/10174} BLOCKED
+10-13 11:44:36.271   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{9567914 com.android.theme.font.notoserifsource/10066} BLOCKED
+10-13 11:44:36.271   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{c2dd5bd com.google.android.safetycenter.resources/10185} BLOCKED
+10-13 11:44:36.271   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{3d1c7b2 com.android.internal.display.cutout.emulation.waterfall/10040} BLOCKED
+10-13 11:44:36.271   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{d67303 com.android.internal.systemui.navbar.transparent/10029} BLOCKED
+10-13 11:44:36.271   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{9ac1280 com.google.android.connectivity.resources/10173} BLOCKED
+10-13 11:44:36.271   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{ae710b9 com.android.providers.contacts.auto_generated_rro_product__/10019} BLOCKED
+10-13 11:44:36.271   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{390acfe com.google.android.feedback/10163} BLOCKED
+10-13 11:44:36.271   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{3c33c5f com.google.android.printservice.recommendation/10110} BLOCKED
+10-13 11:44:36.271   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{6ffd6ac com.google.android.apps.photos/10140} BLOCKED
+10-13 11:44:36.271   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{5b05d4f com.google.android.calendar/10145} BLOCKED
+10-13 11:44:36.271   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{35eff75 com.google.android.documentsui/10098} BLOCKED
+10-13 11:44:36.271   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{ac69b0a com.android.systemui.emulation.pixel_3a_xl/10021} BLOCKED
+10-13 11:44:36.271   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{d893f7b com.android.systemui.emulation.pixel_6_pro/10063} BLOCKED
+10-13 11:44:36.271   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{8e9b198 com.android.systemui.emulation.pixel_7_pro/10054} BLOCKED
+10-13 11:44:36.271   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{32d1df1 com.android.systemui.emulation.pixel_8_pro/10001} BLOCKED
+10-13 11:44:36.271   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{2bb5dd6 com.google.mainline.telemetry/10151} BLOCKED
+10-13 11:44:36.271   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{9e25857 com.android.carrierconfig.auto_generated_rro_product__/10064} BLOCKED
+10-13 11:44:36.271   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{6944f44 com.android.providers.partnerbookmarks/10101} BLOCKED
+10-13 11:44:36.271   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{fe4a82d com.android.wallpaper.livepicker/10090} BLOCKED
+10-13 11:44:36.271   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{f678162 com.android.providers.telephony.auto_generated_rro_product__/10062} BLOCKED
+10-13 11:44:36.271   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{c4a22f3 com.android.phone.auto_generated_rro_vendor__/10081} BLOCKED
+10-13 11:44:36.271   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{d291bb0 com.google.mainline.adservices/10136} BLOCKED
+10-13 11:44:36.271   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{b109a29 com.android.imsserviceentitlement/10117} BLOCKED
+10-13 11:44:36.271   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{9c051ae com.google.android.healthconnect.controller/10179} BLOCKED
+10-13 11:44:36.271   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{a59fb4f com.android.internal.emulation.pixel_2_xl/10016} BLOCKED
+10-13 11:44:36.271   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{fc42dc com.android.internal.emulation.pixel_3_xl/10056} BLOCKED
+10-13 11:44:36.271   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{9efafe5 com.android.internal.emulation.pixel_4_xl/10047} BLOCKED
+10-13 11:44:36.271   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{2c3daba com.android.internal.emulation.pixel_fold/10006} BLOCKED
+10-13 11:44:36.271   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{fe4fd6b com.android.bookmarkprovider/10113} BLOCKED
+10-13 11:44:36.271   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{578b0c8 com.google.android.overlay.pixelconfigcommon/10014} BLOCKED
+10-13 11:44:36.271   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{cf06561 com.android.systemui.accessibility.accessibilitymenu.auto_generated_rro_product__/10050} BLOCKED
+10-13 11:44:36.271   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{b44e886 com.android.systemui.emulation.pixel_3a/10013} BLOCKED
+10-13 11:44:36.271   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{8d40547 com.android.systemui.emulation.pixel_4a/10000} BLOCKED
+10-13 11:44:36.271   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{7cc1174 com.android.systemui.emulation.pixel_6a/10042} BLOCKED
+10-13 11:44:36.271   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{2ecf69d com.android.systemui.emulation.pixel_7a/10017} BLOCKED
+10-13 11:44:36.271   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{c770712 com.google.android.settings.intelligence/10118} BLOCKED
+10-13 11:44:36.271   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{961e90e com.google.android.projection.gearhead/10123} BLOCKED
+10-13 11:44:36.271   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{cc1aee3 com.google.android.uwb.resources/10178} BLOCKED
+10-13 11:44:36.271   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{286af2f com.android.cts.ctsshim/10176} BLOCKED
+10-13 11:44:36.271   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{852d0e0 com.google.android.wifi.resources/10187} BLOCKED
+10-13 11:44:36.271   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{4275f99 com.google.android.wifi.dialog/10188} BLOCKED
+10-13 11:44:36.271   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{d3a825e com.google.android.apps.wallpaper/10160} BLOCKED
+10-13 11:44:36.271   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{856563f com.google.android.odad/10121} BLOCKED
+10-13 11:44:36.271   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{ec41b0c com.android.settings.auto_generated_rro_product__/10028} BLOCKED
+10-13 11:44:36.271   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{1055c55 com.android.internal.systemui.navbar.gestural/10051} BLOCKED
+10-13 11:44:36.271   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{28666a com.google.android.apps.youtube.music/10156} BLOCKED
+10-13 11:44:36.271   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{64175b com.android.bluetoothmidiservice/10108} BLOCKED
+10-13 11:44:36.272   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{51ddbf8 com.android.storagemanager.auto_generated_rro_product__/10026} BLOCKED
+10-13 11:44:36.272   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{8c68d1 com.google.android.cellbroadcastreceiver/10182} BLOCKED
+10-13 11:44:36.272   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{65e7f36 com.android.phone.auto_generated_rro_product__/10061} BLOCKED
+10-13 11:44:36.272   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{ac2ce37 android.auto_generated_rro_product__/10069} BLOCKED
+10-13 11:44:36.272   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{550bfa4 com.android.internal.systemui.navbar.gestural_narrow_back/10052} BLOCKED
+10-13 11:44:36.272   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{a9dc10d com.google.android.inputmethod.latin/10142} BLOCKED
+10-13 11:44:36.272   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{30b58c2 android.auto_generated_rro_vendor__/10075} BLOCKED
+10-13 11:44:36.272   522  2347 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{8ec16d3 com.google.android.apps.restore/10120} BLOCKED
+10-13 11:44:36.327  2894  2894 W pp.igo.ethiopia: Accessing hidden method Landroid/os/Trace;->isTagEnabled(J)Z (unsupported, reflection, allowed)
+10-13 11:44:36.328  2894  2894 W pp.igo.ethiopia: Accessing hidden method Landroid/os/Trace;->traceBegin(JLjava/lang/String;)V (unsupported, reflection, allowed)
+10-13 11:44:36.328  2894  2894 W pp.igo.ethiopia: Accessing hidden method Landroid/os/Trace;->traceEnd(J)V (unsupported, reflection, allowed)
+10-13 11:44:36.328  2894  2894 W pp.igo.ethiopia: Accessing hidden method Landroid/os/Trace;->asyncTraceBegin(JLjava/lang/String;I)V (unsupported, reflection, allowed)
+10-13 11:44:36.328  2894  2894 W pp.igo.ethiopia: Accessing hidden method Landroid/os/Trace;->asyncTraceEnd(JLjava/lang/String;I)V (unsupported, reflection, allowed)
+10-13 11:44:36.392  2894  3070 I cr_VariationsUtils: Failed reading seed file "/data/user/0/app.igo.ethiopia/app_webview/variations_seed_new"
+10-13 11:44:36.392  2894  3070 I cr_VariationsUtils: Failed reading seed file "/data/user/0/app.igo.ethiopia/app_webview/variations_seed"
+10-13 11:44:36.590   522   552 I ActivityManager: Start proc 3081:com.google.android.webview:webview_service/u0a134 for service {com.google.android.webview/org.chromium.android_webview.services.VariationsSeedServer}
+10-13 11:44:36.864  2894  3094 W chromium: [WARNING:dns_config_service_android.cc(115)] Failed to read DnsConfig.
+10-13 11:44:37.179   522   552 I ActivityManager: Start proc 3151:com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0/u0ai9000 for  {app.igo.ethiopia/org.chromium.content.app.SandboxedProcessService0:0}
+10-13 11:44:37.283  2894  2894 D Capacitor: Starting BridgeActivity
+10-13 11:44:37.365  3151  3151 I cr_WebViewApkApp: Launched version=113.0.5672.136 minSdkVersion=29 isBundle=false processName=com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0
+10-13 11:44:37.414  2894  2894 D Capacitor: Registering plugin instance: CapacitorCookies
+10-13 11:44:37.428  2894  2894 D Capacitor: Registering plugin instance: WebView
+10-13 11:44:37.430  2894  2894 D Capacitor: Registering plugin instance: CapacitorHttp
+10-13 11:44:37.437  2894  2894 D Capacitor: Registering plugin instance: App
+10-13 11:44:37.440  2894  2894 D Capacitor: Registering plugin instance: LocalNotifications
+10-13 11:44:37.459  2894  2894 D Capacitor: Registering plugin instance: SplashScreen
+10-13 11:44:37.583  2894  2894 W Capacitor: Unable to read file at path public/plugins
+10-13 11:44:37.623  1058  1058 D CarrierSvcBindHelper: onPackageAdded: app.igo.ethiopia
+10-13 11:44:37.646  2894  2894 D Capacitor: Loading app at https://localhost
+10-13 11:44:37.674  1058  1390 D ImsResolver: maybeAddedImsService, packageName: app.igo.ethiopia
+10-13 11:44:37.734  2894  2894 D Capacitor: App started
+10-13 11:44:37.745  2894  2894 D Capacitor/AppPlugin: Firing change: true
+10-13 11:44:37.746  2894  2894 V Capacitor/AppPlugin: Notifying listeners for event appStateChange
+10-13 11:44:37.746  2894  2894 D Capacitor/AppPlugin: No listeners found for event appStateChange
+10-13 11:44:37.746  2894  2894 D Capacitor: App resumed
+10-13 11:44:37.773   522   552 I ActivityManager: Start proc 3249:com.google.android.webview:webview_apk/u0a134 for service {com.google.android.webview/org.chromium.android_webview.nonembedded.AwComponentUpdateService}
+10-13 11:44:37.859  2894  3096 D Capacitor: Handling local request: https://localhost/
+10-13 11:44:37.995   522  1946 D CoreBackPreview: Window{dcb7660 u0 app.igo.ethiopia/app.igo.ethiopia.MainActivity}: Setting back callback OnBackInvokedCallbackInfo{mCallback=android.window.IOnBackInvokedCallback$Stub$Proxy@559638, mPriority=0, mIsAnimationCallback=false}
+10-13 11:44:38.308  2894  3096 D Capacitor: Handling local request: https://localhost/assets/index-C65w49W9.js
+10-13 11:44:38.320  2894  3121 D Capacitor: Handling local request: https://localhost/assets/index-CwD1YajE.css
+10-13 11:44:38.677  1058  1058 D CarrierSvcBindHelper: onPackageModified: app.igo.ethiopia
+10-13 11:44:38.815  2894  3121 W pp.igo.ethiopia: Long monitor contention with owner ThreadPoolForeg (3096) at java.lang.Object libcore.content.type.MimeMap$MemoizingSupplier.get()(MimeMap.java:475) waiters=0 in java.lang.Object libcore.content.type.MimeMap$MemoizingSupplier.get() for 474ms
+10-13 11:44:38.928  1058  1390 D ImsResolver: maybeAddedImsService, packageName: app.igo.ethiopia
+10-13 11:44:39.216   522   541 W ziparchive: Unable to open '/data/app/~~NQC-1ppxjJ01EzKcFnG86Q==/app.igo.ethiopia-3cuUByXf9DLvgGehc7SKkQ==/base.dm': No such file or directory
+10-13 11:44:39.217   522   541 I ActivityTaskManager: Displayed app.igo.ethiopia/.MainActivity for user 0: +4s473ms
+10-13 11:44:39.264   522  1220 I ImeTracker: app.igo.ethiopia:c38025b1: onRequestHide at ORIGIN_SERVER_HIDE_INPUT reason HIDE_UNSPECIFIED_WINDOW
+10-13 11:44:39.264   522  1220 I ImeTracker: app.igo.ethiopia:c38025b1: onCancelled at PHASE_SERVER_SHOULD_HIDE
+10-13 11:44:39.293  1577  1577 I GoogleInputMethodService: GoogleInputMethodService.onStartInput():1877 onStartInput(EditorInfo{inputType=0x0(NULL) imeOptions=0x12000000 privateImeOptions=null actionName=UNSPECIFIED actionLabel=null actionId=0 initialSelStart=-1 initialSelEnd=-1 initialCapsMode=0x0 hintText=null label=null packageName=app.igo.ethiopia fieldId=0 fieldName=null extras=null}, false)
+10-13 11:44:39.393   522  2640 D CoreBackPreview: Window{5ec9a5b u0 Splash Screen app.igo.ethiopia}: Setting back callback null
+10-13 11:44:39.394   522  2632 W InputManager-JNI: Input channel object '5ec9a5b Splash Screen app.igo.ethiopia (client)' was disposed without first being removed with the input manager!
+10-13 11:44:40.300  2894  2894 V Capacitor/Plugin: To native (Capacitor plugin): callbackId: 49476827, pluginId: App, methodName: addListener
+10-13 11:44:40.300  2894  2894 V Capacitor: callback: 49476827, pluginId: App, methodName: addListener, methodData: {"eventName":"backButton"}
+10-13 11:44:40.313  2894  2894 V Capacitor/Plugin: To native (Capacitor plugin): callbackId: 49476828, pluginId: App, methodName: addListener
+10-13 11:44:40.313  2894  2894 V Capacitor: callback: 49476828, pluginId: App, methodName: addListener, methodData: {"eventName":"resume"}
+10-13 11:44:40.314  2894  2894 V Capacitor/Plugin: To native (Capacitor plugin): callbackId: 49476829, pluginId: LocalNotifications, methodName: addListener
+10-13 11:44:40.314  2894  2894 V Capacitor: callback: 49476829, pluginId: LocalNotifications, methodName: addListener, methodData: {"eventName":"localNotificationActionPerformed"}
+10-13 11:44:40.343  2894  3121 D Capacitor: Handling local request: https://localhost/assets/big-shoulders-display-latin-800-normal-DDUD9Xuh.woff2
+10-13 11:44:40.351  2894  3121 D Capacitor: Handling local request: https://localhost/assets/ibm-plex-mono-latin-600-normal-BgSNZQsw.woff2
+10-13 11:44:40.360  2894  3121 D Capacitor: Handling local request: https://localhost/assets/ibm-plex-sans-latin-400-normal-CDDApCn2.woff2
+10-13 11:44:40.364  2894  3096 D Capacitor: Handling local request: https://localhost/assets/ibm-plex-sans-latin-500-normal-6ng42L7E.woff2
+10-13 11:44:40.365  3249  3401 W cr_AWNetworkFetcherTask: 	at org.chromium.android_webview.nonembedded.NetworkFetcherTask.download(chromium-TrichromeWebViewGoogle6432.apk-stable-567263637:48)
+10-13 11:44:40.366  2894  3096 D Capacitor: Handling local request: https://localhost/assets/big-shoulders-display-latin-700-normal-KM2fueoL.woff2
+10-13 11:44:40.368  2894  3096 D Capacitor: Handling local request: https://localhost/assets/ibm-plex-sans-latin-600-normal-CuJfVYMP.woff2
+10-13 11:44:40.581  2894  3121 D Capacitor: Handling local request: https://localhost/icon.svg
+10-13 11:44:41.193  2894  3298 W pp.igo.ethiopia: Long monitor contention with owner ThreadPoolForeg (3094) at android.content.IContentProvider android.app.ActivityThread.acquireProvider(android.content.Context, java.lang.String, int, boolean)(ActivityThread.java:7330) waiters=0 in android.content.IContentProvider android.app.ActivityThread.acquireProvider(android.content.Context, java.lang.String, int, boolean) for 2.743s
+10-13 11:44:41.208   522   574 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{b5b88d5 com.google.android.youtube/10139} BLOCKED
+10-13 11:44:41.208   522   574 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{7395278 com.google.android.googlequicksearchbox/10131} BLOCKED
+10-13 11:44:41.208   522   574 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{bfc8b33 com.google.android.as/10125} BLOCKED
+10-13 11:44:41.208   522   574 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{ac15ff7 com.google.android.gm/10141} BLOCKED
+10-13 11:44:41.208   522   574 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{fe5079e com.google.android.dialer/10128} BLOCKED
+10-13 11:44:41.209   522   574 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{f9d4e64 com.google.android.contacts/10154} BLOCKED
+10-13 11:44:41.209   522   574 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{93508cd com.google.android.apps.youtube.music/10156} BLOCKED
+10-13 11:44:43.326  2894  2894 V ActivityThread: getPackageInfo() caused update to cached ApplicationInfo for package app.igo.ethiopia
+10-13 11:44:43.443  1815  2158 W earchbox:search: Verification of void org.chromium.net.impl.CronetUrlRequest.e(java.lang.Exception) took 204.254ms (137.08 bytecodes/s) (1920B approximate peak alloc)
+10-13 11:44:43.733  2894  3608 D ProfileInstaller: Installing profile for app.igo.ethiopia
+10-13 11:44:47.620  1683  1683 I AiAiEcho: AppFetcherImplV2 updateApps package:[app.igo.ethiopia], userId:[0], reason:[package is added.].
+10-13 11:44:48.063  1683  1683 I AiAiEcho: AppFetcherImpl onPackageChanged app.igo.ethiopia.
+10-13 11:44:48.066  1683  2772 I AiAiEcho: AppIndexer Package:[app.igo.ethiopia] UserProfile:[0] Enabled:[true].
+10-13 11:44:48.066  1683  2772 I AiAiEcho: AppFetcherImplV2 updateApps package:[app.igo.ethiopia], userId:[0], reason:[package is updated.].
+10-13 11:44:49.563   522   594 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{c8c9b72 com.google.android.settings.intelligence/10118} BLOCKED
+10-13 11:44:49.564   522  2636 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{b671bc3 com.google.android.settings.intelligence/10118} BLOCKED
+10-13 11:44:50.567   522   955 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{51712ee com.google.android.gm/10141} BLOCKED
+10-13 11:44:51.280   522   574 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{58e8960 com.google.android.googlequicksearchbox/10131} BLOCKED
+10-13 11:44:51.281   522   574 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{bcbee19 com.android.camera2/10147} BLOCKED
+10-13 11:44:51.281   522   574 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{8b62ede com.google.android.devicelockcontroller/10184} BLOCKED
+10-13 11:44:51.281   522   574 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{58dc8bf com.google.android.rkpdapp/10170} BLOCKED
+10-13 11:44:51.281   522   574 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{342db8c com.google.android.contacts/10154} BLOCKED
+10-13 11:44:51.281   522   574 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{ca452d5 com.google.android.settings.intelligence/10118} BLOCKED
+10-13 11:44:51.281   522   574 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{857db2e com.google.android.projection.gearhead/10123} BLOCKED
+10-13 11:44:56.250  4465  4465 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+10-13 11:44:56.284  4465  4465 I AndroidRuntime: Using default boot image
+10-13 11:44:56.284  4465  4465 I AndroidRuntime: Leaving lock profiling enabled
+10-13 11:44:56.763  4465  4465 D nativeloader: InitDefaultPublicLibraries for_preload=1: libandroid.so:libaaudio.so:libamidi.so:libbinder_ndk.so:libc.so:libcamera2ndk.so:libdl.so:libEGL.so:libGLESv1_CM.so:libGLESv2.so:libGLESv3.so:libicu.so:libicui18n.so:libicuuc.so:libjnigraphics.so:liblog.so:libmediandk.so:libm.so:libnativehelper.so:libnativewindow.so:libOpenMAXAL.so:libOpenSLES.so:libRS.so:libstdc++.so:libsync.so:libvulkan.so:libwebviewchromium_plat_support.so:libz.so
+10-13 11:44:57.002  4465  4465 D AndroidRuntime: Calling main entry com.android.commands.uiautomator.Launcher
+10-13 11:44:58.859  4465  4465 D AndroidRuntime: Shutting down VM
+10-13 11:45:00.546  1436  3793 I FontLog : Package app.igo.ethiopia has no metadata [CONTEXT service_id=132 ]
+10-13 11:45:00.580  1484  4551 I BlockstoreStorage: Clearing Blockstore Data for package app.igo.ethiopia [CONTEXT service_id=258 ]
+10-13 11:45:01.378   522   574 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{93f5cb4 com.google.android.apps.messaging/10130} BLOCKED
+10-13 11:45:01.378   522   574 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{57180dd com.google.android.gm/10141} BLOCKED
+10-13 11:45:02.076  4605  4605 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+10-13 11:45:02.092  4605  4605 I AndroidRuntime: Using default boot image
+10-13 11:45:02.092  4605  4605 I AndroidRuntime: Leaving lock profiling enabled
+10-13 11:45:02.278  4605  4605 D nativeloader: InitDefaultPublicLibraries for_preload=1: libandroid.so:libaaudio.so:libamidi.so:libbinder_ndk.so:libc.so:libcamera2ndk.so:libdl.so:libEGL.so:libGLESv1_CM.so:libGLESv2.so:libGLESv3.so:libicu.so:libicui18n.so:libicuuc.so:libjnigraphics.so:liblog.so:libmediandk.so:libm.so:libnativehelper.so:libnativewindow.so:libOpenMAXAL.so:libOpenSLES.so:libRS.so:libstdc++.so:libsync.so:libvulkan.so:libwebviewchromium_plat_support.so:libz.so
+10-13 11:45:02.368  4605  4605 D AndroidRuntime: Calling main entry com.android.commands.uiautomator.Launcher
+10-13 11:45:03.480  4605  4605 D AndroidRuntime: Shutting down VM
+10-13 11:45:06.540  4692  4692 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+10-13 11:45:06.547  4692  4692 I AndroidRuntime: Using default boot image
+10-13 11:45:06.547  4692  4692 I AndroidRuntime: Leaving lock profiling enabled
+10-13 11:45:06.613  4692  4692 D nativeloader: InitDefaultPublicLibraries for_preload=1: libandroid.so:libaaudio.so:libamidi.so:libbinder_ndk.so:libc.so:libcamera2ndk.so:libdl.so:libEGL.so:libGLESv1_CM.so:libGLESv2.so:libGLESv3.so:libicu.so:libicui18n.so:libicuuc.so:libjnigraphics.so:liblog.so:libmediandk.so:libm.so:libnativehelper.so:libnativewindow.so:libOpenMAXAL.so:libOpenSLES.so:libRS.so:libstdc++.so:libsync.so:libvulkan.so:libwebviewchromium_plat_support.so:libz.so
+10-13 11:45:06.654  4692  4692 D AndroidRuntime: Calling main entry com.android.commands.uiautomator.Launcher
+10-13 11:45:07.719  4692  4692 D AndroidRuntime: Shutting down VM
+10-13 11:45:10.813  4776  4776 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+10-13 11:45:10.838  4776  4776 I AndroidRuntime: Using default boot image
+10-13 11:45:10.838  4776  4776 I AndroidRuntime: Leaving lock profiling enabled
+10-13 11:45:11.029  4776  4776 D nativeloader: InitDefaultPublicLibraries for_preload=1: libandroid.so:libaaudio.so:libamidi.so:libbinder_ndk.so:libc.so:libcamera2ndk.so:libdl.so:libEGL.so:libGLESv1_CM.so:libGLESv2.so:libGLESv3.so:libicu.so:libicui18n.so:libicuuc.so:libjnigraphics.so:liblog.so:libmediandk.so:libm.so:libnativehelper.so:libnativewindow.so:libOpenMAXAL.so:libOpenSLES.so:libRS.so:libstdc++.so:libsync.so:libvulkan.so:libwebviewchromium_plat_support.so:libz.so
+10-13 11:45:11.098  4776  4776 D AndroidRuntime: Calling main entry com.android.commands.uiautomator.Launcher
+10-13 11:45:11.502   522   574 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{28f0e44 com.google.android.youtube/10139} BLOCKED
+10-13 11:45:11.502   522   574 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{9d9fb2d com.google.android.googlequicksearchbox/10131} BLOCKED
+10-13 11:45:11.502   522   574 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{e25d862 com.google.android.apps.messaging/10130} BLOCKED
+10-13 11:45:11.502   522   574 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{bd72df3 com.google.android.as/10125} BLOCKED
+10-13 11:45:11.502   522   574 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{7b4e4ed com.google.android.apps.maps/10152} BLOCKED
+10-13 11:45:11.502   522   574 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{790cab0 com.google.android.contacts/10154} BLOCKED
+10-13 11:45:12.181  4776  4776 D AndroidRuntime: Shutting down VM
+10-13 11:45:13.990  4355  4922 I cr_CronetUrlRequestContext: destroyNativeStreamLocked org.chromium.net.impl.CronetBidirectionalStream@aacc5c
+10-13 11:45:15.204  4944  4944 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+10-13 11:45:15.208  4944  4944 I AndroidRuntime: Using default boot image
+10-13 11:45:15.208  4944  4944 I AndroidRuntime: Leaving lock profiling enabled
+10-13 11:45:15.303  4944  4944 D nativeloader: InitDefaultPublicLibraries for_preload=1: libandroid.so:libaaudio.so:libamidi.so:libbinder_ndk.so:libc.so:libcamera2ndk.so:libdl.so:libEGL.so:libGLESv1_CM.so:libGLESv2.so:libGLESv3.so:libicu.so:libicui18n.so:libicuuc.so:libjnigraphics.so:liblog.so:libmediandk.so:libm.so:libnativehelper.so:libnativewindow.so:libOpenMAXAL.so:libOpenSLES.so:libRS.so:libstdc++.so:libsync.so:libvulkan.so:libwebviewchromium_plat_support.so:libz.so
+10-13 11:45:15.334   522   574 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{63aaa2 com.google.android.contacts/10154} BLOCKED
+10-13 11:45:15.347  4944  4944 D AndroidRuntime: Calling main entry com.android.commands.uiautomator.Launcher
+10-13 11:45:16.390  4944  4944 D AndroidRuntime: Shutting down VM
+10-13 11:45:18.126   522   574 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{331a320 com.google.android.apps.messaging/10130} BLOCKED
+10-13 11:45:19.430  5027  5027 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+10-13 11:45:19.436  5027  5027 I AndroidRuntime: Using default boot image
+10-13 11:45:19.436  5027  5027 I AndroidRuntime: Leaving lock profiling enabled
+10-13 11:45:19.534  5027  5027 D nativeloader: InitDefaultPublicLibraries for_preload=1: libandroid.so:libaaudio.so:libamidi.so:libbinder_ndk.so:libc.so:libcamera2ndk.so:libdl.so:libEGL.so:libGLESv1_CM.so:libGLESv2.so:libGLESv3.so:libicu.so:libicui18n.so:libicuuc.so:libjnigraphics.so:liblog.so:libmediandk.so:libm.so:libnativehelper.so:libnativewindow.so:libOpenMAXAL.so:libOpenSLES.so:libRS.so:libstdc++.so:libsync.so:libvulkan.so:libwebviewchromium_plat_support.so:libz.so
+10-13 11:45:19.601  5027  5027 D AndroidRuntime: Calling main entry com.android.commands.uiautomator.Launcher
+10-13 11:45:20.758  5027  5027 D AndroidRuntime: Shutting down VM
+10-13 11:45:21.584   522   574 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{e4eefc0 com.google.android.gm/10141} BLOCKED
+10-13 11:45:24.047  5083  5083 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+10-13 11:45:24.059  5083  5083 I AndroidRuntime: Using default boot image
+10-13 11:45:24.065  5083  5083 I AndroidRuntime: Leaving lock profiling enabled
+10-13 11:45:24.238  5083  5083 D nativeloader: InitDefaultPublicLibraries for_preload=1: libandroid.so:libaaudio.so:libamidi.so:libbinder_ndk.so:libc.so:libcamera2ndk.so:libdl.so:libEGL.so:libGLESv1_CM.so:libGLESv2.so:libGLESv3.so:libicu.so:libicui18n.so:libicuuc.so:libjnigraphics.so:liblog.so:libmediandk.so:libm.so:libnativehelper.so:libnativewindow.so:libOpenMAXAL.so:libOpenSLES.so:libRS.so:libstdc++.so:libsync.so:libvulkan.so:libwebviewchromium_plat_support.so:libz.so
+10-13 11:45:24.313  5083  5083 D AndroidRuntime: Calling main entry com.android.commands.uiautomator.Launcher
+10-13 11:45:25.381  5083  5083 D AndroidRuntime: Shutting down VM
+10-13 11:45:25.772   522  1903 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{54b54d com.google.android.settings.intelligence/10118} BLOCKED
+10-13 11:45:26.533   522   574 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{da29e0e com.google.android.as/10125} BLOCKED
+10-13 11:45:28.414  5190  5190 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+10-13 11:45:28.418  5190  5190 I AndroidRuntime: Using default boot image
+10-13 11:45:28.418  5190  5190 I AndroidRuntime: Leaving lock profiling enabled
+10-13 11:45:28.474  5190  5190 D nativeloader: InitDefaultPublicLibraries for_preload=1: libandroid.so:libaaudio.so:libamidi.so:libbinder_ndk.so:libc.so:libcamera2ndk.so:libdl.so:libEGL.so:libGLESv1_CM.so:libGLESv2.so:libGLESv3.so:libicu.so:libicui18n.so:libicuuc.so:libjnigraphics.so:liblog.so:libmediandk.so:libm.so:libnativehelper.so:libnativewindow.so:libOpenMAXAL.so:libOpenSLES.so:libRS.so:libstdc++.so:libsync.so:libvulkan.so:libwebviewchromium_plat_support.so:libz.so
+10-13 11:45:28.516  5190  5190 D AndroidRuntime: Calling main entry com.android.commands.uiautomator.Launcher
+10-13 11:45:29.589  5190  5190 D AndroidRuntime: Shutting down VM
+10-13 11:45:32.715  5312  5312 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+10-13 11:45:32.731  5312  5312 I AndroidRuntime: Using default boot image
+10-13 11:45:32.731  5312  5312 I AndroidRuntime: Leaving lock profiling enabled
+10-13 11:45:32.874  5312  5312 D nativeloader: InitDefaultPublicLibraries for_preload=1: libandroid.so:libaaudio.so:libamidi.so:libbinder_ndk.so:libc.so:libcamera2ndk.so:libdl.so:libEGL.so:libGLESv1_CM.so:libGLESv2.so:libGLESv3.so:libicu.so:libicui18n.so:libicuuc.so:libjnigraphics.so:liblog.so:libmediandk.so:libm.so:libnativehelper.so:libnativewindow.so:libOpenMAXAL.so:libOpenSLES.so:libRS.so:libstdc++.so:libsync.so:libvulkan.so:libwebviewchromium_plat_support.so:libz.so
+10-13 11:45:32.938  5312  5312 D AndroidRuntime: Calling main entry com.android.commands.uiautomator.Launcher
+10-13 11:45:33.421   522   574 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{32cd8f8 com.google.android.contacts/10154} BLOCKED
+10-13 11:45:34.005  5312  5312 D AndroidRuntime: Shutting down VM
+10-13 11:45:34.055   522   595 I ActivityManager: Killing 2894:app.igo.ethiopia/u0a192 (adj 0): depends on provider com.google.android.gms/.fonts.provider.FontsProvider in dying proc com.google.android.gms.persistent (adj -10000)
+10-13 11:45:34.086   522  2347 I WindowManager: WIN DEATH: Window{dcb7660 u0 app.igo.ethiopia/app.igo.ethiopia.MainActivity}
+10-13 11:45:34.088   522  2347 W InputManager-JNI: Input channel object 'dcb7660 app.igo.ethiopia/app.igo.ethiopia.MainActivity (client)' was disposed without first being removed with the input manager!
+10-13 11:45:34.090   522  1922 I ActivityManager: Killing 3151:com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0/u0a192i0 (adj 0): isolated not needed
+10-13 11:45:34.091   522  1220 I ImeTracker: app.igo.ethiopia:ba27eb82: onRequestHide at ORIGIN_SERVER_HIDE_INPUT reason HIDE_REMOVE_CLIENT
+10-13 11:45:34.094   522  1220 I ImeTracker: app.igo.ethiopia:ba27eb82: onCancelled at PHASE_SERVER_SHOULD_HIDE
+10-13 11:45:34.099   522  1922 W ActivityTaskManager: Force removing ActivityRecord{d338a75 u0 app.igo.ethiopia/.MainActivity t8}: app died, no saved state
+10-13 11:45:34.101   840   875 V WindowManagerShell: Transition requested: android.os.BinderProxy@1545516 TransitionRequestInfo { type = CLOSE, triggerTask = TaskInfo{userId=0 taskId=8 displayId=0 isRunning=true baseIntent=Intent { flg=0x10000000 cmp=app.igo.ethiopia/.MainActivity } baseActivity=ComponentInfo{app.igo.ethiopia/app.igo.ethiopia.MainActivity} topActivity=ComponentInfo{app.igo.ethiopia/app.igo.ethiopia.MainActivity} origActivity=null realActivity=ComponentInfo{app.igo.ethiopia/app.igo.ethiopia.MainActivity} numActivities=1 lastActiveTime=46686 supportsMultiWindow=true resizeMode=1 isResizeable=true minWidth=-1 minHeight=-1 defaultMinSize=220 token=WCT{android.window.IWindowContainerToken$Stub$Proxy@7d91e97} topActivityType=1 pictureInPictureParams=null shouldDockBigOverlays=false launchIntoPipHostTaskId=-1 lastParentTaskIdBeforePip=-1 displayCutoutSafeInsets=null topActivityInfo=ActivityInfo{e8e3884 app.igo.ethiopia.MainActivity} launchCookies=[] positionInParent=Point(0, 0) parentTaskId=-1 isFocused=true isVisible=true isVisibleRequested=true isSleeping=false topActivityInSizeCompat=false topActivityEligibleForLetterboxEducation= false topActivityLetterboxed= false isFromDoubleTap= false topActivityLetterboxVerticalPosition= -1 topActivityLetterboxHorizontalPosition= -1 topActivityLetterboxWidth=-1 topActivityLetterboxHeight=-1 locusId=null displayAreaFeatureId=1 cameraCompatControlState=hidden}, remoteTransition = null, displayChange = null }
+10-13 11:45:35.241   522   541 V WindowManager: Sent Transition #7 createdAt=10-13 11:45:34.099 via request=TransitionRequestInfo { type = CLOSE, triggerTask = TaskInfo{userId=0 taskId=8 displayId=0 isRunning=true baseIntent=Intent { flg=0x10000000 cmp=app.igo.ethiopia/.MainActivity } baseActivity=ComponentInfo{app.igo.ethiopia/app.igo.ethiopia.MainActivity} topActivity=ComponentInfo{app.igo.ethiopia/app.igo.ethiopia.MainActivity} origActivity=null realActivity=ComponentInfo{app.igo.ethiopia/app.igo.ethiopia.MainActivity} numActivities=1 lastActiveTime=46686 supportsMultiWindow=true resizeMode=1 isResizeable=true minWidth=-1 minHeight=-1 defaultMinSize=220 token=WCT{RemoteToken{90b747f Task{e9fca0a #8 type=standard A=10192:app.igo.ethiopia}}} topActivityType=1 pictureInPictureParams=null shouldDockBigOverlays=false launchIntoPipHostTaskId=-1 lastParentTaskIdBeforePip=-1 displayCutoutSafeInsets=null topActivityInfo=ActivityInfo{997c4c app.igo.ethiopia.MainActivity} launchCookies=[] positionInParent=Point(0, 0) parentTaskId=-1 isFocused=true isVisible=true isVisibleRequested=true isSleeping=false topActivityInSizeCompat=false topActivityEligibleForLetterboxEducation= false topActivityLetterboxed= false isFromDoubleTap= false topActivityLetterboxVerticalPosition= -1 topActivityLetterboxHorizontalPosition= -1 topActivityLetterboxWidth=-1 topActivityLetterboxHeight=-1 locusId=null displayAreaFeatureId=1 cameraCompatControlState=hidden}, remoteTransition = null, displayChange = null }
+10-13 11:45:37.149  5637  5637 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+10-13 11:45:37.153  5637  5637 I AndroidRuntime: Using default boot image
+10-13 11:45:37.153  5637  5637 I AndroidRuntime: Leaving lock profiling enabled
+10-13 11:45:37.257  5637  5637 D nativeloader: InitDefaultPublicLibraries for_preload=1: libandroid.so:libaaudio.so:libamidi.so:libbinder_ndk.so:libc.so:libcamera2ndk.so:libdl.so:libEGL.so:libGLESv1_CM.so:libGLESv2.so:libGLESv3.so:libicu.so:libicui18n.so:libicuuc.so:libjnigraphics.so:liblog.so:libmediandk.so:libm.so:libnativehelper.so:libnativewindow.so:libOpenMAXAL.so:libOpenSLES.so:libRS.so:libstdc++.so:libsync.so:libvulkan.so:libwebviewchromium_plat_support.so:libz.so
+10-13 11:45:37.314  5637  5637 D AndroidRuntime: Calling main entry com.android.commands.uiautomator.Launcher
+10-13 11:45:38.357  5637  5637 D AndroidRuntime: Shutting down VM
+10-13 11:45:41.333  5761  5761 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+10-13 11:45:41.338  5761  5761 I AndroidRuntime: Using default boot image
+10-13 11:45:41.338  5761  5761 I AndroidRuntime: Leaving lock profiling enabled
+10-13 11:45:41.402  5761  5761 D nativeloader: InitDefaultPublicLibraries for_preload=1: libandroid.so:libaaudio.so:libamidi.so:libbinder_ndk.so:libc.so:libcamera2ndk.so:libdl.so:libEGL.so:libGLESv1_CM.so:libGLESv2.so:libGLESv3.so:libicu.so:libicui18n.so:libicuuc.so:libjnigraphics.so:liblog.so:libmediandk.so:libm.so:libnativehelper.so:libnativewindow.so:libOpenMAXAL.so:libOpenSLES.so:libRS.so:libstdc++.so:libsync.so:libvulkan.so:libwebviewchromium_plat_support.so:libz.so
+10-13 11:45:41.449  5761  5761 D AndroidRuntime: Calling main entry com.android.commands.uiautomator.Launcher
+10-13 11:45:42.510  5761  5761 D AndroidRuntime: Shutting down VM
+10-13 11:45:44.418   522   574 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{bf8329a com.google.android.contacts/10154} BLOCKED
+10-13 11:45:45.497  5844  5844 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+10-13 11:45:45.501  5844  5844 I AndroidRuntime: Using default boot image
+10-13 11:45:45.501  5844  5844 I AndroidRuntime: Leaving lock profiling enabled
+10-13 11:45:45.557  5844  5844 D nativeloader: InitDefaultPublicLibraries for_preload=1: libandroid.so:libaaudio.so:libamidi.so:libbinder_ndk.so:libc.so:libcamera2ndk.so:libdl.so:libEGL.so:libGLESv1_CM.so:libGLESv2.so:libGLESv3.so:libicu.so:libicui18n.so:libicuuc.so:libjnigraphics.so:liblog.so:libmediandk.so:libm.so:libnativehelper.so:libnativewindow.so:libOpenMAXAL.so:libOpenSLES.so:libRS.so:libstdc++.so:libsync.so:libvulkan.so:libwebviewchromium_plat_support.so:libz.so
+10-13 11:45:45.585  5844  5844 D AndroidRuntime: Calling main entry com.android.commands.uiautomator.Launcher
+10-13 11:45:46.630  5844  5844 D AndroidRuntime: Shutting down VM
+10-13 11:45:49.615  5870  5870 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+10-13 11:45:49.619  5870  5870 I AndroidRuntime: Using default boot image
+10-13 11:45:49.619  5870  5870 I AndroidRuntime: Leaving lock profiling enabled
+10-13 11:45:49.673  5870  5870 D nativeloader: InitDefaultPublicLibraries for_preload=1: libandroid.so:libaaudio.so:libamidi.so:libbinder_ndk.so:libc.so:libcamera2ndk.so:libdl.so:libEGL.so:libGLESv1_CM.so:libGLESv2.so:libGLESv3.so:libicu.so:libicui18n.so:libicuuc.so:libjnigraphics.so:liblog.so:libmediandk.so:libm.so:libnativehelper.so:libnativewindow.so:libOpenMAXAL.so:libOpenSLES.so:libRS.so:libstdc++.so:libsync.so:libvulkan.so:libwebviewchromium_plat_support.so:libz.so
+10-13 11:45:49.701  5870  5870 D AndroidRuntime: Calling main entry com.android.commands.uiautomator.Launcher
+10-13 11:45:50.750  5870  5870 D AndroidRuntime: Shutting down VM
+10-13 11:45:51.231   522   574 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{357a6ea com.google.android.googlequicksearchbox/10131} BLOCKED
+10-13 11:45:53.961  5906  5906 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+10-13 11:45:53.971  5906  5906 I AndroidRuntime: Using default boot image
+10-13 11:45:53.971  5906  5906 I AndroidRuntime: Leaving lock profiling enabled
+10-13 11:45:54.154  5906  5906 D nativeloader: InitDefaultPublicLibraries for_preload=1: libandroid.so:libaaudio.so:libamidi.so:libbinder_ndk.so:libc.so:libcamera2ndk.so:libdl.so:libEGL.so:libGLESv1_CM.so:libGLESv2.so:libGLESv3.so:libicu.so:libicui18n.so:libicuuc.so:libjnigraphics.so:liblog.so:libmediandk.so:libm.so:libnativehelper.so:libnativewindow.so:libOpenMAXAL.so:libOpenSLES.so:libRS.so:libstdc++.so:libsync.so:libvulkan.so:libwebviewchromium_plat_support.so:libz.so
+10-13 11:45:54.249  5906  5906 D AndroidRuntime: Calling main entry com.android.commands.uiautomator.Launcher
+10-13 11:45:55.313  5906  5906 D AndroidRuntime: Shutting down VM
+10-13 11:45:57.117   522   574 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{8a4f830 com.google.android.contacts/10154} BLOCKED
+10-13 11:45:58.429  5968  5968 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+10-13 11:45:58.432  5968  5968 I AndroidRuntime: Using default boot image
+10-13 11:45:58.432  5968  5968 I AndroidRuntime: Leaving lock profiling enabled
+10-13 11:45:58.530  5968  5968 D nativeloader: InitDefaultPublicLibraries for_preload=1: libandroid.so:libaaudio.so:libamidi.so:libbinder_ndk.so:libc.so:libcamera2ndk.so:libdl.so:libEGL.so:libGLESv1_CM.so:libGLESv2.so:libGLESv3.so:libicu.so:libicui18n.so:libicuuc.so:libjnigraphics.so:liblog.so:libmediandk.so:libm.so:libnativehelper.so:libnativewindow.so:libOpenMAXAL.so:libOpenSLES.so:libRS.so:libstdc++.so:libsync.so:libvulkan.so:libwebviewchromium_plat_support.so:libz.so
+10-13 11:45:58.568  5968  5968 D AndroidRuntime: Calling main entry com.android.commands.uiautomator.Launcher
+10-13 11:45:59.673  5968  5968 D AndroidRuntime: Shutting down VM
+10-13 11:46:00.641   522   574 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{6710f97 com.google.android.contacts/10154} BLOCKED
+10-13 11:46:02.680  6024  6024 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+10-13 11:46:02.686  6024  6024 I AndroidRuntime: Using default boot image
+10-13 11:46:02.687  6024  6024 I AndroidRuntime: Leaving lock profiling enabled
+10-13 11:46:02.770  6024  6024 D nativeloader: InitDefaultPublicLibraries for_preload=1: libandroid.so:libaaudio.so:libamidi.so:libbinder_ndk.so:libc.so:libcamera2ndk.so:libdl.so:libEGL.so:libGLESv1_CM.so:libGLESv2.so:libGLESv3.so:libicu.so:libicui18n.so:libicuuc.so:libjnigraphics.so:liblog.so:libmediandk.so:libm.so:libnativehelper.so:libnativewindow.so:libOpenMAXAL.so:libOpenSLES.so:libRS.so:libstdc++.so:libsync.so:libvulkan.so:libwebviewchromium_plat_support.so:libz.so
+10-13 11:46:02.807  6024  6024 D AndroidRuntime: Calling main entry com.android.commands.uiautomator.Launcher
+10-13 11:46:03.874  6024  6024 D AndroidRuntime: Shutting down VM
+10-13 11:46:06.841  6102  6102 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+10-13 11:46:06.845  6102  6102 I AndroidRuntime: Using default boot image
+10-13 11:46:06.845  6102  6102 I AndroidRuntime: Leaving lock profiling enabled
+10-13 11:46:06.899  6102  6102 D nativeloader: InitDefaultPublicLibraries for_preload=1: libandroid.so:libaaudio.so:libamidi.so:libbinder_ndk.so:libc.so:libcamera2ndk.so:libdl.so:libEGL.so:libGLESv1_CM.so:libGLESv2.so:libGLESv3.so:libicu.so:libicui18n.so:libicuuc.so:libjnigraphics.so:liblog.so:libmediandk.so:libm.so:libnativehelper.so:libnativewindow.so:libOpenMAXAL.so:libOpenSLES.so:libRS.so:libstdc++.so:libsync.so:libvulkan.so:libwebviewchromium_plat_support.so:libz.so
+10-13 11:46:06.926  6102  6102 D AndroidRuntime: Calling main entry com.android.commands.uiautomator.Launcher
+10-13 11:46:07.957  6102  6102 D AndroidRuntime: Shutting down VM
+10-13 11:46:10.887  6119  6119 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+10-13 11:46:10.890  6119  6119 I AndroidRuntime: Using default boot image
+10-13 11:46:10.890  6119  6119 I AndroidRuntime: Leaving lock profiling enabled
+10-13 11:46:10.943  6119  6119 D nativeloader: InitDefaultPublicLibraries for_preload=1: libandroid.so:libaaudio.so:libamidi.so:libbinder_ndk.so:libc.so:libcamera2ndk.so:libdl.so:libEGL.so:libGLESv1_CM.so:libGLESv2.so:libGLESv3.so:libicu.so:libicui18n.so:libicuuc.so:libjnigraphics.so:liblog.so:libmediandk.so:libm.so:libnativehelper.so:libnativewindow.so:libOpenMAXAL.so:libOpenSLES.so:libRS.so:libstdc++.so:libsync.so:libvulkan.so:libwebviewchromium_plat_support.so:libz.so
+10-13 11:46:10.971  6119  6119 D AndroidRuntime: Calling main entry com.android.commands.uiautomator.Launcher
+10-13 11:46:12.001  6119  6119 D AndroidRuntime: Shutting down VM
+10-13 11:46:14.939  6137  6137 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+10-13 11:46:14.942  6137  6137 I AndroidRuntime: Using default boot image
+10-13 11:46:14.943  6137  6137 I AndroidRuntime: Leaving lock profiling enabled
+10-13 11:46:14.995  6137  6137 D nativeloader: InitDefaultPublicLibraries for_preload=1: libandroid.so:libaaudio.so:libamidi.so:libbinder_ndk.so:libc.so:libcamera2ndk.so:libdl.so:libEGL.so:libGLESv1_CM.so:libGLESv2.so:libGLESv3.so:libicu.so:libicui18n.so:libicuuc.so:libjnigraphics.so:liblog.so:libmediandk.so:libm.so:libnativehelper.so:libnativewindow.so:libOpenMAXAL.so:libOpenSLES.so:libRS.so:libstdc++.so:libsync.so:libvulkan.so:libwebviewchromium_plat_support.so:libz.so
+10-13 11:46:15.022  6137  6137 D AndroidRuntime: Calling main entry com.android.commands.uiautomator.Launcher
+10-13 11:46:16.057  6137  6137 D AndroidRuntime: Shutting down VM
+10-13 11:46:16.256   522   574 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{1b7a6dd com.google.android.contacts/10154} BLOCKED
+10-13 11:46:18.986  6166  6166 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+10-13 11:46:18.989  6166  6166 I AndroidRuntime: Using default boot image
+10-13 11:46:18.990  6166  6166 I AndroidRuntime: Leaving lock profiling enabled
+10-13 11:46:19.041  6166  6166 D nativeloader: InitDefaultPublicLibraries for_preload=1: libandroid.so:libaaudio.so:libamidi.so:libbinder_ndk.so:libc.so:libcamera2ndk.so:libdl.so:libEGL.so:libGLESv1_CM.so:libGLESv2.so:libGLESv3.so:libicu.so:libicui18n.so:libicuuc.so:libjnigraphics.so:liblog.so:libmediandk.so:libm.so:libnativehelper.so:libnativewindow.so:libOpenMAXAL.so:libOpenSLES.so:libRS.so:libstdc++.so:libsync.so:libvulkan.so:libwebviewchromium_plat_support.so:libz.so
+10-13 11:46:19.068  6166  6166 D AndroidRuntime: Calling main entry com.android.commands.uiautomator.Launcher
+10-13 11:46:20.092  6166  6166 D AndroidRuntime: Shutting down VM
+10-13 11:46:23.028  6183  6183 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+10-13 11:46:23.032  6183  6183 I AndroidRuntime: Using default boot image
+10-13 11:46:23.032  6183  6183 I AndroidRuntime: Leaving lock profiling enabled
+10-13 11:46:23.084  6183  6183 D nativeloader: InitDefaultPublicLibraries for_preload=1: libandroid.so:libaaudio.so:libamidi.so:libbinder_ndk.so:libc.so:libcamera2ndk.so:libdl.so:libEGL.so:libGLESv1_CM.so:libGLESv2.so:libGLESv3.so:libicu.so:libicui18n.so:libicuuc.so:libjnigraphics.so:liblog.so:libmediandk.so:libm.so:libnativehelper.so:libnativewindow.so:libOpenMAXAL.so:libOpenSLES.so:libRS.so:libstdc++.so:libsync.so:libvulkan.so:libwebviewchromium_plat_support.so:libz.so
+10-13 11:46:23.112  6183  6183 D AndroidRuntime: Calling main entry com.android.commands.uiautomator.Launcher
+10-13 11:46:24.143  6183  6183 D AndroidRuntime: Shutting down VM
+10-13 11:46:27.071  6201  6201 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+10-13 11:46:27.074  6201  6201 I AndroidRuntime: Using default boot image
+10-13 11:46:27.075  6201  6201 I AndroidRuntime: Leaving lock profiling enabled
+10-13 11:46:27.126  6201  6201 D nativeloader: InitDefaultPublicLibraries for_preload=1: libandroid.so:libaaudio.so:libamidi.so:libbinder_ndk.so:libc.so:libcamera2ndk.so:libdl.so:libEGL.so:libGLESv1_CM.so:libGLESv2.so:libGLESv3.so:libicu.so:libicui18n.so:libicuuc.so:libjnigraphics.so:liblog.so:libmediandk.so:libm.so:libnativehelper.so:libnativewindow.so:libOpenMAXAL.so:libOpenSLES.so:libRS.so:libstdc++.so:libsync.so:libvulkan.so:libwebviewchromium_plat_support.so:libz.so
+10-13 11:46:27.151  6201  6201 D AndroidRuntime: Calling main entry com.android.commands.uiautomator.Launcher
+10-13 11:46:28.179  6201  6201 D AndroidRuntime: Shutting down VM
+10-13 11:46:31.100  6218  6218 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+10-13 11:46:31.104  6218  6218 I AndroidRuntime: Using default boot image
+10-13 11:46:31.104  6218  6218 I AndroidRuntime: Leaving lock profiling enabled
+10-13 11:46:31.154  6218  6218 D nativeloader: InitDefaultPublicLibraries for_preload=1: libandroid.so:libaaudio.so:libamidi.so:libbinder_ndk.so:libc.so:libcamera2ndk.so:libdl.so:libEGL.so:libGLESv1_CM.so:libGLESv2.so:libGLESv3.so:libicu.so:libicui18n.so:libicuuc.so:libjnigraphics.so:liblog.so:libmediandk.so:libm.so:libnativehelper.so:libnativewindow.so:libOpenMAXAL.so:libOpenSLES.so:libRS.so:libstdc++.so:libsync.so:libvulkan.so:libwebviewchromium_plat_support.so:libz.so
+10-13 11:46:31.181  6218  6218 D AndroidRuntime: Calling main entry com.android.commands.uiautomator.Launcher
+10-13 11:46:32.218  6218  6218 D AndroidRuntime: Shutting down VM
+10-13 11:46:35.152  6236  6236 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+10-13 11:46:35.156  6236  6236 I AndroidRuntime: Using default boot image
+10-13 11:46:35.156  6236  6236 I AndroidRuntime: Leaving lock profiling enabled
+10-13 11:46:35.207  6236  6236 D nativeloader: InitDefaultPublicLibraries for_preload=1: libandroid.so:libaaudio.so:libamidi.so:libbinder_ndk.so:libc.so:libcamera2ndk.so:libdl.so:libEGL.so:libGLESv1_CM.so:libGLESv2.so:libGLESv3.so:libicu.so:libicui18n.so:libicuuc.so:libjnigraphics.so:liblog.so:libmediandk.so:libm.so:libnativehelper.so:libnativewindow.so:libOpenMAXAL.so:libOpenSLES.so:libRS.so:libstdc++.so:libsync.so:libvulkan.so:libwebviewchromium_plat_support.so:libz.so
+10-13 11:46:35.232  6236  6236 D AndroidRuntime: Calling main entry com.android.commands.uiautomator.Launcher
+10-13 11:46:36.255  6236  6236 D AndroidRuntime: Shutting down VM
+10-13 11:46:39.269  6307  6307 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+10-13 11:46:39.273  6307  6307 I AndroidRuntime: Using default boot image
+10-13 11:46:39.273  6307  6307 I AndroidRuntime: Leaving lock profiling enabled
+10-13 11:46:39.324  6307  6307 D nativeloader: InitDefaultPublicLibraries for_preload=1: libandroid.so:libaaudio.so:libamidi.so:libbinder_ndk.so:libc.so:libcamera2ndk.so:libdl.so:libEGL.so:libGLESv1_CM.so:libGLESv2.so:libGLESv3.so:libicu.so:libicui18n.so:libicuuc.so:libjnigraphics.so:liblog.so:libmediandk.so:libm.so:libnativehelper.so:libnativewindow.so:libOpenMAXAL.so:libOpenSLES.so:libRS.so:libstdc++.so:libsync.so:libvulkan.so:libwebviewchromium_plat_support.so:libz.so
+10-13 11:46:39.351  6307  6307 D AndroidRuntime: Calling main entry com.android.commands.uiautomator.Launcher
+10-13 11:46:40.061   522   574 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{1af7123 com.google.android.contacts/10154} BLOCKED
+10-13 11:46:41.218  6307  6307 D AndroidRuntime: Shutting down VM
+10-13 11:46:46.352  6345  6345 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+10-13 11:46:46.358  6345  6345 I AndroidRuntime: Using default boot image
+10-13 11:46:46.358  6345  6345 I AndroidRuntime: Leaving lock profiling enabled
+10-13 11:46:46.413  6345  6345 D nativeloader: InitDefaultPublicLibraries for_preload=1: libandroid.so:libaaudio.so:libamidi.so:libbinder_ndk.so:libc.so:libcamera2ndk.so:libdl.so:libEGL.so:libGLESv1_CM.so:libGLESv2.so:libGLESv3.so:libicu.so:libicui18n.so:libicuuc.so:libjnigraphics.so:liblog.so:libmediandk.so:libm.so:libnativehelper.so:libnativewindow.so:libOpenMAXAL.so:libOpenSLES.so:libRS.so:libstdc++.so:libsync.so:libvulkan.so:libwebviewchromium_plat_support.so:libz.so
+10-13 11:46:46.442  6345  6345 D AndroidRuntime: Calling main entry com.android.commands.uiautomator.Launcher
+10-13 11:46:47.472  6345  6345 D AndroidRuntime: Shutting down VM
+10-13 11:46:50.112   522   574 I AppsFilter: interaction: PackageSetting{9488ebf app.igo.ethiopia/10192} -> PackageSetting{69a681f com.google.android.contacts/10154} BLOCKED
+10-13 11:46:50.432  6381  6381 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+10-13 11:46:50.436  6381  6381 I AndroidRuntime: Using default boot image
+10-13 11:46:50.436  6381  6381 I AndroidRuntime: Leaving lock profiling enabled
+10-13 11:46:50.491  6381  6381 D nativeloader: InitDefaultPublicLibraries for_preload=1: libandroid.so:libaaudio.so:libamidi.so:libbinder_ndk.so:libc.so:libcamera2ndk.so:libdl.so:libEGL.so:libGLESv1_CM.so:libGLESv2.so:libGLESv3.so:libicu.so:libicui18n.so:libicuuc.so:libjnigraphics.so:liblog.so:libmediandk.so:libm.so:libnativehelper.so:libnativewindow.so:libOpenMAXAL.so:libOpenSLES.so:libRS.so:libstdc++.so:libsync.so:libvulkan.so:libwebviewchromium_plat_support.so:libz.so
+10-13 11:46:50.521  6381  6381 D AndroidRuntime: Calling main entry com.android.commands.uiautomator.Launcher
+10-13 11:46:51.630  6381  6381 D AndroidRuntime: Shutting down VM
+10-13 11:46:54.682  6419  6419 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+10-13 11:46:54.686  6419  6419 I AndroidRuntime: Using default boot image
+10-13 11:46:54.687  6419  6419 I AndroidRuntime: Leaving lock profiling enabled
+10-13 11:46:54.737  6419  6419 D nativeloader: InitDefaultPublicLibraries for_preload=1: libandroid.so:libaaudio.so:libamidi.so:libbinder_ndk.so:libc.so:libcamera2ndk.so:libdl.so:libEGL.so:libGLESv1_CM.so:libGLESv2.so:libGLESv3.so:libicu.so:libicui18n.so:libicuuc.so:libjnigraphics.so:liblog.so:libmediandk.so:libm.so:libnativehelper.so:libnativewindow.so:libOpenMAXAL.so:libOpenSLES.so:libRS.so:libstdc++.so:libsync.so:libvulkan.so:libwebviewchromium_plat_support.so:libz.so
+10-13 11:46:54.764  6419  6419 D AndroidRuntime: Calling main entry com.android.commands.uiautomator.Launcher
+10-13 11:46:55.808  6419  6419 D AndroidRuntime: Shutting down VM
+10-13 11:46:58.742  6436  6436 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+10-13 11:46:58.745  6436  6436 I AndroidRuntime: Using default boot image
+10-13 11:46:58.745  6436  6436 I AndroidRuntime: Leaving lock profiling enabled
+10-13 11:46:58.799  6436  6436 D nativeloader: InitDefaultPublicLibraries for_preload=1: libandroid.so:libaaudio.so:libamidi.so:libbinder_ndk.so:libc.so:libcamera2ndk.so:libdl.so:libEGL.so:libGLESv1_CM.so:libGLESv2.so:libGLESv3.so:libicu.so:libicui18n.so:libicuuc.so:libjnigraphics.so:liblog.so:libmediandk.so:libm.so:libnativehelper.so:libnativewindow.so:libOpenMAXAL.so:libOpenSLES.so:libRS.so:libstdc++.so:libsync.so:libvulkan.so:libwebviewchromium_plat_support.so:libz.so
+10-13 11:46:58.827  6436  6436 D AndroidRuntime: Calling main entry com.android.commands.uiautomator.Launcher
+10-13 11:46:59.859  6436  6436 D AndroidRuntime: Shutting down VM
+10-13 11:47:02.795  6453  6453 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+10-13 11:47:02.798  6453  6453 I AndroidRuntime: Using default boot image
+10-13 11:47:02.798  6453  6453 I AndroidRuntime: Leaving lock profiling enabled
+10-13 11:47:02.851  6453  6453 D nativeloader: InitDefaultPublicLibraries for_preload=1: libandroid.so:libaaudio.so:libamidi.so:libbinder_ndk.so:libc.so:libcamera2ndk.so:libdl.so:libEGL.so:libGLESv1_CM.so:libGLESv2.so:libGLESv3.so:libicu.so:libicui18n.so:libicuuc.so:libjnigraphics.so:liblog.so:libmediandk.so:libm.so:libnativehelper.so:libnativewindow.so:libOpenMAXAL.so:libOpenSLES.so:libRS.so:libstdc++.so:libsync.so:libvulkan.so:libwebviewchromium_plat_support.so:libz.so
+10-13 11:47:02.877  6453  6453 D AndroidRuntime: Calling main entry com.android.commands.uiautomator.Launcher
+10-13 11:47:03.907  6453  6453 D AndroidRuntime: Shutting down VM
+10-13 11:47:06.835  6470  6470 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+10-13 11:47:06.839  6470  6470 I AndroidRuntime: Using default boot image
+10-13 11:47:06.839  6470  6470 I AndroidRuntime: Leaving lock profiling enabled
+10-13 11:47:06.893  6470  6470 D nativeloader: InitDefaultPublicLibraries for_preload=1: libandroid.so:libaaudio.so:libamidi.so:libbinder_ndk.so:libc.so:libcamera2ndk.so:libdl.so:libEGL.so:libGLESv1_CM.so:libGLESv2.so:libGLESv3.so:libicu.so:libicui18n.so:libicuuc.so:libjnigraphics.so:liblog.so:libmediandk.so:libm.so:libnativehelper.so:libnativewindow.so:libOpenMAXAL.so:libOpenSLES.so:libRS.so:libstdc++.so:libsync.so:libvulkan.so:libwebviewchromium_plat_support.so:libz.so
+10-13 11:47:06.921  6470  6470 D AndroidRuntime: Calling main entry com.android.commands.uiautomator.Launcher
+10-13 11:47:07.960  6470  6470 D AndroidRuntime: Shutting down VM
+10-13 11:47:10.886  6490  6490 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+10-13 11:47:10.889  6490  6490 I AndroidRuntime: Using default boot image
+10-13 11:47:10.889  6490  6490 I AndroidRuntime: Leaving lock profiling enabled
+10-13 11:47:10.941  6490  6490 D nativeloader: InitDefaultPublicLibraries for_preload=1: libandroid.so:libaaudio.so:libamidi.so:libbinder_ndk.so:libc.so:libcamera2ndk.so:libdl.so:libEGL.so:libGLESv1_CM.so:libGLESv2.so:libGLESv3.so:libicu.so:libicui18n.so:libicuuc.so:libjnigraphics.so:liblog.so:libmediandk.so:libm.so:libnativehelper.so:libnativewindow.so:libOpenMAXAL.so:libOpenSLES.so:libRS.so:libstdc++.so:libsync.so:libvulkan.so:libwebviewchromium_plat_support.so:libz.so
+10-13 11:47:10.967  6490  6490 D AndroidRuntime: Calling main entry com.android.commands.uiautomator.Launcher
+10-13 11:47:12.002  6490  6490 D AndroidRuntime: Shutting down VM
+10-13 11:47:14.996  6512  6512 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+10-13 11:47:14.999  6512  6512 I AndroidRuntime: Using default boot image
+10-13 11:47:14.999  6512  6512 I AndroidRuntime: Leaving lock profiling enabled
+10-13 11:47:15.050  6512  6512 D nativeloader: InitDefaultPublicLibraries for_preload=1: libandroid.so:libaaudio.so:libamidi.so:libbinder_ndk.so:libc.so:libcamera2ndk.so:libdl.so:libEGL.so:libGLESv1_CM.so:libGLESv2.so:libGLESv3.so:libicu.so:libicui18n.so:libicuuc.so:libjnigraphics.so:liblog.so:libmediandk.so:libm.so:libnativehelper.so:libnativewindow.so:libOpenMAXAL.so:libOpenSLES.so:libRS.so:libstdc++.so:libsync.so:libvulkan.so:libwebviewchromium_plat_support.so:libz.so
+10-13 11:47:15.075  6512  6512 D AndroidRuntime: Calling main entry com.android.commands.uiautomator.Launcher
+10-13 11:47:16.102  6512  6512 D AndroidRuntime: Shutting down VM
+10-13 11:47:19.024  6528  6528 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+10-13 11:47:19.027  6528  6528 I AndroidRuntime: Using default boot image
+10-13 11:47:19.027  6528  6528 I AndroidRuntime: Leaving lock profiling enabled
+10-13 11:47:19.077  6528  6528 D nativeloader: InitDefaultPublicLibraries for_preload=1: libandroid.so:libaaudio.so:libamidi.so:libbinder_ndk.so:libc.so:libcamera2ndk.so:libdl.so:libEGL.so:libGLESv1_CM.so:libGLESv2.so:libGLESv3.so:libicu.so:libicui18n.so:libicuuc.so:libjnigraphics.so:liblog.so:libmediandk.so:libm.so:libnativehelper.so:libnativewindow.so:libOpenMAXAL.so:libOpenSLES.so:libRS.so:libstdc++.so:libsync.so:libvulkan.so:libwebviewchromium_plat_support.so:libz.so
+10-13 11:47:19.102  6528  6528 D AndroidRuntime: Calling main entry com.android.commands.uiautomator.Launcher
+10-13 11:47:20.127  6528  6528 D AndroidRuntime: Shutting down VM
+10-13 11:47:23.050  6545  6545 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+10-13 11:47:23.054  6545  6545 I AndroidRuntime: Using default boot image
+10-13 11:47:23.054  6545  6545 I AndroidRuntime: Leaving lock profiling enabled
+10-13 11:47:23.105  6545  6545 D nativeloader: InitDefaultPublicLibraries for_preload=1: libandroid.so:libaaudio.so:libamidi.so:libbinder_ndk.so:libc.so:libcamera2ndk.so:libdl.so:libEGL.so:libGLESv1_CM.so:libGLESv2.so:libGLESv3.so:libicu.so:libicui18n.so:libicuuc.so:libjnigraphics.so:liblog.so:libmediandk.so:libm.so:libnativehelper.so:libnativewindow.so:libOpenMAXAL.so:libOpenSLES.so:libRS.so:libstdc++.so:libsync.so:libvulkan.so:libwebviewchromium_plat_support.so:libz.so
+10-13 11:47:23.133  6545  6545 D AndroidRuntime: Calling main entry com.android.commands.uiautomator.Launcher
+10-13 11:47:24.169  6545  6545 D AndroidRuntime: Shutting down VM
