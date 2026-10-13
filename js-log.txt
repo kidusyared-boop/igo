@@ -1,0 +1,2 @@
+console.error SyntaxError: Unexpected token ?
+EXCEPTION SyntaxError: Unexpected token ?
