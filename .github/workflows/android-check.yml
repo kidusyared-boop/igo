@@ -1,9 +1,8 @@
 name: Android emulator check
 
-# Builds the debug APK, runs it on virtual Android phones (a recent one and an old
-# one), taps through the main screens and keeps screenshots plus every JavaScript
-# error and the app log. Runs on demand and on pull requests that change the Android
-# project or this check.
+# Builds the debug APK, runs it on a virtual Android phone, taps through the main
+# screens and keeps screenshots plus every JavaScript error and the app log. Runs on
+# demand and on pull requests that change the Android project or this check.
 on:
   workflow_dispatch:
   pull_request:
@@ -23,8 +22,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # 34 is a recent phone; 29 (Android 10) ships an old WebView, like phones that skip updates.
-        api-level: [34, 29]
+        # Android 10 (29) was tried too, but its emulator never finished booting within 45 minutes.
+        api-level: [34]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
