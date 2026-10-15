@@ -39,7 +39,10 @@ After any change in `src/`, run `npm run cap:sync` before building again.
 - Source images are in `assets/`. After changing them, run `npx capacitor-assets generate --android --ios --iconBackgroundColor '#14213d' --splashBackgroundColor '#14213d'`.
 - On Android the back button steps back one screen and closes igo from the trip list (`src/hooks/useBackButton.ts`).
 
+## Calendar export
+
+On the website "Export to calendar" downloads an .ics file. In the apps it saves the file and opens the share sheet, where the traveller picks their calendar app (`src/services/saveFile.ts`). Some calendar apps, Google Calendar among them, don't import from the share sheet; the file can then be sent to email or Drive and opened from there.
+
 ## Not done yet
 
-- Calendar export (.ics) uses a browser download, which may not work inside the apps.
 - Store listings, signing keys and privacy policy.

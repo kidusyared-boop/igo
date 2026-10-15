@@ -6,7 +6,8 @@ import type { TripDispatch } from '../../hooks/useTrips';
 import { findCity, findCountry } from '../../data/countries';
 import { generatePlan } from '../planner/generatePlan';
 import { addDays, todayIso } from '../../utils/dates';
-import { buildIcs, downloadText } from '../../services/ics';
+import { buildIcs } from '../../services/ics';
+import { saveTextFile } from '../../services/saveFile';
 import { ReminderOffer } from '../reminders/ReminderControls';
 import { DayStrip } from '../days/DayStrip';
 import { DayView } from '../days/DayView';
@@ -64,10 +65,10 @@ export function TripView({ trip, dispatch, onBack, onEdit, notify, justCreated =
   const remove = (task: Task) =>
     task.source === 'user' ? dispatch({ type: 'removeTask', tripId: id, taskId: task.id }) : dispatch({ type: 'hide', tripId: id, taskId: task.id });
 
-  function exportIcs() {
+  async function exportIcs() {
     try {
-      downloadText(`${trip.name.replace(/[^\w-]+/g, '-')}.ics`, buildIcs(trip, plan, city!.timeZone), 'text/calendar');
-      notify(t('toast.calendar'));
+      const result = await saveTextFile(`${trip.name.replace(/[^\w-]+/g, '-')}.ics`, buildIcs(trip, plan, city!.timeZone), 'text/calendar');
+      if (result === 'downloaded') notify(t('toast.calendar'));
     } catch {
       notify(t('toast.calendarFailed'));
     }
