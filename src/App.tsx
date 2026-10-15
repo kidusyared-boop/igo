@@ -2,8 +2,7 @@ import { useEffect, useLayoutEffect, useState } from 'react';
 import type { Trip } from './types';
 import { useTrips } from './hooks/useTrips';
 import { useSync } from './hooks/useSync';
-import { AccountPanel } from './features/account/AccountPanel';
-import { TripList } from './features/trips/TripList';
+import { Home } from './features/home/Home';
 import { TripForm } from './features/trips/TripForm';
 import { TripView } from './features/trips/TripView';
 import { blankTrip } from './features/trips/tripDraft';
@@ -13,6 +12,7 @@ import { ReviewView } from './features/review/ReviewView';
 import { isReviewer } from './services/placeChecks';
 import { useBackButton } from './hooks/useBackButton';
 import { useReminders } from './hooks/useReminders';
+import { useStatusBar } from './hooks/useStatusBar';
 import { ErrorBoundary } from './components/ErrorBoundary';
 
 type Screen = { name: 'list' } | { name: 'review' } | { name: 'trip'; id: string } | { name: 'form'; trip: Trip; isNew: boolean };
@@ -74,10 +74,24 @@ export function App() {
   }, [screen]);
 
   const openTrip = screen.name === 'trip' ? trips.find((t) => t.id === screen.id) : undefined;
+  const onHome = screen.name === 'list' || (screen.name === 'trip' && !openTrip);
+  useStatusBar(onHome);
+
+  const home = (
+    <Home
+      trips={trips}
+      sync={sync.state}
+      onSyncNow={() => void sync.syncNow()}
+      onReview={reviewer ? () => setScreen({ name: 'review' }) : undefined}
+      onOpen={(id) => setScreen({ name: 'trip', id })}
+      onNew={() => setScreen({ name: 'form', trip: blankTrip(), isNew: true })}
+      onToggle={(tripId, taskId) => dispatch({ type: 'toggleDone', tripId, taskId })}
+    />
+  );
 
   return (
     <div className="app">
-      {screen.name !== 'trip' && screen.name !== 'form' && (
+      {screen.name === 'review' && (
         <header className="topbar">
           <span className="brand">i<span>go</span></span>
           <span className="eyebrow tagline">{t('app.tagline')}</span>
@@ -95,11 +109,8 @@ export function App() {
           </section>
         )}
       >
-      {screen.name === 'list' && <AccountPanel sync={sync.state} onSyncNow={() => void sync.syncNow()} onReview={reviewer ? () => setScreen({ name: 'review' }) : undefined} />}
       {screen.name === 'review' && <ReviewView onBack={() => setScreen({ name: 'list' })} notify={setToast} />}
-      {screen.name === 'list' && (
-        <TripList trips={trips} onOpen={(id) => setScreen({ name: 'trip', id })} onNew={() => setScreen({ name: 'form', trip: blankTrip(), isNew: true })} />
-      )}
+      {onHome && home}
       {screen.name === 'form' && (
         <TripForm
           initial={screen.trip}
@@ -119,7 +130,6 @@ export function App() {
           notify={setToast}
         />
       )}
-      {screen.name === 'trip' && !openTrip && <TripList trips={trips} onOpen={(id) => setScreen({ name: 'trip', id })} onNew={() => setScreen({ name: 'form', trip: blankTrip(), isNew: true })} />}
       </ErrorBoundary>
       {!saved && <p className="notice">{t('app.notSaving')}</p>}
       {toast && <div className="toast" role="status">{toast}</div>}

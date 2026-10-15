@@ -8,11 +8,13 @@ interface AccountPanelProps {
   onSyncNow: () => void;
   /** Set for people on the reviewers list. */
   onReview?: () => void;
+  /** Set when the panel sits in a sheet: the sign-in form shows straight away and Cancel closes the sheet. */
+  onClose?: () => void;
 }
 
-export function AccountPanel({ sync, onSyncNow, onReview }: AccountPanelProps) {
+export function AccountPanel({ sync, onSyncNow, onReview, onClose }: AccountPanelProps) {
   const t = useT();
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(Boolean(onClose));
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState<string | null>(null);
@@ -35,6 +37,7 @@ export function AccountPanel({ sync, onSyncNow, onReview }: AccountPanelProps) {
       if (kind === 'up' && !data.session) return setMessage('account.confirmEmail');
       setOpen(false);
       setPassword('');
+      onClose?.();
     } catch {
       setMessage('account.unreachable');
     } finally {
@@ -74,7 +77,7 @@ export function AccountPanel({ sync, onSyncNow, onReview }: AccountPanelProps) {
             <div className="row">
               <button type="submit" className="btn primary" disabled={!ready}>{t('account.signIn')}</button>
               <button type="button" className="btn" disabled={!ready} onClick={() => void run('up')}>{t('account.create')}</button>
-              <button type="button" className="btn ghost" onClick={() => setOpen(false)}>{t('common.cancel')}</button>
+              <button type="button" className="btn ghost" onClick={() => (onClose ? onClose() : setOpen(false))}>{t('common.cancel')}</button>
             </div>
           </form>
         )}
@@ -91,7 +94,7 @@ export function AccountPanel({ sync, onSyncNow, onReview }: AccountPanelProps) {
       <div className="panel account-bar">
         <span className="muted">{sync.email} · <span role="status">{status}</span></span>
         <div className="row">
-          {onReview && <button type="button" className="btn small primary" onClick={onReview}>{t('account.checkPlaces')}</button>}
+          {onReview && <button type="button" className="btn small primary" onClick={() => { onClose?.(); onReview(); }}>{t('account.checkPlaces')}</button>}
           <button type="button" className="btn small" onClick={onSyncNow} disabled={sync.status === 'syncing'}>{t('account.syncNow')}</button>
           <button type="button" className="btn small ghost" onClick={() => void supabase?.auth.signOut()}>{t('account.signOut')}</button>
         </div>
