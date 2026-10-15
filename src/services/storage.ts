@@ -4,6 +4,28 @@ import type { Tombstone } from './sync';
 
 const KEY = 'igo.trips.v1';
 
+/** Fills in fields that trips saved by older versions of igo (here or on another device) don't have. */
+export function normalizeTrip(t: Trip): Trip {
+  return {
+    ...t,
+    stops: t.stops ?? [],
+    interests: t.interests ?? [],
+    pace: t.pace ?? 'balanced',
+    budget: t.budget ?? 'mid',
+    diets: t.diets ?? [],
+    mobility: t.mobility ?? 'full',
+    withKids: t.withKids ?? false,
+    diaspora: t.diaspora ?? false,
+    entryDoc: t.entryDoc ?? 'visa',
+    familyTime: t.familyTime ?? false,
+    dismissedPlaces: t.dismissedPlaces ?? [],
+    doneIds: t.doneIds ?? [],
+    hiddenIds: t.hiddenIds ?? [],
+    customTasks: t.customTasks ?? [],
+    spots: t.spots ?? [],
+  };
+}
+
 export function loadTrips(): Trip[] | null {
   try {
     const raw = window.localStorage.getItem(KEY);
@@ -11,22 +33,7 @@ export function loadTrips(): Trip[] | null {
     const parsed: unknown = JSON.parse(raw);
     if (!Array.isArray(parsed)) return null;
     // Older saves may lack newer fields or point at countries that are no longer offered.
-    const trips = (parsed as Trip[])
-      .map((t) => ({
-        ...t,
-        stops: t.stops ?? [],
-        interests: t.interests ?? [],
-        pace: t.pace ?? 'balanced',
-        budget: t.budget ?? 'mid',
-        diets: t.diets ?? [],
-        mobility: t.mobility ?? 'full',
-        withKids: t.withKids ?? false,
-        diaspora: t.diaspora ?? false,
-        entryDoc: t.entryDoc ?? 'visa',
-        familyTime: t.familyTime ?? false,
-        dismissedPlaces: t.dismissedPlaces ?? [],
-      }))
-      .filter((t) => findCity(t.countryCode, t.cityId));
+    const trips = (parsed as Trip[]).map(normalizeTrip).filter((t) => findCity(t.countryCode, t.cityId));
     return trips;
   } catch {
     return null;

@@ -1,4 +1,5 @@
 import type { Trip } from '../types';
+import { normalizeTrip } from './storage';
 
 /** A trip as stored in Supabase. Deleted trips stay as tombstones so other devices learn about them. */
 export interface RemoteTrip {
@@ -45,7 +46,7 @@ export function mergeTrips(
   for (const r of remote) {
     const cur = byId.get(r.id);
     const at = time(r.updated_at);
-    if (!cur || at > cur.at) byId.set(r.id, { trip: r.data, at, deleted: r.deleted });
+    if (!cur || at > cur.at) byId.set(r.id, { trip: r.data && normalizeTrip(r.data), at, deleted: r.deleted });
   }
 
   const trips: Trip[] = [];

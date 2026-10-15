@@ -1,0 +1,65 @@
+name: iPhone simulator check
+
+# Mac runners use 10x the free minutes on a private repo, so this runs on demand
+# and only on changes to the iPhone project or this check itself.
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'ios/**'
+      - '.github/workflows/ios.yml'
+      - 'scripts/ios-*'
+
+permissions:
+  contents: write
+
+jobs:
+  simulator:
+    runs-on: macos-15
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+        env:
+          VITE_SUPABASE_URL: ${{ vars.VITE_SUPABASE_URL || 'https://gufcxowuyrcxmvebtygy.supabase.co' }}
+          VITE_SUPABASE_PUBLISHABLE_KEY: ${{ vars.VITE_SUPABASE_PUBLISHABLE_KEY || 'sb_publishable_EnWF2aN2gOT3ZtmgrvTOLw_A2_FcbUn' }}
+      - name: Add the screen tour to this build only
+        run: |
+          cp scripts/ios-tour.js dist/
+          sed -i '' 's#</body>#<script src="/ios-tour.js"></script></body>#' dist/index.html
+          grep -q ios-tour.js dist/index.html
+      - run: npx cap sync ios
+      - name: Build for the simulator
+        run: >
+          xcodebuild -workspace ios/App/App.xcworkspace -scheme App -configuration Debug
+          -sdk iphonesimulator -destination 'generic/platform=iOS Simulator'
+          -derivedDataPath build CODE_SIGNING_ALLOWED=NO -quiet
+      - name: Start an iPhone simulator, install igo and take screenshots
+        run: |
+          UDID=$(xcrun simctl list devices available -j | python3 -c "
+          import json,sys
+          ds=[d for k,v in json.load(sys.stdin)['devices'].items() if 'iOS' in k for d in v if d['name'].startswith('iPhone') and not any(x in d['name'] for x in ('Pro Max', 'Plus', 'SE', 'Air')) and not d['name'].endswith('e')]
+          print(ds[-1]['udid'])")
+          xcrun simctl boot "$UDID"
+          xcrun simctl bootstatus "$UDID" -b
+          xcrun simctl install "$UDID" build/Build/Products/Debug-iphonesimulator/App.app
+          xcrun simctl list devices booted
+          scripts/ios-shots.sh "$UDID" shots
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: igo-iphone-screenshots
+          path: shots
+          if-no-files-found: error
+      - name: Publish screenshots to the ci/ios-screenshots branch
+        if: always()
+        run: |
+          mkdir -p shots && cd shots
+          git init -q && git checkout -q -b ci/ios-screenshots
+          git add . && git -c user.name=igo-ci -c user.email=ci@igo.invalid commit -qm "iPhone screenshots for ${{ github.sha }}"
+          git push -qf "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}" ci/ios-screenshots

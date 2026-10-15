@@ -14,6 +14,11 @@ describe('mergeTrips', () => {
     expect(out.trips.map((t) => t.id).sort()).toEqual(['a', 'b']);
     expect(out.push.map((r) => r.id)).toEqual(['a']);
   });
+  it('fills in fields that a trip saved by an older version is missing', () => {
+    const { stops: _s, spots: _p, dismissedPlaces: _d, ...old } = trip('b', '2026-10-01T11:00:00Z');
+    const pulled = mergeTrips([], [], [row(old as Trip)]).trips[0]!;
+    expect(pulled).toMatchObject({ stops: [], spots: [], dismissedPlaces: [] });
+  });
   it('keeps the newest edit of the same trip', () => {
     const old = trip('a', '2026-10-01T10:00:00Z', 'Old');
     const newer = trip('a', '2026-10-02T10:00:00Z', 'New');

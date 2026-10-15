@@ -8,6 +8,7 @@ import { generatePlan } from '../planner/generatePlan';
 import { addDays, todayIso } from '../../utils/dates';
 import { buildIcs } from '../../services/ics';
 import { saveTextFile } from '../../services/saveFile';
+import { ReminderOffer } from '../reminders/ReminderControls';
 import { DayStrip } from '../days/DayStrip';
 import { DayView } from '../days/DayView';
 import { PreTripView } from '../days/PreTripView';
@@ -89,6 +90,7 @@ export function TripView({ trip, dispatch, onBack, onEdit, notify, justCreated =
           onExport={exportIcs}
           onRestore={() => dispatch({ type: 'restoreHidden', tripId: id })}
           onDelete={() => { dispatch({ type: 'remove', tripId: id }); onBack(); }}
+          notify={notify}
         />
       )}
       {tab === 'days' && day && (
@@ -102,6 +104,7 @@ export function TripView({ trip, dispatch, onBack, onEdit, notify, justCreated =
             </div>
             <button type="button" className="btn small ghost" onClick={onEdit}>{t('common.change')}</button>
           </div>
+          <ReminderOffer notify={notify} />
           <DayStrip days={plan.days} selected={day.date} doneIds={doneIds} onSelect={setSelected} />
           <DayView
             day={day}

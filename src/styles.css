@@ -194,6 +194,9 @@ h1, h2, h3 { text-wrap: balance; margin: 0; }
 .empty-hero p { margin: 0; max-width: 30ch; }
 .panel.account-bar { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; padding: 10px 10px 10px 14px; }
 .account-bar > span { font-size: 13px; min-width: 0; flex: 1 1 140px; }
+.reminder-offer { margin-block: 12px; }
+.reminder-offer p { margin: 0; font-size: 14px; }
+.reminder-offer .row { justify-content: flex-end; }
 .example-tag { font: 600 10px/1 var(--font-mono); letter-spacing: 0.1em; text-transform: uppercase; background: var(--surface-2); border: 1px dashed var(--muted); color: var(--muted); padding: 3px 6px; border-radius: 4px; }
 
 /* Forms */
@@ -219,6 +222,9 @@ h1, h2, h3 { text-wrap: balance; margin: 0; }
   min-width: 0; padding: 10px 12px; font-size: 16px;
 }
 .textarea { resize: vertical; min-height: 64px; }
+/* iPhone Safari gives date and time boxes a fixed width that overflows narrow columns, and centers the value. */
+.input[type='date'], .input[type='time'], .input[type='datetime-local'] { -webkit-appearance: none; appearance: none; display: block; }
+.input::-webkit-date-and-time-value { text-align: left; }
 .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(130px, 100%), 1fr)); gap: 12px; }
 .segmented { display: inline-flex; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; background: var(--surface); flex-wrap: wrap; padding: 3px; gap: 3px; }
 .segmented button { border: 0; background: transparent; min-height: 42px; padding: 0 14px; cursor: pointer; font-size: 14px; border-radius: 9px; }
@@ -380,3 +386,9 @@ h1, h2, h3 { text-wrap: balance; margin: 0; }
 .profile-line .tag { flex-shrink: 0; border: 1px solid var(--line); border-radius: 999px; padding: 4px 10px; background: var(--surface); color: var(--ink); }
 .profile-line .btn { flex-shrink: 0; }
 .why { font-size: 12px; color: var(--accent-ink); font-weight: 500; }
+
+/* Shown when a screen crashes, instead of a blank page. */
+.crash { margin: 16px; gap: 0; }
+.crash h2 { margin: 0 0 8px; font-size: 18px; }
+.crash p { margin: 0 0 12px; }
+.crash-detail { margin: 0 0 16px; padding: 8px; overflow-x: auto; white-space: pre-wrap; word-break: break-word; font-size: 12px; background: var(--surface-2); border: 1px solid var(--line); border-radius: 8px; }
