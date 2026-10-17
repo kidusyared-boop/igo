@@ -43,6 +43,8 @@ After any change in `src/`, run `npm run cap:sync` before building again.
 
 On the website "Export to calendar" downloads an .ics file. In the apps it saves the file and opens the share sheet, where the traveller picks their calendar app (`src/services/saveFile.ts`). Some calendar apps, Google Calendar among them, don't import from the share sheet; the file can then be sent to email or Drive and opened from there.
 
+The apps also have "Add to my calendar" (`src/services/phoneCalendar.ts`, plugin `@ebarooni/capacitor-calendar`). It asks for calendar permission once, then writes every task straight into the phone's default calendar. igo remembers the event ids per trip on the device, so adding the trip again replaces the old events, and deleting the trip removes them.
+
 ## Not done yet
 
 - Store listings, signing keys and privacy policy.

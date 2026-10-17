@@ -8,6 +8,7 @@ import { generatePlan } from '../planner/generatePlan';
 import { addDays, todayIso } from '../../utils/dates';
 import { buildIcs } from '../../services/ics';
 import { saveTextFile } from '../../services/saveFile';
+import { addTripToPhoneCalendar, removeTripFromPhoneCalendar } from '../../services/phoneCalendar';
 import { ReminderOffer } from '../reminders/ReminderControls';
 import { DayStrip } from '../days/DayStrip';
 import { DayView } from '../days/DayView';
@@ -74,6 +75,16 @@ export function TripView({ trip, dispatch, onBack, onEdit, notify, justCreated =
     }
   }
 
+  async function addToCalendar() {
+    try {
+      const result = await addTripToPhoneCalendar(trip, plan, city!.timeZone);
+      if (result.status === 'denied') notify(t('toast.phoneCalendarDenied'));
+      else notify(t(result.status === 'added' ? 'toast.phoneCalendarAdded' : 'toast.phoneCalendarUpdated', { n: result.count }));
+    } catch {
+      notify(t('toast.phoneCalendarFailed'));
+    }
+  }
+
   return (
     <>
       <header className="topbar">
@@ -88,8 +99,9 @@ export function TripView({ trip, dispatch, onBack, onEdit, notify, justCreated =
           onClose={closeMenu}
           onEdit={onEdit}
           onExport={exportIcs}
+          onAddToCalendar={addToCalendar}
           onRestore={() => dispatch({ type: 'restoreHidden', tripId: id })}
-          onDelete={() => { dispatch({ type: 'remove', tripId: id }); onBack(); }}
+          onDelete={() => { void removeTripFromPhoneCalendar(id); dispatch({ type: 'remove', tripId: id }); onBack(); }}
           notify={notify}
         />
       )}

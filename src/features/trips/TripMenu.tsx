@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { LanguageSwitch } from '../../components/ui/LanguageSwitch';
 import { useT } from '../../i18n';
 import { ReminderMenuItem } from '../reminders/ReminderControls';
+import { phoneCalendarAvailable } from '../../services/phoneCalendar';
 
 interface TripMenuProps {
   title: string;
@@ -9,13 +10,14 @@ interface TripMenuProps {
   onClose: () => void;
   onEdit: () => void;
   onExport: () => void;
+  onAddToCalendar: () => void;
   onRestore: () => void;
   onDelete: () => void;
   notify: (message: string) => void;
 }
 
 /** Trip actions in a bottom sheet. Tapping outside it or pressing Escape closes it. */
-export function TripMenu({ title, hiddenCount, onClose, onEdit, onExport, onRestore, onDelete, notify }: TripMenuProps) {
+export function TripMenu({ title, hiddenCount, onClose, onEdit, onExport, onAddToCalendar, onRestore, onDelete, notify }: TripMenuProps) {
   const t = useT();
   const [confirming, setConfirming] = useState(false);
 
@@ -38,7 +40,8 @@ export function TripMenu({ title, hiddenCount, onClose, onEdit, onExport, onRest
         {!confirming && (
           <div className="menu-list">
             <button type="button" className="menu-item" onClick={onEdit}>{t('form.edit')}</button>
-            <button type="button" className="menu-item" onClick={then(onExport)}>{t('menu.export')}</button>
+            {phoneCalendarAvailable() && <button type="button" className="menu-item" onClick={then(onAddToCalendar)}>{t('menu.addToCalendar')}</button>}
+            <button type="button" className="menu-item" onClick={then(onExport)}>{t(phoneCalendarAvailable() ? 'menu.shareFile' : 'menu.export')}</button>
             <ReminderMenuItem notify={notify} after={onClose} />
             {hiddenCount > 0 && <button type="button" className="menu-item" onClick={then(onRestore)}>{t('menu.showHidden', { n: hiddenCount })}</button>}
             <button type="button" className="menu-item danger" onClick={() => setConfirming(true)}>{t('menu.delete')}</button>
