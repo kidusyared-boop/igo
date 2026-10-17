@@ -392,3 +392,49 @@ h1, h2, h3 { text-wrap: balance; margin: 0; }
 .crash h2 { margin: 0 0 8px; font-size: 18px; }
 .crash p { margin: 0 0 12px; }
 .crash-detail { margin: 0 0 16px; padding: 8px; overflow-x: auto; white-space: pre-wrap; word-break: break-word; font-size: 12px; background: var(--surface-2); border: 1px solid var(--line); border-radius: 8px; }
+
+/* Opening screen */
+.home-hero {
+  position: relative; margin-inline: calc(var(--gutter) * -1);
+  display: flex; flex-direction: column; justify-content: space-between; gap: 24px; min-height: 520px;
+  padding: calc(14px + env(safe-area-inset-top, 0px)) var(--gutter) 24px;
+  background: var(--board) center bottom / cover no-repeat; color: var(--on-board);
+}
+.home-hero.with-trip { min-height: 380px; }
+/* Darkens the bottom of the picture so the white text on it stays readable. */
+.home-hero::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgb(20 33 61 / 0.1) 0%, rgb(20 33 61 / 0) 35%, rgb(20 33 61 / 0.85) 100%); pointer-events: none; }
+.home-hero > * { position: relative; }
+.home-top { display: flex; align-items: center; justify-content: space-between; min-height: 48px; }
+.home-top .brand span { color: var(--accent); }
+.home-account {
+  width: 44px; height: 44px; border-radius: 22px; display: grid; place-items: center; cursor: pointer;
+  border: 1px solid rgb(244 246 250 / 0.4); background: rgb(20 33 61 / 0.45); color: var(--on-board);
+}
+.home-account svg { width: 22px; height: 22px; }
+.home-hero-body { display: flex; flex-direction: column; gap: 12px; }
+.home-hero .eyebrow { color: var(--accent); }
+.home-hero h1 { font: 800 50px/0.95 var(--font-display); text-transform: uppercase; letter-spacing: 0.01em; }
+.home-points { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; font-size: 15px; }
+.home-points li { display: flex; gap: 10px; align-items: center; }
+.home-points svg { width: 18px; height: 18px; color: var(--accent); flex-shrink: 0; }
+.home-start { min-height: 54px; font-size: 17px; border-radius: 14px; margin-top: 4px; }
+.home-start span { font-size: 22px; line-height: 1; }
+.home-countdown { all: unset; position: relative; display: flex; flex-direction: column; gap: 4px; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.home-countdown:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; border-radius: 8px; }
+.home-trip-name { font: 700 28px/1.05 var(--font-display); text-transform: uppercase; letter-spacing: 0.02em; overflow-wrap: anywhere; }
+.home-count { display: flex; align-items: flex-end; gap: 10px; margin-top: 4px; }
+.home-count b { font: 800 96px/0.85 var(--font-display); color: var(--accent); }
+.home-count span { font: 700 26px/1 var(--font-display); text-transform: uppercase; max-width: 5ch; }
+.home-meta { font-size: 14px; color: #dde4ef; margin-top: 6px; }
+.home-progress { display: grid; gap: 8px; padding-top: 16px; font-size: 13px; }
+.home-progress .bar { height: 8px; border-radius: 4px; background: var(--line); overflow: hidden; }
+.home-progress .bar span { display: block; height: 100%; background: var(--accent); }
+.section h2.home-h { font-size: 20px; letter-spacing: 0.06em; color: var(--muted); }
+.home-todos { padding: 4px 14px; gap: 0; }
+.home-todos .check + .check { border-top: 1px solid var(--line); }
+.home-none { margin: 0; font-size: 14px; }
+.home-plan { align-self: flex-start; }
+.home-foot { margin: 28px 0 0; text-align: center; font-size: 13px; color: var(--muted); }
+.link-btn { border: 0; background: none; padding: 12px 4px; font-weight: 600; color: var(--accent-ink); text-decoration: underline; cursor: pointer; }
+.home-sheet-note { margin: 0 4px 8px; font-size: 14px; }
+.sheet .account.section { padding-top: 0; }
