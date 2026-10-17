@@ -38,11 +38,12 @@ export function dayCapacity(day: Pick<DayPlan, 'kind' | 'movedFrom'>, pace: Pace
 
 /**
  * Whether a place suits the traveler's budget, body, children and diet.
- * Missing data counts as suitable, except halal, which a meal must state.
+ * Missing data counts as suitable, except halal, which a meal must state, and nightlife
+ * that is not a meal, which children skip unless the place says they are welcome.
  */
 export function placeFits(place: SuggestedSpot, prefs: Omit<Preferences, 'interests'>): boolean {
   if (prefs.mobility === 'limited' && place.effort === 'hard') return false;
-  if (prefs.withKids && place.kids === false) return false;
+  if (prefs.withKids && (place.kids === false || (place.kids !== true && isNightOut(place)))) return false;
   if (prefs.budget === 'low' && place.cost === 3) return false;
   if (place.light === 'lunch' || place.light === 'dinner') {
     for (const diet of prefs.diets) {
@@ -51,6 +52,11 @@ export function placeFits(place: SuggestedSpot, prefs: Omit<Preferences, 'intere
     }
   }
   return true;
+}
+
+/** Bars, clubs and late music: nightlife that is not a dinner. */
+function isNightOut(place: SuggestedSpot): boolean {
+  return Boolean(place.tags?.includes('nightlife')) && place.light !== 'lunch' && place.light !== 'dinner';
 }
 
 export function placeKey(cityId: string, name: string): string {

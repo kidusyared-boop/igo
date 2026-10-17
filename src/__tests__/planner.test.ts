@@ -3,6 +3,7 @@ import { sunTimes } from '../utils/solar';
 import { zonedToUtc } from '../utils/timezone';
 import { generatePlan } from '../features/planner/generatePlan';
 import { postingTime } from '../features/planner/dayTasks';
+import { placeFits } from '../features/planner/personalize';
 import { sampleTrip } from '../data/sampleTrip';
 import type { Trip } from '../types';
 import { findCity } from '../data/countries';
@@ -175,6 +176,16 @@ describe('traveler preferences', () => {
     for (const s of picked(solo({ interests, withKids: true }))) {
       expect(catalogue('lalibela').find((p) => p.name === s.name)?.kids).not.toBe(false);
     }
+  });
+  it('keeps bars and late nights off trips with children, but not dinner shows', () => {
+    const prefs = { budget: 'mid' as const, diets: [], mobility: 'full' as const };
+    const fits = (name: string, withKids = true) => placeFits(catalogue('addis').find((p) => p.name === name)!, { ...prefs, withKids });
+    expect(fits('Sunset drinks on a Bole rooftop')).toBe(false);
+    expect(fits('Sunset drinks on a Bole rooftop', false)).toBe(true);
+    expect(fits('Dinner and dancing at Yod Abyssinia')).toBe(true);
+    const nightOut = catalogue('addis').filter((p) => p.tags?.includes('nightlife') && p.light !== 'dinner').map((p) => p.name);
+    const names = picked(solo({ cityId: 'addis', interests: ['nightlife', 'city', 'food', 'culture'], withKids: true, endDate: '2026-11-04' })).map((s) => s.name);
+    expect(names.some((n) => nightOut.includes(n))).toBe(false);
   });
   it('drops expensive places on a tight budget', () => {
     const interests: Trip['interests'] = ['city', 'food', 'history', 'culture', 'nightlife', 'countryside', 'hiking', 'adventure'];
