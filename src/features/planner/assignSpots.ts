@@ -24,6 +24,9 @@ const CAPACITY: Record<Light, number> = { sunrise: 1, any: 2, lunch: 1, sunset: 
 /** Start times for daytime places: one in the morning, one in the afternoon. */
 export const ANY_SLOTS = ['09:30', '14:30'];
 
+/** After checking in on a moving day there is still time for one easy place nearby. */
+export const MOVE_SLOT = '15:30';
+
 /** Flights before 06:00 mean leaving for the airport the night before. */
 export const EARLY_FLIGHT = toMinutes('06:00');
 
@@ -63,7 +66,7 @@ export function isFamilyDay(day: DaySkeleton, trip: Trip): boolean {
 export function anySlots(day: DaySkeleton, trip: Trip): string[] {
   const [free, leave] = freeWindow(day, trip);
   const family = isFamilyDay(day, trip);
-  return ANY_SLOTS.filter((t) => {
+  return (day.movedFrom ? [MOVE_SLOT] : ANY_SLOTS).filter((t) => {
     const start = toMinutes(t);
     const end = start + 120;
     return start >= free && end <= leave && !(family && end > FAMILY_FROM && start < FAMILY_TO) && !clashesWithEvent(day, start, end);
@@ -121,6 +124,8 @@ export function assignSpots(
       return d.kind === 'full' && !d.movedFrom && !d.events?.length && anySlots(d, trip).length === ANY_SLOTS.length && used(d.date, 'any') === 0 && used(d.date, 'sunset') === 0;
     }
     if (awayAllDay(d.date) && (spot.light === 'any' || spot.light === 'sunset')) return false;
+    // Arriving from another city leaves energy for something easy, not a climb.
+    if (d.movedFrom && spot.effort && spot.effort !== 'easy') return false;
     return used(d.date, spot.light) < (spot.light === 'any' ? anySlots(d, trip).length : CAPACITY[spot.light]);
   };
   const underPace = (spot: Spot, d: DaySkeleton) => {

@@ -187,6 +187,21 @@ describe('traveler preferences', () => {
     const names = picked(solo({ cityId: 'addis', interests: ['nightlife', 'city', 'food', 'culture'], withKids: true, endDate: '2026-11-04' })).map((s) => s.name);
     expect(names.some((n) => nightOut.includes(n))).toBe(false);
   });
+  it('gives a moving day one easy outing after check-in', () => {
+    const route = (o: Partial<Trip>) => solo({ cityId: 'addis', startDate: '2026-11-10', endDate: '2026-11-19', stops: [{ id: 'a', cityId: 'gondar', date: '2026-11-12' }, { id: 'b', cityId: 'lalibela', date: '2026-11-15' }], ...o });
+    const moves = (t: Trip) => generatePlan(t).days.filter((d) => d.movedFrom);
+    const history = moves(route({ interests: ['history', 'religion', 'culture'] }));
+    expect(history.some((d) => d.tasks.some((x) => x.id.includes(':spot-') && x.time === '15:30'))).toBe(true);
+    for (const day of history) {
+      for (const task of day.tasks.filter((x) => x.id.includes(':spot-'))) {
+        expect(catalogue(day.cityId).find((p) => task.title.includes(p.name))?.effort ?? 'easy', task.title).toBe('easy');
+      }
+    }
+    // Nothing easy left that matches: an easy walk instead of an empty afternoon.
+    for (const day of moves(route({ interests: ['hiking'] }))) {
+      expect(day.tasks.some((x) => x.id.endsWith(':settle-walk') && x.time === '15:30'), day.date).toBe(true);
+    }
+  });
   it('drops expensive places on a tight budget', () => {
     const interests: Trip['interests'] = ['city', 'food', 'history', 'culture', 'nightlife', 'countryside', 'hiking', 'adventure'];
     const pricey = new Set(catalogue('addis').filter((p) => p.cost === 3).map((p) => p.name));

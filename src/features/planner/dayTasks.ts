@@ -172,13 +172,19 @@ function eveDrafts(ctx: DayContext): Draft[] {
   return drafts;
 }
 
+/** After the afternoon's shoot: in the evening after a day out, later on a moving day. */
+function editTime(ctx: DayContext, hasAnySpot: boolean): string {
+  if (ctx.spots.some((s) => s.allDay) || (ctx.day.movedFrom && hasAnySpot)) return '20:00';
+  return ctx.day.movedFrom ? '16:30' : '16:00';
+}
+
 function creatorRoutine(ctx: DayContext, hasAnySpot: boolean): Draft[] {
   const { trip, city, day } = ctx;
   const post = postingTime(day.date, trip.audienceTimeZone, city.timeZone);
   const late = toMinutes(post.time) < toMinutes('07:00');
   const drafts: Draft[] = [
     { key: 'backup', time: '21:30', title: 'Back up footage: one drive plus cloud', detail: 'Keep cards untouched until the copy is verified.', category: 'edit' },
-    { key: 'edit', time: ctx.spots.some((s) => s.allDay) ? '20:00' : '16:00', title: 'Edit: pick selects and cut today\'s short', category: 'edit' },
+    { key: 'edit', time: editTime(ctx, hasAnySpot), title: 'Edit: pick selects and cut today\'s short', category: 'edit' },
     late
       ? {
           key: 'post',
@@ -210,7 +216,7 @@ function creatorRoutine(ctx: DayContext, hasAnySpot: boolean): Draft[] {
 }
 
 /** Tasks that only fill spare time, dropped when a festival event takes that time. */
-const FILLERS = new Set(['broll', 'midday', 'explore', 'scout', 'kids-break', 'family']);
+const FILLERS = new Set(['broll', 'midday', 'explore', 'scout', 'kids-break', 'family', 'settle-walk']);
 
 function festivalDrafts(ctx: DayContext): Draft[] {
   const category = ctx.trip.mode === 'creator' ? 'shoot' : 'explore';
@@ -236,6 +242,16 @@ export function buildDayTasks(ctx: DayContext): Task[] {
       if (!hasAnySpot && !day.movedFrom) drafts.push({ key: 'explore', time: '10:00', title: 'Explore a new neighborhood on foot', category: 'explore' });
       drafts.push({ key: 'plan-tomorrow', time: '21:00', title: 'Plan tomorrow: check opening hours and book timed tickets', category: 'rest' });
     }
+  }
+
+  // A moving day with no place left to see still gets one easy outing after check-in.
+  const [moveSlot] = day.kind === 'full' && day.movedFrom && !hasAnySpot ? anySlots(day, trip) : [];
+  if (moveSlot) {
+    drafts.push(
+      creator
+        ? { key: 'settle-walk', time: moveSlot, title: `Film establishing shots of ${ctx.city.name} near your stay`, detail: 'Street signs, skyline, daily life: the shots that tell viewers where you are now.', category: 'shoot' }
+        : { key: 'settle-walk', time: moveSlot, title: `Walk around ${ctx.city.name} near your stay`, detail: 'An easy first look after the journey: find a cafe, a cash machine and your bearings.', category: 'explore' },
+    );
   }
 
   if (trip.diaspora && trip.familyTime && day.kind === 'full' && !day.movedFrom) {
