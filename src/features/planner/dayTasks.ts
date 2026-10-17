@@ -88,6 +88,13 @@ function arrivalDrafts(ctx: DayContext): Draft[] {
   const checkInAt = toMinutes(a) + 120;
   const checkIn = fromMinutes(checkInAt);
   const late = checkInAt >= toMinutes('21:30');
+  // Landing late at night: the steps after landing would all pile up at 23:59, so they become one.
+  if (toMinutes(a) >= toMinutes('22:00')) {
+    return [
+      { key: 'land', time: a, title: 'Land and clear immigration', detail: needsVisa(trip) ? country.entry.summary : 'Use the Ethiopian citizens and Origin ID line with your document ready.', category: 'logistics' },
+      { key: 'ride', time: fromMinutes(Math.min(toMinutes(a) + 30, 24 * 60 - 1)), title: 'Get to your stay and sleep', detail: `Turn on your eSIM at the airport if you need a ride app; cash can wait until morning. ${country.rideApps}`, category: 'logistics' },
+    ];
+  }
   return [
     { key: 'land', time: a, title: 'Land and clear immigration', detail: needsVisa(trip) ? country.entry.summary : 'Use the Ethiopian citizens and Origin ID line with your document ready.', category: 'logistics' },
     ...(trip.diaspora ? [{ key: 'tell-family', time: shiftTime(a, 50), title: 'Tell family you have landed and when you will reach them', category: 'logistics' as const }] : []),
@@ -264,8 +271,17 @@ export function buildDayTasks(ctx: DayContext): Task[] {
 
   if (isEveOfEarlyFlight(day, trip)) {
     // Nothing after the wrap-up: the night is short.
-    drafts = drafts.filter((t) => !t.time || toMinutes(t.time) < toMinutes('21:00'));
-    drafts.push(...eveDrafts(ctx));
+    drafts = drafts.filter((t) => !t.time || toMinutes(t.time) < toMinutes('21:00') || t.key === 'land' || t.key === 'ride');
+    const landed = day.kind === 'arrival' ? toMinutes(trip.arrivalTime) : 0;
+    // Landing the evening before a small-hours flight: wrap up once you are at your stay.
+    drafts.push(...eveDrafts(ctx).map((t, i) => (t.time && toMinutes(t.time) <= landed ? { ...t, time: fromMinutes(Math.min(landed + 90 + i * 10, 24 * 60 - 1)) } : t)));
+  }
+
+  if (day.kind === 'arrival' || day.kind === 'single') {
+    // Nothing the traveler cannot do yet: before landing, or (in a one-day stopover) after leaving for the airport.
+    const landed = toMinutes(trip.arrivalTime);
+    const leave = day.kind === 'single' ? toMinutes(trip.departureTime) - 180 : 24 * 60;
+    drafts = drafts.filter((t) => !t.time || t.key === 'flight' || t.key === 'airport' || (toMinutes(t.time) >= landed && toMinutes(t.time) <= leave));
   }
 
   return drafts.map(({ key, ...rest }) => ({ ...rest, id: `auto:${day.date}:${key}`, date: day.date, source: 'auto' as const }));

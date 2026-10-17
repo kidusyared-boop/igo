@@ -1,11 +1,13 @@
 import type { Trip } from '../../types';
 import { COUNTRIES } from '../../data/countries';
-import { addDays, daysBetween, todayIso } from '../../utils/dates';
+import { addDays, daysBetween, todayIso, toMinutes } from '../../utils/dates';
 import { deviceTimeZone } from '../../utils/timezone';
 import { newId } from '../../utils/id';
 import type { TKey } from '../../i18n';
 
 export const MAX_TRIP_DAYS = 60;
+/** Shortest one-day stop between landing and flying out. */
+export const MIN_STOP_MINUTES = 4 * 60;
 
 export function blankTrip(): Trip {
   const country = COUNTRIES[0]!;
@@ -48,6 +50,8 @@ export function validateTrip(trip: Trip): TKey | null {
   if (days < 0) return 'error.order';
   if (days + 1 > MAX_TRIP_DAYS) return 'error.tooLong';
   if (!trip.arrivalTime || !trip.departureTime) return 'error.times';
+  // Getting back to the airport takes 3 hours, so a shorter stop leaves no time in town.
+  if (days === 0 && toMinutes(trip.departureTime) - toMinutes(trip.arrivalTime) < MIN_STOP_MINUTES) return 'error.sameDay';
   if (trip.stops.some((s) => s.date <= trip.startDate || s.date > trip.endDate)) {
     return 'error.stops';
   }

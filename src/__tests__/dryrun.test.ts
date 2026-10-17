@@ -5,6 +5,7 @@ import { findCity, findCountry } from '../data/countries';
 import { sampleTrip } from '../data/sampleTrip';
 import type { Trip } from '../types';
 import { toMinutes } from '../utils/dates';
+import { validateTrip } from '../features/trips/tripDraft';
 
 // Problems found by planning real routes end to end, October 2026.
 const trip = (over: Partial<Trip>): Trip => ({ ...sampleTrip(), spots: [], customTasks: [], stops: [], ...over });
@@ -58,5 +59,31 @@ describe('plans from real routes', () => {
     expect(travelDetail(city('addis'), city('harar'), et)).toBe(city('harar').access);
     expect(travelDetail(city('harar'), city('arba-minch'), et)).toMatch(/through Addis Ababa/);
     expect(travelDetail(city('harar'), city('addis'), et)).toMatch(/^The way you came/);
+  });
+
+  it('plans a one-day stopover between landing and leaving for the airport', () => {
+    const plan = generatePlan(trip({ startDate: '2027-03-10', endDate: '2027-03-10', arrivalTime: '17:15', departureTime: '23:40' }));
+    const times = plan.days[0]!.tasks.map((t) => t.time!);
+    expect(times[0]).toBe('17:15');
+    expect(titles(plan, '2027-03-10')).not.toContain('Check out and leave bags with reception');
+    expect(titles(plan, '2027-03-10').at(-1)).toBe('Flight departs');
+  });
+
+  it('turns a late-night landing into one step instead of a pile at 23:59', () => {
+    const plan = generatePlan(trip({ startDate: '2027-03-10', endDate: '2027-03-13', arrivalTime: '23:40' }));
+    expect(titles(plan, '2027-03-10')).toEqual(['Land and clear immigration', 'Get to your stay and sleep']);
+  });
+
+  it('wraps up after landing when the flight home leaves that same night', () => {
+    const plan = generatePlan(trip({ startDate: '2027-03-10', endDate: '2027-03-11', arrivalTime: '20:00', departureTime: '03:10' }));
+    const day = plan.days[0]!.tasks;
+    expect(day.every((t) => toMinutes(t.time!) >= toMinutes('20:00'))).toBe(true);
+    expect(day.some((t) => t.title.startsWith('Pack, settle your bill'))).toBe(true);
+  });
+
+  it('refuses a one-day trip with too little time between flights', () => {
+    expect(validateTrip(trip({ startDate: '2027-03-10', endDate: '2027-03-10', arrivalTime: '17:15', departureTime: '13:30' }))).toBe('error.sameDay');
+    expect(validateTrip(trip({ startDate: '2027-03-10', endDate: '2027-03-10', arrivalTime: '08:00', departureTime: '11:00' }))).toBe('error.sameDay');
+    expect(validateTrip(trip({ startDate: '2027-03-10', endDate: '2027-03-10', arrivalTime: '08:00', departureTime: '20:00' }))).toBeNull();
   });
 });
