@@ -61,6 +61,7 @@ export const en = {
   'error.order': 'The last day is before the first day. Swap the dates.',
   'error.tooLong': 'Trips can be up to {max} days. Split longer stays into one trip per city.',
   'error.times': 'Add your landing and departure times.',
+  'error.sameDay': 'On a one-day trip, leave at least 4 hours between landing and your flight out.',
   'error.stops': 'Each move to another city must fall after the first day and on or before the last day.',
 
   'route.label': 'Then move to',
