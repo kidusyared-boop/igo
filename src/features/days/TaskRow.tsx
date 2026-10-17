@@ -1,5 +1,6 @@
 import type { Task } from '../../types';
 import { useT } from '../../i18n';
+import { LinkText } from '../../components/ui/LinkText';
 
 interface TaskRowProps {
   task: Task;
@@ -27,7 +28,7 @@ export function TaskRow({ task, done, localClock, onToggle, onRemove, timeless =
       <label htmlFor={checkId} className="body">
         <span className={`cat cat-${task.category}`}>{t(`category.${task.category}`)}</span>
         <span className="title">{task.title}</span>
-        {task.detail && <span className="detail">{task.detail}</span>}
+        {task.detail && <span className="detail"><LinkText text={task.detail} /></span>}
       </label>
       <button
         type="button"

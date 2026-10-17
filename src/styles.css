@@ -438,3 +438,7 @@ h1, h2, h3 { text-wrap: balance; margin: 0; }
 .link-btn { border: 0; background: none; padding: 12px 4px; font-weight: 600; color: var(--accent-ink); text-decoration: underline; cursor: pointer; }
 .home-sheet-note { margin: 0 4px 8px; font-size: 14px; }
 .sheet .account.section { padding-top: 0; }
+
+/* Web addresses and emergency numbers inside plan text */
+/* The padding widens the tap area around short numbers without moving the text. */
+.task .detail a, .facts a, .note a { padding: 10px 4px; margin: -10px -4px; color: var(--accent-ink); font-weight: 600; text-decoration: underline; text-underline-offset: 2px; overflow-wrap: anywhere; }

@@ -1,6 +1,7 @@
 import type { CountryPack, Trip } from '../../types';
 import { routeCities } from '../planner/route';
 import { useT, type TKey } from '../../i18n';
+import { LinkText } from '../../components/ui/LinkText';
 
 interface CountryBriefProps {
   country: CountryPack;
@@ -33,7 +34,7 @@ export function CountryBrief({ country, trip }: CountryBriefProps) {
       </p>
       <dl className="facts panel">
         {facts.map(([k, v]) => (
-          <div key={k}><dt>{t(k)}</dt><dd>{v}</dd></div>
+          <div key={k}><dt>{t(k)}</dt><dd><LinkText text={v} /></dd></div>
         ))}
       </dl>
       <h2>{t('country.destinations')}</h2>

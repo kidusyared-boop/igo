@@ -1,6 +1,7 @@
 import type { DayPlan } from '../../types';
 import { formatDay, shiftTime } from '../../utils/dates';
 import { useT } from '../../i18n';
+import { LinkText } from '../../components/ui/LinkText';
 
 interface DayTicketProps {
   day: DayPlan;
@@ -35,7 +36,7 @@ export function DayTicket({ day, index, cityName, done, localDate }: DayTicketPr
           {day.notes.map((n) => (
             <div key={n.text} className={`note note-${n.kind}`}>
               <b>{t(`note.${n.kind}`)}</b>
-              <span>{n.text}</span>
+              <span><LinkText text={n.text} /></span>
             </div>
           ))}
         </div>
