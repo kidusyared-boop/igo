@@ -62,6 +62,10 @@ describe('stress test: 300 made-up trips', () => {
             expect(at, `${where} ${day.date}: "${task.title}" after the flight`).toBeLessThan(toMinutes(trip.departureTime));
           }
         }
+        if (day.kind === 'full' && day.movedFrom) {
+          const outing = day.tasks.filter((x) => x.id.includes(':spot-') || x.id.endsWith(':settle-walk'));
+          expect(outing.length, `${where} ${day.date}: moving day with nothing to do after check-in`).toBeGreaterThan(0);
+        }
       }
       for (const task of plan.preTrip) expect(task.date < trip.startDate, `${where}: ${task.title}`).toBe(true);
       expect(() => buildIcs(trip, plan, 'Africa/Addis_Ababa')).not.toThrow();
