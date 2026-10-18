@@ -62,6 +62,8 @@ describe('stress test: 300 made-up trips', () => {
             expect(at, `${where} ${day.date}: "${task.title}" after the flight`).toBeLessThan(toMinutes(trip.departureTime));
           }
         }
+        const times = day.tasks.flatMap((x) => (x.time ? [x.time] : []));
+        expect(new Set(times).size, `${where} ${day.date}: two tasks at the same time`).toBe(times.length);
         if (day.kind === 'full' && day.movedFrom) {
           const outing = day.tasks.filter((x) => x.id.includes(':spot-') || x.id.endsWith(':settle-walk'));
           expect(outing.length, `${where} ${day.date}: moving day with nothing to do after check-in`).toBeGreaterThan(0);

@@ -300,7 +300,28 @@ export function buildDayTasks(ctx: DayContext): Task[] {
     drafts = drafts.filter((t) => !t.time || t.key === 'flight' || t.key === 'airport' || (toMinutes(t.time) >= landed && toMinutes(t.time) <= leave));
   }
 
-  return drafts.map(({ key, ...rest }) => ({ ...rest, id: `auto:${day.date}:${key}`, date: day.date, source: 'auto' as const }));
+  return spreadOut(drafts).map(({ key, ...rest }) => ({ ...rest, id: `auto:${day.date}:${key}`, date: day.date, source: 'auto' as const }));
+}
+
+/** Tasks tied to a clock someone else sets: flights, light, events and the audience's posting time. */
+const isFixed = (key: string) => /^(post|land|flight|airport|move-in|spot-|go-|fest-)/.test(key);
+
+/**
+ * No two tasks share a minute. Fixed tasks keep their time; a flexible one that lands on a
+ * taken minute moves 10 minutes later, or earlier when the day has run out.
+ */
+function spreadOut(drafts: Draft[]): Draft[] {
+  const taken = new Set(drafts.filter((t) => t.time && isFixed(t.key)).map((t) => toMinutes(t.time!)));
+  return drafts.map((t) => {
+    if (!t.time || isFixed(t.key)) return t;
+    let at = toMinutes(t.time);
+    for (let step = 10; taken.has(at); ) {
+      if (at + step > 24 * 60 - 1) step = -10;
+      at += step;
+    }
+    taken.add(at);
+    return at === toMinutes(t.time) ? t : { ...t, time: fromMinutes(at) };
+  });
 }
 
 export function sortTasks(tasks: Task[]): Task[] {
