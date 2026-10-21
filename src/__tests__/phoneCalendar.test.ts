@@ -5,10 +5,11 @@ const cal = vi.hoisted(() => ({
   access: vi.fn(),
   create: vi.fn(),
   remove: vi.fn(),
+  list: vi.fn(),
 }));
 vi.mock('@capacitor/core', () => ({ Capacitor: { isNativePlatform: () => cal.native } }));
 vi.mock('@ebarooni/capacitor-calendar', () => ({
-  CapacitorCalendar: { requestFullCalendarAccess: cal.access, createEvent: cal.create, deleteEventsById: cal.remove },
+  CapacitorCalendar: { requestFullCalendarAccess: cal.access, createEvent: cal.create, deleteEventsById: cal.remove, listCalendars: cal.list },
 }));
 
 const store = new Map<string, string>();
@@ -18,7 +19,8 @@ vi.stubGlobal('localStorage', {
   removeItem: (k: string) => void store.delete(k),
 });
 
-import { addTripToPhoneCalendar, phoneEvents, removeTripFromPhoneCalendar } from '../services/phoneCalendar';
+import { addTripToPhoneCalendar, phoneEvents, pickCalendar, removeTripFromPhoneCalendar } from '../services/phoneCalendar';
+import type { Calendar } from '@ebarooni/capacitor-calendar';
 import { calendarTasks } from '../services/ics';
 import { generatePlan } from '../features/planner/generatePlan';
 import { sampleTrip } from '../data/sampleTrip';
@@ -26,6 +28,13 @@ import { sampleTrip } from '../data/sampleTrip';
 const trip = { ...sampleTrip(), id: 'trip-1' };
 const plan = generatePlan(trip);
 const tz = 'Africa/Addis_Ababa';
+
+const calendar = (id: string, accountName: string | null, ownerAccount = accountName, visible = true) =>
+  ({ id, title: id, accountName, ownerAccount, visible }) as Calendar;
+// What a typical Android phone lists: its own calendar first, then the Google account's.
+const phone = calendar('1', 'Phone', 'Phone');
+const holidays = calendar('2', 'kidus@gmail.com', 'en.et#holiday@group.v.calendar.google.com');
+const google = calendar('3', 'kidus@gmail.com');
 
 describe('adding a trip to the phone calendar', () => {
   beforeEach(() => {
@@ -36,6 +45,21 @@ describe('adding a trip to the phone calendar', () => {
     let n = 0;
     cal.create.mockImplementation(async () => ({ id: String(++n) }));
     cal.remove.mockResolvedValue({ result: { deleted: [], failed: [] } });
+    cal.list.mockResolvedValue({ result: [phone, holidays, google] });
+  });
+
+  it("writes to the Google account's own calendar, not the phone-only one", async () => {
+    expect(pickCalendar([phone, holidays, google])).toBe('3');
+    await addTripToPhoneCalendar(trip, plan, tz);
+    expect(cal.create.mock.calls.every(([e]) => (e as { calendarId?: string }).calendarId === '3')).toBe(true);
+  });
+
+  it('falls back to the default calendar without a Google account, or when the list fails', async () => {
+    expect(pickCalendar([phone])).toBeUndefined();
+    expect(pickCalendar([calendar('4', 'kidus@gmail.com', 'kidus@gmail.com', false)])).toBeUndefined();
+    cal.list.mockRejectedValue(new Error('not supported'));
+    await addTripToPhoneCalendar(trip, plan, tz);
+    expect(cal.create.mock.calls.every(([e]) => !('calendarId' in (e as object)))).toBe(true);
   });
 
   it('turns every task into one event, timed tasks at Addis time', () => {

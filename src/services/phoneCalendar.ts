@@ -1,5 +1,5 @@
 import { Capacitor } from '@capacitor/core';
-import { CapacitorCalendar } from '@ebarooni/capacitor-calendar';
+import { CapacitorCalendar, type Calendar } from '@ebarooni/capacitor-calendar';
 import type { Trip, TripPlan } from '../types';
 import { calendarTasks, taskTimes } from './ics';
 
@@ -47,10 +47,20 @@ function saveIds(tripId: string, ids: string[]): void {
   }
 }
 
+/**
+ * The calendar to write to. Android phones often list their own on-device calendar first,
+ * and Google Calendar never shows it, so a Google account's own calendar wins when there is
+ * one: it is named after the account's email address. Otherwise the phone's default is used.
+ */
+export function pickCalendar(calendars: Calendar[]): string | undefined {
+  const google = calendars.find((c) => c.visible !== false && c.accountName?.includes('@') && c.ownerAccount === c.accountName);
+  return google?.id;
+}
+
 export type AddResult = { status: 'added' | 'updated'; count: number } | { status: 'denied' };
 
 /**
- * Writes the trip into the phone's default calendar. Adding the same trip
+ * Writes the trip into the phone's calendar (see pickCalendar). Adding the same trip
  * again replaces the events from last time instead of doubling them.
  */
 export async function addTripToPhoneCalendar(trip: Trip, plan: TripPlan, timeZone: string): Promise<AddResult> {
@@ -58,10 +68,13 @@ export async function addTripToPhoneCalendar(trip: Trip, plan: TripPlan, timeZon
   if (result !== 'granted') return { status: 'denied' };
   const previous = savedIds(trip.id);
   if (previous.length) await CapacitorCalendar.deleteEventsById({ ids: previous }).catch(() => {});
+  const calendarId = await CapacitorCalendar.listCalendars()
+    .then(({ result }) => pickCalendar(result))
+    .catch(() => undefined);
   const ids: string[] = [];
   try {
     for (const event of phoneEvents(plan, timeZone)) {
-      const { id } = await CapacitorCalendar.createEvent(event);
+      const { id } = await CapacitorCalendar.createEvent(calendarId ? { ...event, calendarId } : event);
       if (id) ids.push(id);
     }
   } finally {
