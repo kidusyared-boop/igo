@@ -9,7 +9,7 @@ interface AddTaskFormProps {
   onAdd: (task: Task) => void;
 }
 
-const CATEGORIES: TaskCategory[] = ['explore', 'food', 'logistics', 'shoot', 'edit', 'post', 'rest', 'prep'];
+export const CATEGORIES: TaskCategory[] = ['explore', 'food', 'logistics', 'shoot', 'edit', 'post', 'rest', 'prep'];
 
 export function AddTaskForm({ date, formId, onAdd }: AddTaskFormProps) {
   const t = useT();

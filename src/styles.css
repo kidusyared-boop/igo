@@ -271,7 +271,8 @@ h1, h2, h3 { text-wrap: balance; margin: 0; }
   display: grid; grid-template-columns: 58px 24px minmax(0, 1fr) 40px; gap: 12px; align-items: start;
   padding: 14px 0; border-bottom: 1px solid var(--line);
 }
-.task .icon-btn { width: 40px; height: 44px; margin: -10px -8px 0 0; font-size: 22px; }
+.task .icon-btn { width: 40px; height: 44px; margin: -10px -8px 0 0; color: var(--muted); }
+.task .icon-btn svg { width: 20px; height: 20px; }
 .task.untimed { grid-template-columns: 24px minmax(0, 1fr) 40px; }
 .task .time { font: 500 14px/22px var(--font-mono); font-variant-numeric: tabular-nums; color: var(--muted); }
 .task input[type='checkbox'] { width: 24px; height: 24px; margin: -1px 0 0; accent-color: var(--c-explore); cursor: pointer; }
@@ -342,6 +343,10 @@ h1, h2, h3 { text-wrap: balance; margin: 0; }
 .menu-item.danger { color: var(--danger); }
 .menu-confirm { display: grid; gap: 10px; border-top: 1px solid var(--line); padding-top: 12px; }
 .menu-confirm .row > .btn { flex: 1; }
+.task-sheet { gap: 12px; }
+.task-sheet-when { display: grid; grid-template-columns: minmax(0, 1fr) 136px; gap: 8px; }
+.task-sheet .hint { margin: -6px 0 0; font-size: 13px; color: var(--muted); }
+.task-sheet-actions > .btn { flex: 1; }
 
 @media (prefers-reduced-motion: no-preference) {
   .task input[type='checkbox'] { transition: transform 120ms; }

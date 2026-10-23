@@ -1,6 +1,7 @@
 import type { Task } from '../../types';
 import { useT } from '../../i18n';
 import { LinkText } from '../../components/ui/LinkText';
+import { PencilIcon } from '../../components/ui/Icons';
 
 interface TaskRowProps {
   task: Task;
@@ -8,12 +9,13 @@ interface TaskRowProps {
   /** Converts a time to the local clock, e.g. Ethiopian time. */
   localClock?: (hhmm: string) => string;
   onToggle: () => void;
-  onRemove: () => void;
+  /** Opens the sheet to change, move or remove the task. */
+  onOpen: () => void;
   /** Leave out the time column, as in the prep list where nothing has a time. */
   timeless?: boolean;
 }
 
-export function TaskRow({ task, done, localClock, onToggle, onRemove, timeless = false }: TaskRowProps) {
+export function TaskRow({ task, done, localClock, onToggle, onOpen, timeless = false }: TaskRowProps) {
   const t = useT();
   const checkId = `chk-${task.id}`;
   return (
@@ -30,14 +32,8 @@ export function TaskRow({ task, done, localClock, onToggle, onRemove, timeless =
         <span className="title">{task.title}</span>
         {task.detail && <span className="detail"><LinkText text={task.detail} /></span>}
       </label>
-      <button
-        type="button"
-        className="icon-btn"
-        onClick={onRemove}
-        aria-label={t(task.source === 'user' ? 'task.deleteNamed' : 'task.hideNamed', { title: task.title })}
-        title={t(task.source === 'user' ? 'common.delete' : 'common.hide')}
-      >
-        ×
+      <button type="button" className="icon-btn" onClick={onOpen} aria-label={t('task.editNamed', { title: task.title })} title={t('common.edit')}>
+        <PencilIcon />
       </button>
     </li>
   );

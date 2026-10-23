@@ -205,6 +205,8 @@ export interface Task {
   detail?: string;
   category: TaskCategory;
   source: 'auto' | 'user';
+  /** On the traveler's edited copy of an igo task: the id of the igo task it stands in for. */
+  replaces?: string;
 }
 
 export interface DayPlan {

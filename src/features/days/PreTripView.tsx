@@ -9,12 +9,12 @@ interface PreTripViewProps {
   startDate: string;
   doneIds: Set<string>;
   onToggle: (taskId: string) => void;
-  onRemove: (task: Task) => void;
+  onOpen: (task: Task) => void;
   onAdd: (task: Task) => void;
   addDate: string;
 }
 
-export function PreTripView({ tasks, startDate, doneIds, onToggle, onRemove, onAdd, addDate }: PreTripViewProps) {
+export function PreTripView({ tasks, startDate, doneIds, onToggle, onOpen, onAdd, addDate }: PreTripViewProps) {
   const t = useT();
   const groups = new Map<string, Task[]>();
   for (const task of tasks) groups.set(task.date, [...(groups.get(task.date) ?? []), task]);
@@ -31,7 +31,7 @@ export function PreTripView({ tasks, startDate, doneIds, onToggle, onRemove, onA
           <div className="date-head">{formatDay(date)} · {t(daysBetween(date, startDate) === 1 ? 'pre.dayBefore' : 'pre.daysBefore', { n: daysBetween(date, startDate) })}</div>
           <ul className="task-list">
             {list.map((task) => (
-              <TaskRow key={task.id} timeless task={task} done={doneIds.has(task.id)} onToggle={() => onToggle(task.id)} onRemove={() => onRemove(task)} />
+              <TaskRow key={task.id} timeless task={task} done={doneIds.has(task.id)} onToggle={() => onToggle(task.id)} onOpen={() => onOpen(task)} />
             ))}
           </ul>
         </div>

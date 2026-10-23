@@ -11,18 +11,18 @@ interface DayViewProps {
   localDate?: string;
   doneIds: Set<string>;
   onToggle: (taskId: string) => void;
-  onRemove: (task: Task) => void;
+  onOpen: (task: Task) => void;
   onAdd: (task: Task) => void;
 }
 
-export function DayView({ day, index, cityName, localClock, localDate, doneIds, onToggle, onRemove, onAdd }: DayViewProps) {
+export function DayView({ day, index, cityName, localClock, localDate, doneIds, onToggle, onOpen, onAdd }: DayViewProps) {
   const done = day.tasks.filter((t) => doneIds.has(t.id)).length;
   return (
     <div className="stack" style={{ gap: 8 }}>
       <DayTicket day={day} index={index} cityName={cityName} done={done} localDate={localDate} />
       <ul className="task-list">
         {day.tasks.map((t) => (
-          <TaskRow key={t.id} task={t} localClock={localClock} done={doneIds.has(t.id)} onToggle={() => onToggle(t.id)} onRemove={() => onRemove(t)} />
+          <TaskRow key={t.id} task={t} localClock={localClock} done={doneIds.has(t.id)} onToggle={() => onToggle(t.id)} onOpen={() => onOpen(t)} />
         ))}
       </ul>
       <AddTaskForm date={day.date} formId={`add-${day.date}`} onAdd={onAdd} />

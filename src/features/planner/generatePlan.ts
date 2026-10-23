@@ -57,7 +57,10 @@ export function generatePlan(trip: Trip, closed: ReadonlySet<string> = new Set()
 
   const hidden = new Set(trip.hiddenIds);
   const visible = (t: Task) => !hidden.has(t.id);
-  const custom = (date: string) => trip.customTasks.filter((t) => t.date === date);
+  // The traveler's tasks dated after a trip that has since been shortened stay in sight on its last day.
+  const lastDay = dates[dates.length - 1];
+  const custom = (date: string) =>
+    trip.customTasks.flatMap((t) => (t.date === date ? [t] : date === lastDay && t.date > date ? [{ ...t, date }] : []));
 
   const days: DayPlan[] = skeletons.map((day, i) => {
     const city = cityOf(day.cityId);
