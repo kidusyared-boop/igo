@@ -15,7 +15,7 @@ import { DayView } from '../days/DayView';
 import { PreTripView } from '../days/PreTripView';
 import { TaskSheet } from '../days/TaskSheet';
 import { allowedDays, hiddenByTraveler, routeStop, spotOf } from '../planner/taskEdits';
-import { tryEdit } from '../planner/checkPlan';
+import { tryAdd, tryEdit, type Problem } from '../planner/checkPlan';
 import { SpotsView } from '../spots/SpotsView';
 import { CountryBrief } from '../country/CountryBrief';
 import { BookingsView } from '../bookings/BookingsView';
@@ -68,7 +68,18 @@ export function TripView({ trip, dispatch, onBack, onEdit, notify, justCreated =
   const day = plan.days[dayIndex];
   const id = trip.id;
   const toggle = (taskId: string) => dispatch({ type: 'toggleDone', tripId: id, taskId });
-  const add = (task: Task) => dispatch({ type: 'addTask', tripId: id, task });
+  const refuse = (p: Problem) =>
+    notify(t('check.refused', { reason: t(`check.${p.code}`, { title: p.title, city: p.cityId ? cityName(p.cityId) : '', other: p.other ?? '' }) }));
+  const add = (task: Task) => {
+    // Prep tasks come before the trip, where there is nothing to clash with.
+    const result = task.date < trip.startDate ? null : tryAdd(trip, plan, task, closed);
+    if (result && 'problem' in result) {
+      refuse(result.problem);
+      return false;
+    }
+    dispatch({ type: 'addTask', tripId: id, task });
+    return true;
+  };
   const remove = (task: Task) =>
     task.source === 'user' ? dispatch({ type: 'removeTask', tripId: id, taskId: task.id }) : dispatch({ type: 'hide', tripId: id, taskId: task.id });
   const cityName = (cityId: string) => findCity(trip.countryCode, cityId)?.name ?? city.name;
@@ -87,10 +98,7 @@ export function TripView({ trip, dispatch, onBack, onEdit, notify, justCreated =
 
   function saveEdit(original: Task, edited: Task) {
     const result = tryEdit(trip, plan, original, edited, closed);
-    if ('problem' in result) {
-      const p = result.problem;
-      return notify(t('check.refused', { reason: t(`check.${p.code}`, { title: p.title, city: p.cityId ? cityName(p.cityId) : '', other: p.other ?? '' }) }));
-    }
+    if ('problem' in result) return refuse(result.problem);
     dispatch({ type: 'upsert', trip: result.trip });
     setEditing(null);
     if (edited.date === original.date && !editStop) return;

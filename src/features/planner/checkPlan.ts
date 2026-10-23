@@ -3,7 +3,7 @@ import { toMinutes } from '../../utils/dates';
 import { generatePlan } from './generatePlan';
 import { moveTask, partnerOf, resetTask, spotOf } from './taskEdits';
 
-export type ProblemCode = 'wrongCity' | 'beforeLanding' | 'beforeCheckIn' | 'wrongLight' | 'afterAirport' | 'goAfterVisit' | 'twice' | 'routeOutside' | 'movedBefore' | 'movedAfter';
+export type ProblemCode = 'wrongCity' | 'beforeLanding' | 'beforeCheckIn' | 'wrongLight' | 'afterAirport' | 'goAfterVisit' | 'twice' | 'routeOutside' | 'movedBefore' | 'movedAfter' | 'onTheRoad';
 
 export interface Problem {
   code: ProblemCode;
@@ -41,7 +41,8 @@ function lightWindow(light: Light, sun: SunTimes | null): [number, number] {
  * places only on days in their city and, on a moving day, only after checking in there;
  * each place once, at a time its light allows (no night outing in the morning); leaving
  * for a place before the visit; nothing before landing or after leaving for the airport;
- * and a route that stays inside the trip. An empty list means the plan holds together.
+ * a route that stays inside the trip; and none of the traveler's own tasks while they are
+ * on the road between two cities. An empty list means the plan holds together.
  */
 export function checkPlan(trip: Trip, plan: TripPlan): Problem[] {
   const problems: Problem[] = [];
@@ -59,6 +60,7 @@ export function checkPlan(trip: Trip, plan: TripPlan): Problem[] {
     const visits = new Map<string, number | null>();
     // On a day that moves to another city, its places can only start once you have checked in there.
     const checkIn = day.movedFrom ? day.tasks.find((t) => keyOf(t) === 'move-in' && t.time) : undefined;
+    const depart = day.movedFrom ? day.tasks.find((t) => keyOf(t) === 'move' && t.time) : undefined;
 
     for (const task of day.tasks) {
       const key = keyOf(task);
@@ -83,6 +85,9 @@ export function checkPlan(trip: Trip, plan: TripPlan): Problem[] {
       if (minutes === null) continue;
       if ((day.kind === 'arrival' || day.kind === 'single') && minutes < toMinutes(trip.arrivalTime)) problems.push({ code: 'beforeLanding', ...base });
       if (leave !== null && minutes > leave && !/^(airport|flight|connect)/.test(key)) problems.push({ code: 'afterAirport', ...base });
+      // The traveler's own tasks can't happen on the bus or plane between two cities.
+      const own = task.source === 'user' && !task.replaces;
+      if (own && depart && checkIn && minutes > toMinutes(depart.time!) && minutes < toMinutes(checkIn.time!)) problems.push({ code: 'onTheRoad', ...base, other: checkIn.title });
     }
 
     problems.push(...outOfOrder(day, igo.get(day.date) ?? []));
@@ -154,6 +159,13 @@ export function tryEdit(
   const partner = partnerOf(original, plan.days.find((d) => d.date === original.date)?.tasks ?? []);
   const next = moveTask(trip, original, edited, spot, partner);
   if (next === trip && edited.date !== original.date) return { problem: { code: 'routeOutside', date: edited.date, title: original.title, ref: original.id } };
+  const added = newProblems(checkPlan(trip, plan), checkPlan(next, generatePlan(next, closed)));
+  return added[0] ? { problem: added[0] } : { trip: next };
+}
+
+/** Adds the traveler's own task, unless it would break a rule the plan kept before. */
+export function tryAdd(trip: Trip, plan: TripPlan, task: Task, closed: ReadonlySet<string> = new Set()): { trip: Trip } | { problem: Problem } {
+  const next = { ...trip, customTasks: [...trip.customTasks, task] };
   const added = newProblems(checkPlan(trip, plan), checkPlan(next, generatePlan(next, closed)));
   return added[0] ? { problem: added[0] } : { trip: next };
 }

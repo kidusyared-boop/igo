@@ -12,7 +12,7 @@ interface DayViewProps {
   doneIds: Set<string>;
   onToggle: (taskId: string) => void;
   onOpen: (task: Task) => void;
-  onAdd: (task: Task) => void;
+  onAdd: (task: Task) => boolean | void;
 }
 
 export function DayView({ day, index, cityName, localClock, localDate, doneIds, onToggle, onOpen, onAdd }: DayViewProps) {

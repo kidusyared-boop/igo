@@ -5,7 +5,7 @@ import { buildReminders, LEAD_MINUTES } from '../features/reminders/buildReminde
 import { buildIcs } from '../services/ics';
 import { mergeTrips } from '../services/sync';
 import { normalizeTrip } from '../services/storage';
-import { tryEdit } from '../features/planner/checkPlan';
+import { tryAdd, tryEdit } from '../features/planner/checkPlan';
 import { sampleTrip } from '../data/sampleTrip';
 import { translate } from '../i18n';
 import type { Task, Trip } from '../types';
@@ -336,5 +336,58 @@ describe('travel and logistics steps keep their order', () => {
   it('a saved trip with check-in before checkout repairs itself on load', () => {
     const broken = saveTaskEdit(tr, step('move-in'), { ...step('move-in'), time: '02:30' }, () => 'task_bad');
     expect(normalizeTrip(broken).customTasks).toEqual([]);
+  });
+});
+
+describe('tasks the traveler adds are checked too', () => {
+  const tr = trip({
+    startDate: '2026-11-10', endDate: '2026-11-15',
+    stops: [{ id: 's1', cityId: 'harar', date: '2026-11-12' }, { id: 's2', cityId: 'addis', date: '2026-11-14' }],
+  });
+  const plan = generatePlan(tr);
+  const moving = plan.days.find((d) => d.date === '2026-11-12')!;
+  const step = (key: string, day = moving) => day.tasks.find((x) => x.id.endsWith(`:${key}`))!;
+  const own = (date: string, time?: string): Task => ({ id: ids(), date, title: 'Meet a friend', category: 'explore', source: 'user', ...(time ? { time } : {}) });
+
+  it('refuses a task while you are on the road between two cities', () => {
+    const result = tryAdd(tr, plan, own('2026-11-12', shiftTime(step('move').time!, 30)));
+    expect('problem' in result && result.problem).toMatchObject({ code: 'onTheRoad', other: step('move-in').title });
+  });
+
+  it('takes the same task once you have checked in', () => {
+    expect('trip' in tryAdd(tr, plan, own('2026-11-12', shiftTime(step('move-in').time!, 30)))).toBe(true);
+  });
+
+  it('refuses a task before you land', () => {
+    const land = step('land', plan.days[0]);
+    expect('problem' in tryAdd(tr, plan, own(tr.startDate, shiftTime(land.time!, -60)))).toBe(true);
+  });
+
+  it('refuses a task after you leave for the airport', () => {
+    const last = plan.days.at(-1)!;
+    const airport = last.tasks.find((x) => /:airport/.test(x.id))!;
+    const result = tryAdd(tr, plan, own(last.date, shiftTime(airport.time!, 30)));
+    expect('problem' in result && result.problem.code).toBe('afterAirport');
+  });
+
+  it('takes a task with no time on any day', () => {
+    expect('trip' in tryAdd(tr, plan, own('2026-11-12'))).toBe(true);
+  });
+
+  it('changing your own task onto the road is refused', () => {
+    const added = tryAdd(tr, plan, own('2026-11-12', shiftTime(step('move-in').time!, 30)));
+    if (!('trip' in added)) throw new Error('should be added');
+    const mine = added.trip.customTasks.at(-1)!;
+    const result = tryEdit(added.trip, generatePlan(added.trip), mine, { ...mine, time: shiftTime(step('move').time!, 30) });
+    expect('problem' in result && result.problem.code).toBe('onTheRoad');
+  });
+
+  it('moving a journey onto a day where your own task would be on the road is refused', () => {
+    const next = plan.days.find((d) => d.date === '2026-11-13')!;
+    const added = tryAdd(tr, plan, own(next.date, shiftTime(step('move').time!, 30)));
+    if (!('trip' in added)) throw new Error('should be added');
+    const travel = step('move');
+    const result = tryEdit(added.trip, generatePlan(added.trip), travel, { ...travel, date: '2026-11-13' });
+    expect('problem' in result && result.problem.code).toBe('onTheRoad');
   });
 });

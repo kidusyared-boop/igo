@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { generatePlan } from '../features/planner/generatePlan';
-import { checkPlan, newProblems, tryEdit } from '../features/planner/checkPlan';
+import { checkPlan, newProblems, tryAdd, tryEdit } from '../features/planner/checkPlan';
 import { allowedDays, routeStop, spotOf } from '../features/planner/taskEdits';
 import { ETHIOPIA } from '../data/ethiopia/ethiopia';
 import { addDays, fromMinutes } from '../utils/dates';
@@ -31,7 +31,7 @@ function randomTrip(i: number): Trip {
   };
 }
 
-describe('edit fuzz: 120 trips, 8 random changes each', () => {
+describe('edit fuzz: 120 trips, 8 random changes or added tasks each', () => {
   it('no change, accepted or refused, leaves the plan broken', { timeout: 60_000 }, () => {
     let accepted = 0;
     let refused = 0;
@@ -42,6 +42,18 @@ describe('edit fuzz: 120 trips, 8 random changes each', () => {
       for (let step = 0; step < 8; step++) {
         const plan = generatePlan(trip);
         const day = pick(plan.days);
+        if (rnd() < 0.25) {
+          // Sometimes the traveler adds a task of their own instead, at any time of that day.
+          const time = rnd() < 0.8 ? fromMinutes(Math.floor(rnd() * 24 * 60)) : undefined;
+          const added = tryAdd(trip, plan, { id: `own-${i}-${step}`, date: day.date, title: `Own ${step}`, category: 'explore', source: 'user', ...(time ? { time } : {}) });
+          if ('problem' in added) refused++;
+          else {
+            accepted++;
+            trip = added.trip;
+            expect(newProblems(baseline, checkPlan(trip, generatePlan(trip))), `trip ${i} step ${step}: own task ${day.date} ${time ?? ''}`).toEqual([]);
+          }
+          continue;
+        }
         const task = day.tasks.length ? pick(day.tasks) : undefined;
         if (!task) continue;
         const spot = spotOf(task, trip, plan.pickedSpots.map((p) => p.spot));

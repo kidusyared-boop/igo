@@ -6,7 +6,8 @@ import { useT } from '../../i18n';
 interface AddTaskFormProps {
   date: string;
   formId: string;
-  onAdd: (task: Task) => void;
+  /** Returns false when the task was refused, so the form keeps what was typed. */
+  onAdd: (task: Task) => boolean | void;
 }
 
 export const CATEGORIES: TaskCategory[] = ['explore', 'food', 'logistics', 'shoot', 'edit', 'post', 'rest', 'prep'];
@@ -21,7 +22,7 @@ export function AddTaskForm({ date, formId, onAdd }: AddTaskFormProps) {
     e.preventDefault();
     const clean = title.trim();
     if (!clean) return;
-    onAdd({ id: newId('task'), date, title: clean, time: time || undefined, category, source: 'user' });
+    if (onAdd({ id: newId('task'), date, title: clean, time: time || undefined, category, source: 'user' }) === false) return;
     setTitle('');
     setTime('');
   }
