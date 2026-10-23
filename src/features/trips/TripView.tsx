@@ -18,6 +18,7 @@ import { allowedDays, hiddenByTraveler, routeStop, spotOf } from '../planner/tas
 import { tryEdit } from '../planner/checkPlan';
 import { SpotsView } from '../spots/SpotsView';
 import { CountryBrief } from '../country/CountryBrief';
+import { BookingsView } from '../bookings/BookingsView';
 import { TabBar, type TripTab } from './TabBar';
 import { TripMenu } from './TripMenu';
 import { BackIcon, MoreIcon } from '../../components/ui/Icons';
@@ -182,6 +183,14 @@ export function TripView({ trip, dispatch, onBack, onEdit, notify, justCreated =
           onRemove={(spotId) => dispatch({ type: 'removeSpot', tripId: id, spotId })}
           onDismiss={(key) => dispatch({ type: 'dismissPlace', tripId: id, key })}
           onRestore={() => dispatch({ type: 'restorePlaces', tripId: id })}
+        />
+      )}
+      {tab === 'bookings' && (
+        <BookingsView
+          trip={trip}
+          plan={plan}
+          onSave={(booking) => dispatch({ type: 'upsertBooking', tripId: id, booking })}
+          onRemove={(bookingId) => dispatch({ type: 'removeBooking', tripId: id, bookingId })}
         />
       )}
       {tab === 'country' && <CountryBrief country={country} trip={trip} />}
