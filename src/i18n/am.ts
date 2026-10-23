@@ -214,6 +214,8 @@ export const am: Record<keyof typeof en, string> = {
   'check.refused': 'አልተቀመጠም፦ {reason}',
   'check.wrongCity': '{title} በ{city} በማይሆኑበት ቀን ላይ ይወድቃል።',
   'check.beforeLanding': '{title} ከማረፍዎ በፊት ይሆናል።',
+  'check.beforeCheckIn': '{title} በዚያ ቀን {city} ከመድረስዎ በፊት ይሆናል።',
+  'check.wrongLight': '{title} ለእሱ በማይሆን የቀን ሰዓት ላይ ይሆናል።',
   'check.afterAirport': '{title} ወደ አየር ማረፊያ ከተነሱ በኋላ ይሆናል።',
   'check.goAfterVisit': '{title} ከሚወስደው ጉብኝት በኋላ ይመጣል።',
   'check.twice': '{title} በሁለት ቀናት ላይ ይሆናል።',

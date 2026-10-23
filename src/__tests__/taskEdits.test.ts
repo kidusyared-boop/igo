@@ -5,6 +5,7 @@ import { buildReminders, LEAD_MINUTES } from '../features/reminders/buildReminde
 import { buildIcs } from '../services/ics';
 import { mergeTrips } from '../services/sync';
 import { normalizeTrip } from '../services/storage';
+import { tryEdit } from '../features/planner/checkPlan';
 import { sampleTrip } from '../data/sampleTrip';
 import { translate } from '../i18n';
 import type { Task, Trip } from '../types';
@@ -251,5 +252,41 @@ describe('what Kidus hit on his iPhone', () => {
     const fixed = normalizeTrip(broken);
     expect(fixed.customTasks).toEqual([]);
     expect(fixed.hiddenIds).toEqual([]);
+  });
+});
+
+describe('the checker refuses a place at a time you cannot be there', () => {
+  const tr = trip({
+    startDate: '2026-11-10', endDate: '2026-11-15',
+    stops: [{ id: 's1', cityId: 'harar', date: '2026-11-12' }, { id: 's2', cityId: 'addis', date: '2026-11-14' }],
+    spots: [
+      { id: 'sp4', cityId: 'harar', name: 'Hyena feeding outside the walls', light: 'night', shotList: '', date: '2026-11-12' },
+      { id: 'sp9', cityId: 'harar', name: 'Old town walk', light: 'any', shotList: '', date: '2026-11-13' },
+    ],
+  });
+  const plan = generatePlan(tr);
+  const day = plan.days.find((d) => d.date === '2026-11-12')!;
+  const hyena = day.tasks.find((x) => x.id.endsWith(':spot-sp4'))!;
+
+  it('a Harar outing before you have travelled to Harar', () => {
+    const walk = plan.days.find((d) => d.date === '2026-11-13')!.tasks.find((x) => x.id.endsWith(':spot-sp9'))!;
+    const moved = tryEdit(tr, plan, walk, { ...walk, date: '2026-11-12' });
+    expect('trip' in moved).toBe(true);
+    const after = 'trip' in moved ? moved.trip : tr;
+    const p2 = generatePlan(after);
+    const early = p2.days.find((d) => d.date === '2026-11-12')!.tasks.find((x) => x.id.endsWith(':spot-sp9'))!;
+    const result = tryEdit(after, p2, early, { ...early, time: '08:30' });
+    expect('problem' in result && result.problem.code).toBe('beforeCheckIn');
+  });
+
+  it('a night outing moved to the morning', () => {
+    const result = tryEdit(tr, plan, hyena, { ...hyena, time: '07:17' });
+    expect('problem' in result).toBe(true);
+    expect('problem' in result && ['beforeCheckIn', 'wrongLight']).toContain('problem' in result && result.problem.code);
+  });
+
+  it('a night outing moved a little later is fine', () => {
+    const result = tryEdit(tr, plan, hyena, { ...hyena, time: shiftTime(hyena.time!, 20) });
+    expect('trip' in result).toBe(true);
   });
 });

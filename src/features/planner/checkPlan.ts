@@ -1,9 +1,9 @@
-import type { Task, Trip, TripPlan } from '../../types';
+import type { Light, Spot, SunTimes, Task, Trip, TripPlan } from '../../types';
 import { toMinutes } from '../../utils/dates';
 import { generatePlan } from './generatePlan';
 import { moveTask, partnerOf, spotOf } from './taskEdits';
 
-export type ProblemCode = 'wrongCity' | 'beforeLanding' | 'afterAirport' | 'goAfterVisit' | 'twice' | 'routeOutside';
+export type ProblemCode = 'wrongCity' | 'beforeLanding' | 'beforeCheckIn' | 'wrongLight' | 'afterAirport' | 'goAfterVisit' | 'twice' | 'routeOutside';
 
 export interface Problem {
   code: ProblemCode;
@@ -20,16 +20,26 @@ function keyOf(task: Task): string {
   return (task.replaces ?? task.id).replace(/^auto:\d{4}-\d{2}-\d{2}:/, '');
 }
 
-/** The city a place is in: the traveler's own places say so; igo's picks carry it in their id. */
-function placeCity(trip: Trip, spotId: string): string | undefined {
-  return trip.spots.find((s) => s.id === spotId)?.cityId ?? /^place:([^:]+):/.exec(spotId)?.[1];
+/** When in the day a place's light allows a visit, in minutes from midnight. */
+function lightWindow(light: Light, sun: SunTimes | null): [number, number] {
+  const rise = toMinutes(sun?.sunrise ?? '06:30');
+  const set = toMinutes(sun?.sunset ?? '18:30');
+  switch (light) {
+    case 'sunrise': return [rise - 90, rise + 90];
+    case 'sunset': return [set - 150, set + 30];
+    case 'night': return [set + 30, 24 * 60 - 1];
+    case 'lunch': return [toMinutes('11:00'), toMinutes('15:30')];
+    case 'dinner': return [toMinutes('17:30'), toMinutes('23:00')];
+    case 'any': return [rise, set];
+  }
 }
 
 /**
  * Checks a built plan against the rules every schedule must keep, whoever changed it:
- * places only on days in their city, each place once, leaving for a place before the
- * visit, nothing before landing or after leaving for the airport, and a route that
- * stays inside the trip. An empty list means the plan holds together.
+ * places only on days in their city and, on a moving day, only after checking in there;
+ * each place once, at a time its light allows (no night outing in the morning); leaving
+ * for a place before the visit; nothing before landing or after leaving for the airport;
+ * and a route that stays inside the trip. An empty list means the plan holds together.
  */
 export function checkPlan(trip: Trip, plan: TripPlan): Problem[] {
   const problems: Problem[] = [];
@@ -37,20 +47,30 @@ export function checkPlan(trip: Trip, plan: TripPlan): Problem[] {
     if (stop.date <= trip.startDate || stop.date > trip.endDate) problems.push({ code: 'routeOutside', date: stop.date, title: '', ref: stop.id });
   }
 
+  const spots = new Map<string, Spot>([...plan.pickedSpots.map((p) => [p.spot.id, p.spot] as const), ...trip.spots.map((s) => [s.id, s] as const)]);
   const seen = new Map<string, string>();
   for (const day of plan.days) {
     const at = (t: Task) => (t.time ? toMinutes(t.time) : null);
     const airport = day.tasks.filter((t) => /^airport/.test(keyOf(t)) && t.time).map((t) => toMinutes(t.time!));
     const leave = airport.length ? Math.min(...airport) : null;
     const visits = new Map<string, number | null>();
+    // On a day that moves to another city, its places can only start once you have checked in there.
+    const checkIn = day.movedFrom ? day.tasks.find((t) => keyOf(t) === 'move-in' && t.time) : undefined;
 
     for (const task of day.tasks) {
       const key = keyOf(task);
       const found = /^(spot|go)-(.+)$/.exec(key);
       const base = { date: day.date, title: task.title, ref: task.id };
       if (found) {
-        const city = placeCity(trip, found[2]!);
-        if (city && city !== day.cityId) problems.push({ code: 'wrongCity', ...base, cityId: city });
+        const spot = spots.get(found[2]!);
+        const city = spot?.cityId ?? /^place:([^:]+):/.exec(found[2]!)?.[1] ?? trip.cityId;
+        if (city !== day.cityId) problems.push({ code: 'wrongCity', ...base, cityId: city });
+        else if (checkIn && task.time && toMinutes(task.time) < toMinutes(checkIn.time!)) problems.push({ code: 'beforeCheckIn', ...base, cityId: city });
+        if (found[1] === 'spot' && spot && !spot.allDay && task.time) {
+          const [from, to] = lightWindow(spot.light, day.sun);
+          const m = toMinutes(task.time);
+          if (m < from || m > to) problems.push({ code: 'wrongLight', ...base });
+        }
         const where = seen.get(key);
         if (where && where !== day.date) problems.push({ code: 'twice', ...base });
         seen.set(key, day.date);

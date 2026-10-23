@@ -211,6 +211,8 @@ export const en = {
   'check.refused': 'Not saved: {reason}',
   'check.wrongCity': '{title} would land on a day you are not in {city}.',
   'check.beforeLanding': '{title} would be before you land.',
+  'check.beforeCheckIn': '{title} would be before you reach {city} that day.',
+  'check.wrongLight': '{title} would be at the wrong time of day for it.',
   'check.afterAirport': '{title} would be after you leave for the airport.',
   'check.goAfterVisit': '{title} would come after the visit it leads to.',
   'check.twice': '{title} would be on two days.',
