@@ -28,9 +28,9 @@ General planners (Wanderlog, GetYourGuide, Visit A City, Culture Trip) cover Eth
 3. Generated daily to-dos:
    - Before you go: e-Visa, travel advice per region, vaccinations and malaria, domestic flights, guides and scouts, media permit (creators), clean USD notes, power banks, and booking every leg of the route.
    - Arrival: immigration, SIM, cash, transfer, altitude warning, learning the Ethiopian clock.
-   - Travel days: checkout, transfer and check-in, with journey B-roll for creators.
+   - Travel days: checkout, transfer and check-in timed to the length of the journey (long moves through Addis take the whole day, with no outing), with journey B-roll for creators.
    - Shoot days: spots placed in their best light, in the right city, with backup, editing and a posting slot at 7 pm audience time.
-   - Departure: final backup, spending leftover birr, leaving for the airport.
+   - Departure: final backup, spending leftover birr, leaving for the airport. International flights use Bole, so a route that starts or ends in another city gets the connection to or from Addis Ababa.
 4. Each day shows the **Ethiopian date**, every task shows **Ethiopian time**, and the day lists **holidays, fasting and safety** notes.
 5. **Preferences**: budget (tight, mid-range, comfortable), diet (vegetarian, vegan, halal, Orthodox fasting), easy access and travel with young children. They filter the 148-place catalogue across 11 destinations (Hawassa added) and add tasks such as ordering yetsom, asking for "ye Islam" meat, ground-floor rooms, child seats and a midday break for kids.
 6. **Diaspora mode** for Ethiopians and people of Ethiopian origin visiting home. They choose how they enter (Origin ID, Ethiopian passport or visa), and Origin ID or passport holders skip the e-Visa steps. They get prep for money transfers and diaspora accounts, customs allowances for gifts, baggage weight and an old Ethio Telecom number. Optional family afternoons (15:00 to 19:00) are kept free of places, and holidays get a "holiday at home" task.

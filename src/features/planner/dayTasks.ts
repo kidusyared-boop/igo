@@ -1,7 +1,7 @@
 import type { City, CountryPack, Spot, Task, Trip } from '../../types';
 import { fromMinutes, shiftTime, toMinutes } from '../../utils/dates';
 import { utcToZoned, zonedToUtc } from '../../utils/timezone';
-import { ANY_SLOTS, EARLY_FLIGHT, MOVE_CHECK_IN, anySlots, clashesWithEvent, isEveOfEarlyFlight, type DaySkeleton } from './assignSpots';
+import { ANY_SLOTS, EARLY_FLIGHT, LATEST_CHECK_IN, MOVE_DEPART, anySlots, arrivalCheckIn, clashesWithEvent, departureLeave, isEveOfEarlyFlight, moveCheckIn, type DaySkeleton } from './assignSpots';
 import { travelDetail } from './route';
 import { interestLabel } from './personalize';
 import { needsVisa } from './diaspora';
@@ -61,9 +61,12 @@ function spotDrafts(ctx: DayContext, sunrise: string, sunset: string): Draft[] {
       case 'lunch':
         drafts.push({ key, time: '12:30', title: mealTitle(spot, 'Lunch'), detail, category: 'food' });
         break;
-      case 'dinner':
-        drafts.push({ key, time: '19:30', title: mealTitle(spot, 'Dinner'), detail, category: 'food' });
+      case 'dinner': {
+        // After an evening outing, dinner waits until it is over.
+        const time = ctx.spots.some((s) => s.light === 'night') ? fromMinutes(Math.ceil((toMinutes(sunset) + 180) / 10) * 10) : '19:30';
+        drafts.push({ key, time, title: mealTitle(spot, 'Dinner'), detail, category: 'food' });
         break;
+      }
       default: {
         if (spot.allDay) {
           const title = /^day trip/i.test(spot.name) ? spot.name : `Day trip: ${spot.name}`;
@@ -81,18 +84,22 @@ function spotDrafts(ctx: DayContext, sunrise: string, sunset: string): Draft[] {
 }
 
 function arrivalDrafts(ctx: DayContext): Draft[] {
-  const { trip, country } = ctx;
+  const { trip, country, city } = ctx;
   const a = trip.arrivalTime;
+  const via = ctx.day.viaHub;
   // Landing before 11:00 means reaching the stay before normal check-in time.
-  const early = toMinutes(a) < toMinutes('11:00');
-  const checkInAt = toMinutes(a) + 120;
+  const early = !via && toMinutes(a) < toMinutes('11:00');
+  // A connection that would arrive after the latest check-in waits for the morning.
+  const overnight = Boolean(via) && arrivalCheckIn(ctx.day, trip) > LATEST_CHECK_IN;
+  const checkInAt = overnight ? toMinutes(a) + 120 : arrivalCheckIn(ctx.day, trip);
   const checkIn = fromMinutes(checkInAt);
   const late = checkInAt >= toMinutes('21:30');
+  const hub = country.cities[0]?.name ?? 'the capital';
   // Landing late at night: the steps after landing would all pile up at 23:59, so they become one.
   if (toMinutes(a) >= toMinutes('22:00')) {
     return [
       { key: 'land', time: a, title: 'Land and clear immigration', detail: needsVisa(trip) ? country.entry.summary : 'Use the Ethiopian citizens and Origin ID line with your document ready.', category: 'logistics' },
-      { key: 'ride', time: fromMinutes(Math.min(toMinutes(a) + 30, 24 * 60 - 1)), title: 'Get to your stay and sleep', detail: `Turn on your eSIM at the airport if you need a ride app; cash can wait until morning. ${country.rideApps}`, category: 'logistics' },
+      { key: 'ride', time: fromMinutes(Math.min(toMinutes(a) + 30, 24 * 60 - 1)), title: 'Get to your stay and sleep', detail: `${via ? `Domestic flights don't run overnight, so sleep near the airport and fly on to ${city.name} in the morning. ` : ''}Turn on your eSIM at the airport if you need a ride app; cash can wait until morning. ${country.rideApps}`, category: 'logistics' },
     ];
   }
   return [
@@ -100,7 +107,9 @@ function arrivalDrafts(ctx: DayContext): Draft[] {
     ...(trip.diaspora ? [{ key: 'tell-family', time: shiftTime(a, 50), title: 'Tell family you have landed and when you will reach them', category: 'logistics' as const }] : []),
     { key: 'esim', time: shiftTime(a, 45), title: 'Turn on your eSIM and test data', detail: country.connectivity, category: 'logistics' },
     { key: 'cash', time: shiftTime(a, 55), title: `Get ${country.currency.code} cash from a bank ATM`, detail: country.currency.cashNote, category: 'logistics' },
-    { key: 'ride', time: shiftTime(a, 70), title: 'Get to your stay', detail: country.rideApps, category: 'logistics' },
+    via && !overnight
+      ? { key: 'connect', time: shiftTime(a, 90), title: `Catch your connection to ${city.name}`, detail: `${city.access ?? ''} Leave at least 2 hours between landing and a domestic flight. On one Ethiopian Airlines ticket your bags go straight through.`.trim(), category: 'logistics' as const }
+      : { key: 'ride', time: shiftTime(a, 70), title: overnight ? `Get to a stay in ${hub} for tonight` : 'Get to your stay', detail: overnight ? `It is too late to reach ${city.name} today. Book the first connection tomorrow morning. ${country.rideApps}` : country.rideApps, category: 'logistics' as const },
     early
       ? { key: 'checkin', time: checkIn, title: 'Ask for early check-in, or drop your bags. Nap 90 minutes at most', detail: 'Put every battery on charge while you rest.', category: 'logistics' }
       : { key: 'checkin', time: checkIn, title: 'Check in, unpack, put every battery on charge', category: 'logistics' },
@@ -127,17 +136,27 @@ function altitudeDrafts(ctx: DayContext, time: string): Draft[] {
 
 function moveDrafts(ctx: DayContext): Draft[] {
   const from = ctx.fromCity?.name ?? 'your last stop';
+  const hours = ctx.day.moveHours ?? 4.5;
+  const checkIn = moveCheckIn(ctx.day);
+  const tooLong = MOVE_DEPART + hours * 60 > LATEST_CHECK_IN;
+  const how = ctx.fromCity ? travelDetail(ctx.fromCity, ctx.city, ctx.country) : ctx.city.access;
+  const length = tooLong
+    ? `This takes more than a day (about ${hours} hours). Break the journey with a night on the way, or add a stop in ${ctx.country.cities[0]?.name ?? 'the capital'}.`
+    : how?.includes('hours by road')
+      ? ''
+      : `Plan on about ${hours} hours door to door, waits included.`;
   return [
     { key: 'move-out', time: '08:00', title: `Check out in ${from}`, detail: 'Confirm your transfer time the night before.', category: 'logistics' },
-    { key: 'move', time: '09:30', title: `Travel to ${ctx.city.name}`, detail: ctx.fromCity ? travelDetail(ctx.fromCity, ctx.city, ctx.country) : ctx.city.access, category: 'logistics' },
-    { key: 'move-in', time: MOVE_CHECK_IN, title: `Check in in ${ctx.city.name}`, category: 'logistics' },
-    ...altitudeDrafts(ctx, shiftTime(MOVE_CHECK_IN, 15)),
+    { key: 'move', time: fromMinutes(MOVE_DEPART), title: `Travel to ${ctx.city.name}`, detail: `${how ?? ''} ${length}`.trim(), category: 'logistics' },
+    { key: 'move-in', time: fromMinutes(checkIn), title: `Check in in ${ctx.city.name}`, category: 'logistics' },
+    ...altitudeDrafts(ctx, fromMinutes(checkIn + 15)),
   ];
 }
 
 function departureDrafts(ctx: DayContext): Draft[] {
   const { trip, country } = ctx;
   const d = trip.departureTime;
+  if (ctx.day.viaHub && ctx.day.kind === 'departure') return hubDepartureDrafts(ctx);
   if (toMinutes(d) < EARLY_FLIGHT && ctx.day.kind === 'departure') {
     // Checkout, cash and backup sit on the evening before; see eveDrafts.
     return [
@@ -153,6 +172,44 @@ function departureDrafts(ctx: DayContext): Draft[] {
   ];
   if (trip.mode === 'creator') {
     drafts.unshift({ key: 'final-backup', time: fromMinutes(Math.max(0, toMinutes(d) - 300)), title: 'Final backup: every card on two drives before you format anything', category: 'edit' });
+  }
+  return drafts;
+}
+
+/** The last day in a city without international flights: get back to the hub first. */
+function hubDepartureDrafts(ctx: DayContext): Draft[] {
+  const { trip, country, city } = ctx;
+  const hub = country.cities[0]!;
+  const flight = toMinutes(trip.departureTime);
+  const leave = departureLeave(ctx.day, trip);
+  const at = (m: number) => fromMinutes(Math.max(0, m));
+  if (leave < toMinutes('05:00')) {
+    return [
+      {
+        key: 'airport',
+        time: at(flight - 180),
+        title: `Be at the airport in ${hub.name} for your flight home`,
+        detail: `Your flight is too early to reach from ${city.name} on the same day, so spend your last night in ${hub.name}. ${travelDetail(city, hub, country) ?? ''}`.trim(),
+        category: 'logistics',
+      },
+      { key: 'flight', time: trip.departureTime, title: 'Flight departs', category: 'logistics' },
+    ];
+  }
+  const drafts: Draft[] = [
+    { key: 'cash-out', time: at(leave - 60), title: `Spend or exchange leftover ${country.currency.code}`, category: 'logistics' },
+    { key: 'checkout', time: at(leave - 30), title: 'Check out and settle your bill', category: 'logistics' },
+    {
+      key: 'airport-hub',
+      time: at(leave),
+      title: `Leave for ${hub.name}: your flight home leaves from there`,
+      detail: `Be at the international airport by ${at(flight - 180)}. ${travelDetail(city, hub, country) ?? ''}`.trim(),
+      category: 'logistics',
+    },
+    { key: 'airport', time: at(flight - 180), title: `Check in for your flight home in ${hub.name}`, category: 'logistics' },
+    { key: 'flight', time: trip.departureTime, title: 'Flight departs', category: 'logistics' },
+  ];
+  if (trip.mode === 'creator') {
+    drafts.unshift({ key: 'final-backup', time: at(leave - 90), title: 'Final backup: every card on two drives before you format anything', category: 'edit' });
   }
   return drafts;
 }
@@ -175,7 +232,7 @@ function eveDrafts(ctx: DayContext): Draft[] {
 /** After the afternoon's shoot: in the evening after a day out, later on a moving day. */
 function editTime(ctx: DayContext, hasAnySpot: boolean): string {
   if (ctx.spots.some((s) => s.allDay) || (ctx.day.movedFrom && hasAnySpot)) return '20:00';
-  return ctx.day.movedFrom ? '16:30' : '16:00';
+  return ctx.day.movedFrom ? fromMinutes(Math.max(toMinutes('16:30'), moveCheckIn(ctx.day) + 30)) : '16:00';
 }
 
 function creatorRoutine(ctx: DayContext, hasAnySpot: boolean): Draft[] {
@@ -281,13 +338,13 @@ export function buildDayTasks(ctx: DayContext): Task[] {
   }
 
   if (day.kind === 'departure') {
-    const leave = toMinutes(trip.departureTime) - 180;
-    drafts = drafts.filter((t) => !t.time || toMinutes(t.time) <= leave || t.key === 'flight' || t.key === 'airport');
+    const leave = departureLeave(day, trip);
+    drafts = drafts.filter((t) => !t.time || toMinutes(t.time) <= leave || t.key === 'flight' || t.key.startsWith('airport'));
   }
 
   if (isEveOfEarlyFlight(day, trip)) {
     // Nothing after the wrap-up: the night is short.
-    drafts = drafts.filter((t) => !t.time || toMinutes(t.time) < toMinutes('21:00') || t.key === 'land' || t.key === 'ride');
+    drafts = drafts.filter((t) => !t.time || toMinutes(t.time) < toMinutes('21:00') || t.key === 'land' || t.key === 'ride' || t.key === 'move-in');
     const landed = day.kind === 'arrival' ? toMinutes(trip.arrivalTime) : 0;
     // Landing the evening before a small-hours flight: wrap up once you are at your stay.
     drafts.push(...eveDrafts(ctx).map((t, i) => (t.time && toMinutes(t.time) <= landed ? { ...t, time: fromMinutes(Math.min(landed + 90 + i * 10, 24 * 60 - 1)) } : t)));
@@ -304,7 +361,7 @@ export function buildDayTasks(ctx: DayContext): Task[] {
 }
 
 /** Tasks tied to a clock someone else sets: flights, light, events and the audience's posting time. */
-const isFixed = (key: string) => /^(post|land|flight|airport|move-in|spot-|go-|fest-)/.test(key);
+const isFixed = (key: string) => /^(post|land|flight|airport|spot-|go-|fest-)/.test(key);
 
 /**
  * No two tasks share a minute. Fixed tasks keep their time; a flexible one that lands on a

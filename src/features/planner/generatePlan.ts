@@ -5,7 +5,7 @@ import { sunTimes } from '../../utils/solar';
 import { assignSpots, freeWindow, type DaySkeleton } from './assignSpots';
 import { buildDayTasks, sortTasks } from './dayTasks';
 import { buildPreTripTasks } from './preTrip';
-import { cityForDate, travelDetail } from './route';
+import { DEFAULT_HUB_HOURS, cityForDate, travelDetail, travelHours } from './route';
 import { pickPlaces, placeKey } from './personalize';
 import { festivalEventsByDate } from './festivals';
 
@@ -38,12 +38,17 @@ export function generatePlan(trip: Trip, closed: ReadonlySet<string> = new Set()
     const city = cityOf(cityForDate(trip, date));
     const prev = i > 0 ? cityForDate(trip, dates[i - 1]!) : city.id;
     const kind = dayKind(i, dates.length);
+    const moved = prev !== city.id;
+    // International flights land and leave at the hub, so a first or last city elsewhere needs a connection.
+    const offHub = city.id !== country.cities[0]?.id && (kind === 'arrival' || kind === 'departure');
     const day: DaySkeleton = {
       date,
       cityId: city.id,
-      movedFrom: prev !== city.id ? prev : undefined,
+      movedFrom: moved ? prev : undefined,
       kind,
       sun: sunTimes(date, city.lat, city.lon, city.timeZone),
+      ...(moved ? { moveHours: travelHours(cityOf(prev), city, country) } : {}),
+      ...(offHub ? { viaHub: city.hubHours ?? DEFAULT_HUB_HOURS } : {}),
     };
     // Only events the day's flights and moves leave time for.
     const [free, leave] = freeWindow(day, trip);

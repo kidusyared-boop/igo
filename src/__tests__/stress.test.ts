@@ -65,8 +65,13 @@ describe('stress test: 300 made-up trips', () => {
         const times = day.tasks.flatMap((x) => (x.time ? [x.time] : []));
         expect(new Set(times).size, `${where} ${day.date}: two tasks at the same time`).toBe(times.length);
         if (day.kind === 'full' && day.movedFrom) {
+          // Short moves leave the afternoon for one outing; long ones fill the day with travel.
+          const checkIn = toMinutes(day.tasks.find((x) => x.id.endsWith(':move-in'))!.time!);
           const outing = day.tasks.filter((x) => x.id.includes(':spot-') || x.id.endsWith(':settle-walk'));
-          expect(outing.length, `${where} ${day.date}: moving day with nothing to do after check-in`).toBeGreaterThan(0);
+          for (const x of outing) expect(toMinutes(x.time!), `${where} ${day.date}: ${x.title} before check-in`).toBeGreaterThan(checkIn);
+          if (checkIn <= toMinutes('14:30') && !day.tasks.some((x) => x.id.includes(':fest-'))) {
+            expect(outing.length, `${where} ${day.date}: moving day with nothing to do after check-in`).toBeGreaterThan(0);
+          }
         }
       }
       for (const task of plan.preTrip) expect(task.date < trip.startDate, `${where}: ${task.title}`).toBe(true);
