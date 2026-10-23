@@ -80,6 +80,14 @@ function spotIdOf(task: Task): string | undefined {
   return /^(?:spot|go)-(.+)$/.exec(origin(task)?.key ?? '')?.[1];
 }
 
+/** For the traveler's copy of a place task: which of the place's tasks it stands in for. */
+export function placeKeyOf(task: Task): { key: string; spotId: string } | undefined {
+  if (!task.replaces) return undefined;
+  const key = origin(task)?.key;
+  const spotId = spotIdOf(task);
+  return key && spotId ? { key, spotId } : undefined;
+}
+
 /** The place a place task is for: one of the traveler's own, or one igo picked. */
 export function spotOf(task: Task, trip: Trip, picked: Spot[]): Spot | undefined {
   const id = spotIdOf(task);
@@ -143,9 +151,13 @@ export function moveTask(
     // Drop an earlier copy: the plan task on the new day takes over.
     let next = original.replaces ? resetTask(trip, original.id) : trip;
     if (routeMove) {
-      // This journey and every later one move by the same number of days.
+      // This journey and every later one move by the same number of days, but never past the end of the trip.
       const shift = daysBetween(stop.date, edited.date);
+      if (edited.date <= trip.startDate || next.stops.some((s) => s.date >= stop.date && addDays(s.date, shift) > trip.endDate)) return trip;
+      if (next.stops.some((s) => s.date < stop.date && s.date >= edited.date)) return trip;
+      const shifted = new Set(next.stops.filter((s) => s.date >= stop.date).map((s) => s.date));
       next = { ...next, stops: next.stops.map((s) => (s.date >= stop.date ? { ...s, date: addDays(s.date, shift) } : s)) };
+      next = shiftJourneyCopies(next, shifted, shift);
     } else if (spot) {
       const pinned = { ...spot, date: edited.date };
       next = { ...next, spots: next.spots.some((s) => s.id === spot.id) ? next.spots.map((s) => (s.id === spot.id ? pinned : s)) : [...next.spots, pinned] };
@@ -165,6 +177,21 @@ export function moveTask(
   return next;
 }
 
+/** The traveler's edited copies of tasks on moving days go along when those journeys move. */
+function shiftJourneyCopies(trip: Trip, dates: Set<string>, shift: number): Trip {
+  const moves = new Map<string, string>();
+  const customTasks = trip.customTasks.map((t) => {
+    const o = t.replaces ? origin(t) : null;
+    if (!o || !ROUTE_KEYS.test(o.key) || !dates.has(o.date)) return t;
+    const date = addDays(o.date, shift);
+    const replaces = `auto:${date}:${o.key}`;
+    moves.set(t.replaces!, replaces);
+    return { ...t, date, replaces };
+  });
+  if (!moves.size) return trip;
+  return { ...trip, customTasks, hiddenIds: trip.hiddenIds.map((id) => moves.get(id) ?? id) };
+}
+
 /** The other half of a place task: leaving for a place, or the visit itself. */
 export function partnerOf(task: Task, dayTasks: Task[]): Task | undefined {
   const o = origin(task);
@@ -172,4 +199,17 @@ export function partnerOf(task: Task, dayTasks: Task[]): Task | undefined {
   if (!o || !id) return undefined;
   const key = o.key.startsWith('go-') ? `spot-${id}` : `go-${id}`;
   return dayTasks.find((t) => origin(t)?.key === key && t.date === task.date);
+}
+
+/**
+ * The first version of task editing saved a moved journey or place as a loose copy on the
+ * new day, which left the route and the rest of its tasks behind. Such copies are dropped
+ * and igo's tasks come back, so the plan is whole again and the move can be redone.
+ */
+export function dropLooseCopies(trip: Trip): Trip {
+  const loose = trip.customTasks.filter((t) => {
+    const o = t.replaces ? origin(t) : null;
+    return o && t.date !== o.date && (ROUTE_KEYS.test(o.key) || /^(spot|go)-/.test(o.key));
+  });
+  return loose.reduce((next, t) => resetTask(next, t.id), trip);
 }

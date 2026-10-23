@@ -3,7 +3,7 @@ import type { Spot, Task, Trip } from '../types';
 import { loadTombstones, loadTrips, saveTombstones, saveTrips } from '../services/storage';
 import type { Tombstone } from '../services/sync';
 import { sampleTrip } from '../data/sampleTrip';
-import { moveTask, resetTask, restoreHidden } from '../features/planner/taskEdits';
+import { resetTask, restoreHidden } from '../features/planner/taskEdits';
 
 type Action =
   | { type: 'upsert'; trip: Trip }
@@ -13,7 +13,6 @@ type Action =
   | { type: 'restoreHidden'; tripId: string }
   | { type: 'addTask'; tripId: string; task: Task }
   | { type: 'removeTask'; tripId: string; taskId: string }
-  | { type: 'editTask'; tripId: string; original: Task; edited: Task; spot?: Spot; partner?: Task }
   | { type: 'resetTask'; tripId: string; taskId: string }
   | { type: 'upsertSpot'; tripId: string; spot: Spot }
   | { type: 'removeSpot'; tripId: string; spotId: string }
@@ -52,8 +51,6 @@ function edit(trips: Trip[], action: Exclude<Action, { type: 'merge' }>): Trip[]
       return updateTrip(trips, action.tripId, (t) => ({ ...t, customTasks: [...t.customTasks, action.task] }));
     case 'removeTask':
       return updateTrip(trips, action.tripId, (t) => ({ ...t, customTasks: t.customTasks.filter((x) => x.id !== action.taskId) }));
-    case 'editTask':
-      return updateTrip(trips, action.tripId, (t) => moveTask(t, action.original, action.edited, action.spot, action.partner));
     case 'resetTask':
       return updateTrip(trips, action.tripId, (t) => resetTask(t, action.taskId));
     case 'upsertSpot':

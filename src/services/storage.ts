@@ -1,12 +1,13 @@
 import type { Trip } from '../types';
 import { findCity } from '../data/countries';
 import type { Tombstone } from './sync';
+import { dropLooseCopies } from '../features/planner/taskEdits';
 
 const KEY = 'igo.trips.v1';
 
 /** Fills in fields that trips saved by older versions of igo (here or on another device) don't have. */
 export function normalizeTrip(t: Trip): Trip {
-  return {
+  return dropLooseCopies({
     ...t,
     stops: t.stops ?? [],
     interests: t.interests ?? [],
@@ -23,7 +24,7 @@ export function normalizeTrip(t: Trip): Trip {
     hiddenIds: t.hiddenIds ?? [],
     customTasks: t.customTasks ?? [],
     spots: t.spots ?? [],
-  };
+  });
 }
 
 export function loadTrips(): Trip[] | null {
