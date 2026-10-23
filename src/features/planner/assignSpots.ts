@@ -2,10 +2,15 @@ import type { DayPlan, FestivalEvent, Light, Spot, Trip } from '../../types';
 import { dayCapacity, isMealSpot } from './personalize';
 import { addDays, toMinutes } from '../../utils/dates';
 import { eventWindow } from './festivals';
+import { findCountry } from '../../data/countries';
 
 export type DaySkeleton = Pick<DayPlan, 'date' | 'kind' | 'sun' | 'cityId' | 'movedFrom'> & {
   /** Festival events the traveler is in town for; nothing else is planned over them. */
   events?: FestivalEvent[];
+  /** Door-to-door hours of the move on a day that changes city. */
+  moveHours?: number;
+  /** On an arrival or departure day outside the hub: hours between this city and the hub's airport. */
+  viaHub?: number;
 };
 
 /** Whether a stretch of the day clashes with a festival event. */
@@ -16,7 +21,27 @@ export function clashesWithEvent(day: Pick<DaySkeleton, 'events'>, start: number
   });
 }
 
-export const MOVE_CHECK_IN = '14:00';
+/** Leaving on a moving day, after checking out at 08:00. */
+export const MOVE_DEPART = toMinutes('09:30');
+/** Latest check-in igo plans; longer journeys get a warning instead. */
+export const LATEST_CHECK_IN = toMinutes('21:00');
+
+/** Minute of check-in on a moving day: the journey's length after leaving at 09:30. */
+export function moveCheckIn(day: Pick<DaySkeleton, 'moveHours'>): number {
+  return Math.min(MOVE_DEPART + Math.round((day.moveHours ?? 4.5) * 60), LATEST_CHECK_IN);
+}
+
+/** Minute of check-in on arrival day: two hours after landing, plus the connection when the first city is not the hub. */
+export function arrivalCheckIn(day: Pick<DaySkeleton, 'viaHub'>, trip: Trip): number {
+  const landed = toMinutes(trip.arrivalTime);
+  return day.viaHub ? landed + 60 + Math.round(day.viaHub * 60) : landed + 120;
+}
+
+/** Minute to leave the stay on departure day: three hours before the flight, or earlier to get back to the hub first. */
+export function departureLeave(day: Pick<DaySkeleton, 'viaHub'>, trip: Trip): number {
+  const flight = toMinutes(trip.departureTime);
+  return day.viaHub ? flight - 120 - Math.round(day.viaHub * 60) : flight - 180;
+}
 
 /** How many spots of each light a day can hold. */
 const CAPACITY: Record<Light, number> = { sunrise: 1, any: 2, lunch: 1, sunset: 1, dinner: 1, night: 1 };
@@ -39,13 +64,13 @@ export function isEveOfEarlyFlight(day: Pick<DaySkeleton, 'date'>, trip: Trip): 
 export function freeWindow(day: DaySkeleton, trip: Trip): [number, number] {
   const start =
     day.kind === 'arrival' || day.kind === 'single'
-      ? toMinutes(trip.arrivalTime) + 180
+      ? arrivalCheckIn(day, trip) + 60
       : day.movedFrom
-        ? toMinutes(MOVE_CHECK_IN) + 60
+        ? moveCheckIn(day) + 60
         : 0;
   const end =
     day.kind === 'departure' || day.kind === 'single'
-      ? toMinutes(trip.departureTime) - 240
+      ? departureLeave(day, trip) - 60
       : isEveOfEarlyFlight(day, trip)
         ? toMinutes('19:00')
         : 24 * 60;
@@ -116,10 +141,17 @@ export function assignSpots(
   const count = (date: string) => (byDate.get(date) ?? []).filter((s) => !isMealSpot(s)).reduce((n, s) => n + weight(s), 0);
   const awayAllDay = (date: string) => (byDate.get(date) ?? []).some((s) => s.allDay);
   const order = (d: DaySkeleton) => (d.kind === 'full' && !d.movedFrom ? 0 : 1);
+  const keepsFast = trip.diets.includes('fasting');
+  const country = findCountry(trip.countryCode);
+  const fastingDay = (date: string) => Boolean(country?.dayNotes?.(date).some((n) => n.kind === 'fasting'));
+  // On fasting days someone keeping the fast only gets meals that serve fasting food.
+  const breaksFast = (spot: Spot, d: DaySkeleton) =>
+    keepsFast && isMealSpot(spot) && !spot.diets?.some((x) => x === 'fasting' || x === 'vegan') && fastingDay(d.date);
 
   // Whole-day trips need a full day in one place with nothing else in daylight.
   const roomFor = (spot: Spot, d: DaySkeleton) => {
     if (spot.weekdays && !spot.weekdays.includes(weekday(d.date))) return false;
+    if (breaksFast(spot, d)) return false;
     if (spot.allDay) {
       return d.kind === 'full' && !d.movedFrom && !d.events?.length && anySlots(d, trip).length === ANY_SLOTS.length && used(d.date, 'any') === 0 && used(d.date, 'sunset') === 0;
     }

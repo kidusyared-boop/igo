@@ -46,6 +46,10 @@ export interface City {
   /** Region-level safety note shown on every day spent there. */
   safety?: string;
   altitudeM?: number;
+  /** Door-to-door hours from the country's main hub, airport waits included. */
+  hubHours?: number;
+  /** Cities reached directly by road, without going back through the hub. */
+  roads?: { cityId: string; hours: number }[];
   lat: number;
   lon: number;
   timeZone: string;
@@ -158,6 +162,8 @@ export interface Spot {
   checked?: string;
   allDay?: boolean;
   weekdays?: number[];
+  /** For meals: diets the place reliably serves. */
+  diets?: Diet[];
 }
 
 export interface Trip {

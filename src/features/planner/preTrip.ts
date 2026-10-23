@@ -1,7 +1,7 @@
 import type { CountryPack, City, Task, Trip } from '../../types';
-import { addDays, formatDay } from '../../utils/dates';
+import { addDays, formatDay, toMinutes } from '../../utils/dates';
 import { findCity } from '../../data/countries';
-import { routeCities } from './route';
+import { DEFAULT_HUB_HOURS, routeCities } from './route';
 import { preferencePrep } from './preferences';
 import { diasporaPrep, needsVisa } from './diaspora';
 import { festivalPrep } from './festivals';
@@ -74,6 +74,27 @@ export function buildPreTripTasks(trip: Trip, country: CountryPack, city: City):
     tasks.push(task(trip, 21, 'route', {
       title: `Book every leg of your route: ${route}`,
       detail: moves.join(' '),
+      category: 'prep',
+    }));
+  }
+
+  // International flights use the hub, so a route that starts or ends elsewhere needs a connection.
+  const hub = country.cities[0];
+  const last = findCity(trip.countryCode, legs.at(-1)!.cityId) ?? city;
+  if (hub && city.id !== hub.id) {
+    tasks.push(task(trip, 21, 'start-hub', {
+      title: `Book your connection from ${hub.name} to ${city.name}`,
+      detail: `International flights land in ${hub.name}. ${city.access ?? ''}`.trim(),
+      category: 'prep',
+    }));
+  }
+  if (hub && last.id !== hub.id) {
+    const leave = toMinutes(trip.departureTime) - 120 - Math.round((last.hubHours ?? DEFAULT_HUB_HOURS) * 60);
+    tasks.push(task(trip, 21, 'end-hub', {
+      title: `Book your way back to ${hub.name} for your flight home`,
+      detail: leave < toMinutes('05:00')
+        ? `Your flight home leaves from ${hub.name} too early to reach from ${last.name} that morning. Plan your last night in ${hub.name}.`
+        : `Your flight home leaves from ${hub.name}; be at the airport 3 hours before it. From ${last.name}: ${last.access ?? ''}`.trim(),
       category: 'prep',
     }));
   }
