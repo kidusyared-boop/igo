@@ -219,6 +219,7 @@ export const am: Record<keyof typeof en, string> = {
   'check.wrongLight': '{title} ለእሱ በማይሆን የቀን ሰዓት ላይ ይሆናል።',
   'check.movedBefore': '{title} ከ{other} በፊት ይመጣል።',
   'check.movedAfter': '{title} ከ{other} በኋላ ይመጣል።',
+  'check.onTheRoad': '{title} በጉዞ ላይ እያሉ፣ ከ"{other}" በፊት ይሆናል።',
   'check.afterAirport': '{title} ወደ አየር ማረፊያ ከተነሱ በኋላ ይሆናል።',
   'check.goAfterVisit': '{title} ከሚወስደው ጉብኝት በኋላ ይመጣል።',
   'check.twice': '{title} በሁለት ቀናት ላይ ይሆናል።',

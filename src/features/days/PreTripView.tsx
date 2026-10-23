@@ -10,7 +10,7 @@ interface PreTripViewProps {
   doneIds: Set<string>;
   onToggle: (taskId: string) => void;
   onOpen: (task: Task) => void;
-  onAdd: (task: Task) => void;
+  onAdd: (task: Task) => boolean | void;
   addDate: string;
 }
 
