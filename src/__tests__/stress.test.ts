@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { generatePlan } from '../features/planner/generatePlan';
+import { checkPlan } from '../features/planner/checkPlan';
 import { buildReminders } from '../features/reminders/buildReminders';
 import { buildIcs } from '../services/ics';
 import { validateTrip } from '../features/trips/tripDraft';
@@ -41,6 +42,7 @@ describe('stress test: 300 made-up trips', () => {
     expect(trips.length).toBeGreaterThan(200);
     for (const trip of trips) {
       const plan = generatePlan(trip);
+      expect(checkPlan(trip, plan), trip.id).toEqual([]);
       const where = `${trip.id} (${trip.startDate}..${trip.endDate}, lands ${trip.arrivalTime}, leaves ${trip.departureTime})`;
       expect(plan.days, where).toHaveLength(daysBetween(trip.startDate, trip.endDate) + 1);
       const ids = new Set<string>();

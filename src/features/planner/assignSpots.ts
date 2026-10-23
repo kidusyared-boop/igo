@@ -130,11 +130,15 @@ export function assignSpots(
   const byDate = new Map<string, Spot[]>(days.map((d) => [d.date, []]));
   const unscheduled: Spot[] = [];
 
+  const inCity = (spot: Spot, day: DaySkeleton) => (spot.cityId ?? trip.cityId) === day.cityId;
+  // A pin only holds while the route still has the traveler in that city that day.
+  const dayOf = new Map(days.map((d) => [d.date, d]));
+  const pinned = (spot: Spot) => Boolean(spot.date && dayOf.has(spot.date) && inCity(spot, dayOf.get(spot.date)!));
+
   for (const spot of trip.spots) {
-    if (spot.date && byDate.has(spot.date)) byDate.get(spot.date)?.push(spot);
+    if (pinned(spot)) byDate.get(spot.date!)?.push(spot);
   }
 
-  const inCity = (spot: Spot, day: DaySkeleton) => (spot.cityId ?? trip.cityId) === day.cityId;
   const used = (date: string, light: Light) => (byDate.get(date) ?? []).filter((s) => s.light === light).length;
   // A whole-day trip counts as two places against the pace limit.
   const weight = (spot: Spot) => (spot.allDay ? 2 : 1);
@@ -175,7 +179,7 @@ export function assignSpots(
   };
 
   for (const spot of trip.spots) {
-    if (spot.date && byDate.has(spot.date)) continue;
+    if (pinned(spot)) continue;
     if (!place(spot, false)) unscheduled.push(spot);
   }
   for (const spot of picked) place(spot, true);

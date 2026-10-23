@@ -1,12 +1,14 @@
 import type { Trip } from '../types';
 import { findCity } from '../data/countries';
 import type { Tombstone } from './sync';
+import { dropLooseCopies } from '../features/planner/taskEdits';
+import { repairTrip } from '../features/planner/checkPlan';
 
 const KEY = 'igo.trips.v1';
 
 /** Fills in fields that trips saved by older versions of igo (here or on another device) don't have. */
 export function normalizeTrip(t: Trip): Trip {
-  return {
+  const trip = dropLooseCopies({
     ...t,
     stops: t.stops ?? [],
     interests: t.interests ?? [],
@@ -23,7 +25,9 @@ export function normalizeTrip(t: Trip): Trip {
     hiddenIds: t.hiddenIds ?? [],
     customTasks: t.customTasks ?? [],
     spots: t.spots ?? [],
-  };
+  });
+  // Trips in countries igo no longer offers have no plan to check.
+  return findCity(trip.countryCode, trip.cityId) ? repairTrip(trip) : trip;
 }
 
 export function loadTrips(): Trip[] | null {

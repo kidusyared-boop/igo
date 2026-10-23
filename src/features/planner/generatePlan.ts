@@ -8,6 +8,7 @@ import { buildPreTripTasks } from './preTrip';
 import { DEFAULT_HUB_HOURS, cityForDate, travelDetail, travelHours } from './route';
 import { pickPlaces, placeKey } from './personalize';
 import { festivalEventsByDate } from './festivals';
+import { placeKeyOf } from './taskEdits';
 
 function dayKind(index: number, total: number): DayPlan['kind'] {
   if (total === 1) return 'single';
@@ -62,12 +63,25 @@ export function generatePlan(trip: Trip, closed: ReadonlySet<string> = new Set()
 
   const hidden = new Set(trip.hiddenIds);
   const visible = (t: Task) => !hidden.has(t.id);
-  const custom = (date: string) => trip.customTasks.filter((t) => t.date === date);
+  // The traveler's tasks dated after a trip that has since been shortened stay in sight on its last day.
+  const lastDay = dates[dates.length - 1];
+  // The traveler's edited copy of a place task follows the place to whatever day it is planned on.
+  const spotDate = new Map([...byDate.entries()].flatMap(([date, spots]) => spots.map((s) => [s.id, date] as const)));
+  const placeCopies = new Map(trip.customTasks.flatMap((t) => {
+    const key = placeKeyOf(t);
+    return key ? [[key.key, { task: t, spotId: key.spotId }] as const] : [];
+  }));
+  const loose = trip.customTasks.filter((t) => !placeKeyOf(t));
+  const custom = (date: string) => [
+    ...loose.flatMap((t) => (t.date === date ? [t] : date === lastDay && t.date > date ? [{ ...t, date }] : [])),
+    ...[...placeCopies.values()].flatMap(({ task, spotId }) => (spotDate.get(spotId) === date ? [{ ...task, date }] : [])),
+  ];
+  const keyOf = (t: Task) => t.id.replace(/^auto:\d{4}-\d{2}-\d{2}:/, '');
 
   const days: DayPlan[] = skeletons.map((day, i) => {
     const city = cityOf(day.cityId);
     const fromCity = day.movedFrom ? cityOf(day.movedFrom) : undefined;
-    const auto = buildDayTasks({ trip, country, city, fromCity, day, spots: byDate.get(day.date) ?? [] });
+    const auto = buildDayTasks({ trip, country, city, fromCity, day, spots: byDate.get(day.date) ?? [] }).filter((t) => !placeCopies.has(keyOf(t)));
     const notes: DayNote[] = [
       ...(fromCity ? [{ kind: 'move' as const, text: `Moving from ${fromCity.name} to ${city.name}. ${travelDetail(fromCity, city, country) ?? ''}`.trim() }] : []),
       ...(country.dayNotes?.(day.date) ?? []),

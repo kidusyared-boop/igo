@@ -5,7 +5,7 @@ import type { Task, Trip } from '../../types';
 import type { TripDispatch } from '../../hooks/useTrips';
 import { findCity, findCountry } from '../../data/countries';
 import { generatePlan } from '../planner/generatePlan';
-import { addDays, todayIso } from '../../utils/dates';
+import { addDays, formatDay, todayIso } from '../../utils/dates';
 import { buildIcs } from '../../services/ics';
 import { saveTextFile } from '../../services/saveFile';
 import { addTripToPhoneCalendar, removeTripFromPhoneCalendar } from '../../services/phoneCalendar';
@@ -13,6 +13,9 @@ import { ReminderOffer } from '../reminders/ReminderControls';
 import { DayStrip } from '../days/DayStrip';
 import { DayView } from '../days/DayView';
 import { PreTripView } from '../days/PreTripView';
+import { TaskSheet } from '../days/TaskSheet';
+import { allowedDays, hiddenByTraveler, routeStop, spotOf } from '../planner/taskEdits';
+import { tryEdit } from '../planner/checkPlan';
 import { SpotsView } from '../spots/SpotsView';
 import { CountryBrief } from '../country/CountryBrief';
 import { BookingsView } from '../bookings/BookingsView';
@@ -52,8 +55,10 @@ export function TripView({ trip, dispatch, onBack, onEdit, notify, justCreated =
   const [tab, setTab] = useState<TripTab>(today < trip.startDate && !justCreated ? 'before' : 'days');
   const [selected, setSelected] = useState(today >= trip.startDate && today <= trip.endDate ? today : trip.startDate);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [editing, setEditing] = useState<Task | null>(null);
   const doneIds = useMemo(() => new Set(trip.doneIds), [trip.doneIds]);
   const closeMenu = useCallback(() => setMenuOpen(false), []);
+  const closeEditor = useCallback(() => setEditing(null), []);
 
   if (!country || !city) {
     return <div className="empty"><p>{t('trip.unsupported')}</p><button className="btn" onClick={onBack}>{t('trip.back')}</button></div>;
@@ -66,6 +71,32 @@ export function TripView({ trip, dispatch, onBack, onEdit, notify, justCreated =
   const add = (task: Task) => dispatch({ type: 'addTask', tripId: id, task });
   const remove = (task: Task) =>
     task.source === 'user' ? dispatch({ type: 'removeTask', tripId: id, taskId: task.id }) : dispatch({ type: 'hide', tripId: id, taskId: task.id });
+  const cityName = (cityId: string) => findCity(trip.countryCode, cityId)?.name ?? city.name;
+  const editSpot = editing ? spotOf(editing, trip, plan.pickedSpots.map((p) => p.spot)) : undefined;
+  const editStop = editing ? routeStop(trip, editing) : undefined;
+  // A journey's tasks show the day the route has it on; anything else keeps its own day in the list.
+  const sheetTask = editing && editStop ? { ...editing, date: editStop.date } : editing;
+  const allowed = new Set(editing ? [...(editStop || editSpot ? [] : [editing.date]), ...allowedDays(trip, editing, plan.days, editSpot)] : []);
+  if (sheetTask) allowed.add(sheetTask.date);
+  const dayOptions = plan.days.filter((d) => allowed.has(d.date)).map((d) => ({ date: d.date, label: `${formatDay(d.date)} · ${cityName(d.cityId)}` }));
+  const linkHint = editStop
+    ? t('edit.routeHint', { city: cityName(editStop.cityId) })
+    : editSpot
+      ? t('edit.placeHint', { place: editSpot.name })
+      : undefined;
+
+  function saveEdit(original: Task, edited: Task) {
+    const result = tryEdit(trip, plan, original, edited, closed);
+    if ('problem' in result) {
+      const p = result.problem;
+      return notify(t('check.refused', { reason: t(`check.${p.code}`, { title: p.title, city: p.cityId ? cityName(p.cityId) : '', other: p.other ?? '' }) }));
+    }
+    dispatch({ type: 'upsert', trip: result.trip });
+    setEditing(null);
+    if (edited.date === original.date && !editStop) return;
+    if (editStop && edited.date === editStop.date) return;
+    notify(editStop ? t('toast.routeMoved', { city: cityName(editStop.cityId), day: formatDay(edited.date) }) : t('toast.taskMoved', { day: formatDay(edited.date) }));
+  }
 
   async function exportIcs() {
     try {
@@ -96,7 +127,7 @@ export function TripView({ trip, dispatch, onBack, onEdit, notify, justCreated =
       {menuOpen && (
         <TripMenu
           title={trip.name}
-          hiddenCount={trip.hiddenIds.length}
+          hiddenCount={hiddenByTraveler(trip).length}
           onClose={closeMenu}
           onEdit={onEdit}
           onExport={exportIcs}
@@ -125,11 +156,24 @@ export function TripView({ trip, dispatch, onBack, onEdit, notify, justCreated =
             cityName={findCity(trip.countryCode, day.cityId)?.name ?? city.name}
             localClock={country.localClock}
             localDate={country.localDate?.(day.date)}
-            doneIds={doneIds} onToggle={toggle} onRemove={remove} onAdd={add} />
+            doneIds={doneIds} onToggle={toggle} onOpen={setEditing} onAdd={add} />
         </>
       )}
       {tab === 'before' && (
-        <PreTripView tasks={plan.preTrip} startDate={trip.startDate} doneIds={doneIds} onToggle={toggle} onRemove={remove} onAdd={add} addDate={addDays(trip.startDate, -1)} />
+        <PreTripView tasks={plan.preTrip} startDate={trip.startDate} doneIds={doneIds} onToggle={toggle} onOpen={setEditing} onAdd={add} addDate={addDays(trip.startDate, -1)} />
+      )}
+      {editing && sheetTask && (
+        <TaskSheet
+          key={editing.id}
+          task={sheetTask}
+          days={editing.date < trip.startDate ? undefined : dayOptions}
+          latest={addDays(trip.startDate, -1)}
+          linkHint={linkHint}
+          onSave={(edited) => saveEdit(sheetTask, edited)}
+          onRemove={() => { remove(editing); setEditing(null); }}
+          onReset={() => { dispatch({ type: 'resetTask', tripId: id, taskId: editing.id }); setEditing(null); }}
+          onClose={closeEditor}
+        />
       )}
       {tab === 'spots' && (
         <SpotsView
