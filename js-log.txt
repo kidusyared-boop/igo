@@ -1,0 +1,110 @@
+console.startGroupCollapsed %cnative %cApp.addListener (#44529617) font-weight: lighter; color: gray font-weight: bold; color: #000
+console.dir Object
+console.endGroup console.groupEnd
+console.startGroupCollapsed %cnative %cApp.addListener (#44529618) font-weight: lighter; color: gray font-weight: bold; color: #000
+console.dir Object
+console.endGroup console.groupEnd
+console.startGroupCollapsed %cnative %cLocalNotifications.addListener (#44529619) font-weight: lighter; color: gray font-weight: bold; color: #000
+console.dir Object
+console.endGroup console.groupEnd
+console.startGroupCollapsed %cnative %cStatusBar.setStyle (#44529620) font-weight: lighter; color: gray font-weight: bold; color: #000
+console.dir Object
+console.endGroup console.groupEnd
+console.startGroupCollapsed %cnative %cStatusBar.setBackgroundColor (#44529621) font-weight: lighter; color: gray font-weight: bold; color: #000
+console.dir Object
+console.endGroup console.groupEnd
+console.startGroupCollapsed %cresult %cStatusBar.setStyle (#44529620) font-style: italic; font-weight: lighter; color: gray font-style: italic; font-weight: bold; color: #444
+console.dir 
+console.endGroup console.groupEnd
+console.startGroupCollapsed %cresult %cStatusBar.setBackgroundColor (#44529621) font-style: italic; font-weight: lighter; color: gray font-style: italic; font-weight: bold; color: #444
+console.dir 
+console.endGroup console.groupEnd
+shot 01-launch: igo ETHIOPIA · TRIP PLANNER PLAN YOUR ETHIOPIA TRIP Visa, eSIM and arrival sorted before you fly Shoots timed to the best light Reminders for every day of the t
+console.startGroupCollapsed %cnative %cStatusBar.setStyle (#44529622) font-weight: lighter; color: gray font-weight: bold; color: #000
+console.dir Object
+console.endGroup console.groupEnd
+console.startGroupCollapsed %cnative %cStatusBar.setBackgroundColor (#44529623) font-weight: lighter; color: gray font-weight: bold; color: #000
+console.dir Object
+console.endGroup console.groupEnd
+tapped Addis and Harar
+console.startGroupCollapsed %cresult %cStatusBar.setStyle (#44529622) font-style: italic; font-weight: lighter; color: gray font-style: italic; font-weight: bold; color: #444
+console.dir 
+console.endGroup console.groupEnd
+console.startGroupCollapsed %cresult %cStatusBar.setBackgroundColor (#44529623) font-style: italic; font-weight: lighter; color: gray font-style: italic; font-weight: bold; color: #444
+console.dir 
+console.endGroup console.groupEnd
+shot 02-example-trip: ADDIS AND HARAR (EXAMPLE) BEFORE YOU GO 0/21 done SUN, SEP 20 · 45 DAYS BEFORE PREP Check your government's travel advice for every region on your route Parts o
+tapped Before you go
+shot 03-before-you-go: ADDIS AND HARAR (EXAMPLE) BEFORE YOU GO 0/21 done SUN, SEP 20 · 45 DAYS BEFORE PREP Check your government's travel advice for every region on your route Parts o
+tapped Places
+shot 04-places: ADDIS AND HARAR (EXAMPLE) PLACES PICKED FOR YOU Dinner and dancing at Yod Abyssinia Addis Ababa · Dinner · Wed, Nov 4 Because you like restaurants and food, loc
+tapped Country
+shot 05-country: ADDIS AND HARAR (EXAMPLE) ETHIOPIA BRIEF Reviewed 2026-10. Entry, safety and drone rules change often. Confirm on the official e-Visa site and your government's
+tapped Days
+shot 06-days: ADDIS AND HARAR (EXAMPLE) Planned for city life restaurants and food coffee local culture historic sites balanced pace mid-range budget Change Get a reminder on
+tapped Trip options
+shot 07-trip-menu: ADDIS AND HARAR (EXAMPLE) ADDIS AND HARAR (EXAMPLE) Edit trip Add to my calendar Share calendar file (.ics) Turn on reminders Delete trip Planned for city life 
+console.startGroupCollapsed %cnative %cStatusBar.setStyle (#44529624) font-weight: lighter; color: gray font-weight: bold; color: #000
+console.dir Object
+console.endGroup console.groupEnd
+console.startGroupCollapsed %cnative %cStatusBar.setBackgroundColor (#44529625) font-weight: lighter; color: gray font-weight: bold; color: #000
+console.dir Object
+console.endGroup console.groupEnd
+tapped All trips
+console.startGroupCollapsed %cresult %cStatusBar.setStyle (#44529624) font-style: italic; font-weight: lighter; color: gray font-style: italic; font-weight: bold; color: #444
+console.dir 
+console.endGroup console.groupEnd
+console.startGroupCollapsed %cresult %cStatusBar.setBackgroundColor (#44529625) font-style: italic; font-weight: lighter; color: gray font-style: italic; font-weight: bold; color: #444
+console.dir 
+console.endGroup console.groupEnd
+shot 08-back-to-list: igo ETHIOPIA · TRIP PLANNER PLAN YOUR ETHIOPIA TRIP Visa, eSIM and arrival sorted before you fly Shoots timed to the best light Reminders for every day of the t
+console.startGroupCollapsed %cnative %cStatusBar.setStyle (#44529626) font-weight: lighter; color: gray font-weight: bold; color: #000
+console.dir Object
+console.endGroup console.groupEnd
+console.startGroupCollapsed %cnative %cStatusBar.setBackgroundColor (#44529627) font-weight: lighter; color: gray font-weight: bold; color: #000
+console.dir Object
+console.endGroup console.groupEnd
+tapped New trip
+console.startGroupCollapsed %cresult %cStatusBar.setStyle (#44529626) font-style: italic; font-weight: lighter; color: gray font-style: italic; font-weight: bold; color: #444
+console.dir 
+console.endGroup console.groupEnd
+console.startGroupCollapsed %cresult %cStatusBar.setBackgroundColor (#44529627) font-style: italic; font-weight: lighter; color: gray font-style: italic; font-weight: bold; color: #444
+console.dir 
+console.endGroup console.groupEnd
+shot 09-new-trip-form: NEW TRIP Trip name Leave empty to use the city and date. First city Addis Ababa Lalibela Gondar Bahir Dar Simien Mountains (Debark) Axum Harar Hawassa Arba Minc
+tapped Content creator
+shot 10-creator: NEW TRIP Trip name Leave empty to use the city and date. First city Addis Ababa Lalibela Gondar Bahir Dar Simien Mountains (Debark) Axum Harar Hawassa Arba Minc
+tapped Build my plan
+shot 11-day-1: ADDIS ABABA, NOV 6 Planned for city life restaurants and food historic sites local culture balanced pace mid-range budget Change Get a reminder on this phone 30
+console.startGroupCollapsed %cnative %cLocalNotifications.requestPermissions (#44529628) font-weight: lighter; color: gray font-weight: bold; color: #000
+console.dir Object
+console.endGroup console.groupEnd
+tapped Turn on reminders
+console.startGroupCollapsed %cresult %cLocalNotifications.requestPermissions (#44529628) font-style: italic; font-weight: lighter; color: gray font-style: italic; font-weight: bold; color: #444
+console.dir Object
+console.endGroup console.groupEnd
+console.startGroupCollapsed %cnative %cLocalNotifications.schedule (#44529629) font-weight: lighter; color: gray font-weight: bold; color: #000
+console.dir Object
+console.endGroup console.groupEnd
+console.startGroupCollapsed %cresult %cLocalNotifications.schedule (#44529629) font-style: italic; font-weight: lighter; color: gray font-style: italic; font-weight: bold; color: #444
+console.dir Object
+console.endGroup console.groupEnd
+console.startGroupCollapsed %cnative %cLocalNotifications.checkPermissions (#44529630) font-weight: lighter; color: gray font-weight: bold; color: #000
+console.dir Object
+console.endGroup console.groupEnd
+console.startGroupCollapsed %cresult %cLocalNotifications.checkPermissions (#44529630) font-style: italic; font-weight: lighter; color: gray font-style: italic; font-weight: bold; color: #444
+console.dir Object
+console.endGroup console.groupEnd
+console.startGroupCollapsed %cnative %cLocalNotifications.getPending (#44529631) font-weight: lighter; color: gray font-weight: bold; color: #000
+console.dir Object
+console.endGroup console.groupEnd
+console.startGroupCollapsed %cresult %cLocalNotifications.getPending (#44529631) font-style: italic; font-weight: lighter; color: gray font-style: italic; font-weight: bold; color: #444
+console.dir Object
+console.endGroup console.groupEnd
+console.startGroupCollapsed %cnative %cLocalNotifications.schedule (#44529632) font-weight: lighter; color: gray font-weight: bold; color: #000
+console.dir Object
+console.endGroup console.groupEnd
+console.startGroupCollapsed %cresult %cLocalNotifications.schedule (#44529632) font-style: italic; font-weight: lighter; color: gray font-style: italic; font-weight: bold; color: #444
+console.dir Object
+console.endGroup console.groupEnd
+shot 12-reminders-on: ADDIS ABABA, NOV 6 Planned for city life restaurants and food historic sites local culture balanced pace mid-range budget Change FRI 6 SAT 7 SUN 8 MON 9 TUE 10 

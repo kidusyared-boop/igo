@@ -1,0 +1,124 @@
+10-23 19:37:12.619   519   550 I ActivityManager: Start proc 3561:com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0/u0ai9000 for  {app.igo.ethiopia/org.chromium.content.app.SandboxedProcessService0:0}
+10-23 19:37:12.959  3230  3550 W chromium: [WARNING:dns_config_service_android.cc(115)] Failed to read DnsConfig.
+10-23 19:37:13.061  3561  3561 I cr_WebViewApkApp: Launched version=113.0.5672.136 minSdkVersion=29 isBundle=false processName=com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0
+10-23 19:37:13.476  3230  3581 E chromium: [ERROR:simple_file_enumerator.cc(21)] opendir /data/user/0/app.igo.ethiopia/cache/WebView/Default/HTTP Cache/Code Cache/wasm: No such file or directory (2)
+10-23 19:37:13.476  3230  3581 E chromium: [ERROR:simple_index_file.cc(614)] Could not reconstruct index from disk
+10-23 19:37:13.476  3230  3605 E chromium: [ERROR:simple_file_enumerator.cc(21)] opendir /data/user/0/app.igo.ethiopia/cache/WebView/Default/HTTP Cache/Code Cache/js: No such file or directory (2)
+10-23 19:37:13.476  3230  3605 E chromium: [ERROR:simple_index_file.cc(614)] Could not reconstruct index from disk
+10-23 19:37:13.809   519   550 I ActivityManager: Start proc 3663:com.google.android.webview:webview_apk/u0a133 for service {com.google.android.webview/org.chromium.android_webview.nonembedded.AwComponentUpdateService}
+10-23 19:37:13.843  3230  3230 D Capacitor: Starting BridgeActivity
+10-23 19:37:13.960  3230  3230 D Capacitor: Registering plugin instance: CapacitorCookies
+10-23 19:37:13.965  3230  3230 D Capacitor: Registering plugin instance: WebView
+10-23 19:37:13.972  3230  3230 D Capacitor: Registering plugin instance: CapacitorHttp
+10-23 19:37:13.976  3230  3230 D Capacitor: Registering plugin instance: App
+10-23 19:37:13.981  3230  3230 D Capacitor: Registering plugin instance: Filesystem
+10-23 19:37:13.984  3230  3230 D Capacitor: Registering plugin instance: LocalNotifications
+10-23 19:37:14.000  3230  3230 D Capacitor: Registering plugin instance: Share
+10-23 19:37:14.006  3230  3230 D Capacitor: Registering plugin instance: SplashScreen
+10-23 19:37:14.013  3230  3230 D Capacitor: Registering plugin instance: StatusBar
+10-23 19:37:14.020  3230  3230 V Capacitor/StatusBarPlugin: Notifying listeners for event statusBarOverlayChanged
+10-23 19:37:14.020  3230  3230 D Capacitor/StatusBarPlugin: No listeners found for event statusBarOverlayChanged
+10-23 19:37:14.021  3230  3230 V Capacitor/StatusBarPlugin: Notifying listeners for event statusBarOverlayChanged
+10-23 19:37:14.021  3230  3230 D Capacitor/StatusBarPlugin: No listeners found for event statusBarOverlayChanged
+10-23 19:37:14.022  3230  3230 D Capacitor: Registering plugin instance: CapacitorCalendar
+10-23 19:37:14.116  3230  3230 W Capacitor: Unable to read file at path public/plugins
+10-23 19:37:14.122  3230  3230 D Capacitor: Loading app at https://localhost
+10-23 19:37:14.410  3230  3230 D Capacitor: App started
+10-23 19:37:14.437  3230  3230 D Capacitor/AppPlugin: Firing change: true
+10-23 19:37:14.437  3230  3230 V Capacitor/AppPlugin: Notifying listeners for event appStateChange
+10-23 19:37:14.437  3230  3230 D Capacitor/AppPlugin: No listeners found for event appStateChange
+10-23 19:37:14.438  3230  3230 D Capacitor: App resumed
+10-23 19:37:14.547  3230  3549 D Capacitor: Handling local request: https://localhost/
+10-23 19:37:14.969  3230  3549 D Capacitor: Handling local request: https://localhost/assets/index-CR_iWiyp.js
+10-23 19:37:14.987  3230  3581 D Capacitor: Handling local request: https://localhost/assets/index-DSi3YVig.css
+10-23 19:37:15.674  3663  3804 W cr_AWNetworkFetcherTask: 	at org.chromium.android_webview.nonembedded.NetworkFetcherTask.download(chromium-TrichromeWebViewGoogle6432.apk-stable-567263637:48)
+10-23 19:37:16.734  3230  3559 D Capacitor: Handling local request: https://localhost/assets/big-shoulders-display-latin-800-normal-DDUD9Xuh.woff2
+10-23 19:37:16.736  3230  3605 D Capacitor: Handling local request: https://localhost/assets/ibm-plex-sans-latin-600-normal-CuJfVYMP.woff2
+10-23 19:37:16.743  3230  3549 D Capacitor: Handling local request: https://localhost/assets/ibm-plex-mono-latin-600-normal-BgSNZQsw.woff2
+10-23 19:37:16.766  3230  3622 D Capacitor: Handling local request: https://localhost/assets/big-shoulders-display-latin-700-normal-KM2fueoL.woff2
+10-23 19:37:16.775  3230  3581 D Capacitor: Handling local request: https://localhost/assets/ibm-plex-sans-latin-400-normal-CDDApCn2.woff2
+10-23 19:37:16.798  3230  3559 D Capacitor: Handling local request: https://localhost/icon.svg
+10-23 19:37:16.809  3230  3230 V Capacitor/Plugin: To native (Capacitor plugin): callbackId: 44529617, pluginId: App, methodName: addListener
+10-23 19:37:16.810  3230  3230 V Capacitor: callback: 44529617, pluginId: App, methodName: addListener, methodData: {"eventName":"backButton"}
+10-23 19:37:16.810  3230  3230 V Capacitor/Plugin: To native (Capacitor plugin): callbackId: 44529618, pluginId: App, methodName: addListener
+10-23 19:37:16.810  3230  3230 V Capacitor: callback: 44529618, pluginId: App, methodName: addListener, methodData: {"eventName":"resume"}
+10-23 19:37:16.811  3230  3230 V Capacitor/Plugin: To native (Capacitor plugin): callbackId: 44529619, pluginId: LocalNotifications, methodName: addListener
+10-23 19:37:16.811  3230  3230 V Capacitor: callback: 44529619, pluginId: LocalNotifications, methodName: addListener, methodData: {"eventName":"localNotificationActionPerformed"}
+10-23 19:37:16.812  3230  3230 V Capacitor/Plugin: To native (Capacitor plugin): callbackId: 44529620, pluginId: StatusBar, methodName: setStyle
+10-23 19:37:16.812  3230  3230 V Capacitor: callback: 44529620, pluginId: StatusBar, methodName: setStyle, methodData: {"style":"DARK"}
+10-23 19:37:16.813  3230  3230 V Capacitor/Plugin: To native (Capacitor plugin): callbackId: 44529621, pluginId: StatusBar, methodName: setBackgroundColor
+10-23 19:37:16.813  3230  3230 V Capacitor: callback: 44529621, pluginId: StatusBar, methodName: setBackgroundColor, methodData: {"color":"#1d2a4d"}
+10-23 19:37:16.860  3230  3549 D Capacitor: Handling local request: https://localhost/icon.svg
+10-23 19:37:19.094  3230  3230 I Capacitor/Console: File:  - Line 333 - Msg: undefined
+10-23 19:37:19.095  3230  3230 I Capacitor/Console: File:  - Line 333 - Msg: undefined
+10-23 19:37:26.151  3230  3230 V Capacitor/Plugin: To native (Capacitor plugin): callbackId: 44529622, pluginId: StatusBar, methodName: setStyle
+10-23 19:37:26.152  3230  3230 V Capacitor: callback: 44529622, pluginId: StatusBar, methodName: setStyle, methodData: {"style":"LIGHT"}
+10-23 19:37:26.154  3230  3230 V Capacitor/Plugin: To native (Capacitor plugin): callbackId: 44529623, pluginId: StatusBar, methodName: setBackgroundColor
+10-23 19:37:26.154  3230  3230 V Capacitor: callback: 44529623, pluginId: StatusBar, methodName: setBackgroundColor, methodData: {"color":"#eef1f5"}
+10-23 19:37:26.205  3230  3549 D Capacitor: Handling local request: https://localhost/assets/ibm-plex-sans-latin-500-normal-6ng42L7E.woff2
+10-23 19:37:26.220  3230  3549 D Capacitor: Handling local request: https://localhost/assets/ibm-plex-mono-latin-500-normal-DSY6xOcd.woff2
+10-23 19:37:26.363  3230  3230 I Capacitor/Console: File:  - Line 333 - Msg: undefined
+10-23 19:37:26.389  3230  3230 I Capacitor/Console: File:  - Line 333 - Msg: undefined
+10-23 19:37:44.910  3230  3230 V Capacitor/Plugin: To native (Capacitor plugin): callbackId: 44529624, pluginId: StatusBar, methodName: setStyle
+10-23 19:37:44.910  3230  3230 V Capacitor: callback: 44529624, pluginId: StatusBar, methodName: setStyle, methodData: {"style":"DARK"}
+10-23 19:37:44.910  3230  3230 V Capacitor/Plugin: To native (Capacitor plugin): callbackId: 44529625, pluginId: StatusBar, methodName: setBackgroundColor
+10-23 19:37:44.910  3230  3230 V Capacitor: callback: 44529625, pluginId: StatusBar, methodName: setBackgroundColor, methodData: {"color":"#1d2a4d"}
+10-23 19:37:44.969  3230  3230 I Capacitor/Console: File:  - Line 333 - Msg: undefined
+10-23 19:37:44.970  3230  3230 I Capacitor/Console: File:  - Line 333 - Msg: undefined
+10-23 19:37:47.989  3230  3230 V Capacitor/Plugin: To native (Capacitor plugin): callbackId: 44529626, pluginId: StatusBar, methodName: setStyle
+10-23 19:37:47.990  3230  3230 V Capacitor: callback: 44529626, pluginId: StatusBar, methodName: setStyle, methodData: {"style":"LIGHT"}
+10-23 19:37:47.996  3230  3230 V Capacitor/Plugin: To native (Capacitor plugin): callbackId: 44529627, pluginId: StatusBar, methodName: setBackgroundColor
+10-23 19:37:47.996  3230  3230 V Capacitor: callback: 44529627, pluginId: StatusBar, methodName: setBackgroundColor, methodData: {"color":"#eef1f5"}
+10-23 19:37:47.999  3230  3230 I Capacitor/Console: File:  - Line 333 - Msg: undefined
+10-23 19:37:48.146  3230  3230 I Capacitor/Console: File:  - Line 333 - Msg: undefined
+10-23 19:37:50.536  4579  5084 I cr_CronetUrlRequestContext: destroyNativeStreamLocked org.chromium.net.impl.CronetBidirectionalStream@dfac438
+10-23 19:37:56.691  3230  3230 V Capacitor/Plugin: To native (Capacitor plugin): callbackId: 44529628, pluginId: LocalNotifications, methodName: requestPermissions
+10-23 19:37:56.693  3230  3230 V Capacitor: callback: 44529628, pluginId: LocalNotifications, methodName: requestPermissions, methodData: {}
+10-23 19:37:56.719  3230  3230 V Capacitor/Plugin: To native (Capacitor plugin): callbackId: 44529629, pluginId: LocalNotifications, methodName: schedule
+10-23 19:37:56.720  3230  3230 V Capacitor: callback: 44529629, pluginId: LocalNotifications, methodName: schedule, methodData: {"notifications":[{"id":340936049,"title":"Reminders are working","body":"Like this one, igo will remind you 30 minutes before each to-do on your trip.","schedule":{"at":"2026-10-23T19:38:01.706Z","allowWhileIdle":true},"smallIcon":"ic_stat_igo","iconColor":"#e8a317"}]}
+10-23 19:37:56.853  3230  3665 W Capacitor/LocalNotification: Exact alarms not allowed in user settings.  Notification scheduled with non-exact alarm.
+10-23 19:37:58.264  3230  3230 V Capacitor/Plugin: To native (Capacitor plugin): callbackId: 44529630, pluginId: LocalNotifications, methodName: checkPermissions
+10-23 19:37:58.264  3230  3230 V Capacitor: callback: 44529630, pluginId: LocalNotifications, methodName: checkPermissions, methodData: {}
+10-23 19:37:58.272  3230  3230 V Capacitor/Plugin: To native (Capacitor plugin): callbackId: 44529631, pluginId: LocalNotifications, methodName: getPending
+10-23 19:37:58.272  3230  3230 V Capacitor: callback: 44529631, pluginId: LocalNotifications, methodName: getPending, methodData: {}
+10-23 19:37:58.365  3230  3230 V Capacitor/Plugin: To native (Capacitor plugin): callbackId: 44529632, pluginId: LocalNotifications, methodName: schedule
+10-23 19:37:58.404  3230  3230 V Capacitor: callback: 44529632, pluginId: LocalNotifications, methodName: schedule, methodData: {"notifications":[{"id":1921473282,"title":"Before your trip: 3 things to do","body":"Tell your bank and pack a card with no foreign transaction fee\nDownload offline maps for Addis Ababa\nWrite shot lists for your planned spots","largeBody":"Tell your bank and pack a card with no foreign transaction fee\nDownload offline maps for Addis Ababa\nWrite shot lists for your planned spots","schedule":{"at":"2026-10-30T09:00:00.000Z","allowWhileIdle":true},"smallIcon":"ic_stat_igo","iconColor":"#e8a317","extra":{"tripId":"trip_mvldgqfb470jig"}},{"id":488020399,"title":"Before your trip: Decide what this trip produces","body":"Addis Ababa, Nov 6","largeBody":"Addis Ababa, Nov 6","schedule":{"at":"2026-11-01T09:00:00.000Z","allowWhileIdle":true},"smallIcon":"ic_stat_igo","iconColor":"#e8a317","extra":{"tripId":"trip_mvldgqfb470jig"}},{"id":943988011,"title":"Before your trip: Get clean US dollar notes printed after 2013","body":"Addis Ababa, Nov 6","largeBody":"Addis Ababa, Nov 6","schedule":{"at":"2026-11-03T09:00:00.000Z","allowWhileIdle":true},"smallIcon":"ic_stat_igo","iconColor":"#e8a317","extra":{"tripId":"trip_mvldgqfb470jig"}},{"id":1737528465,"title":"Before your trip: Pack a plug adapter: Type C \/ E \/ F \/ L, 220 V","body":"Addis Ababa, Nov 6","largeBody":"Addis Ababa, Nov 6","schedule":{"at":"2026-11-04T09:00:00.000Z","allowWhileIdle":true},"smallIcon":"ic_stat_igo","iconColor":"#e8a317","extra":{"tripId":"trip_mvldgqfb470jig"}},{"id":1678711555,"title":"Before your trip: 4 things to do","body":"Install local ride and transit apps\nSave emergency numbers and your hotel address offline\nPack power banks and a head torch\nCharge every battery, format cards, clear phone storage","largeBody":"Install local ride and transit apps\nSave emergency numbers and your hotel address offline\nPack power banks and a head torch\nCharge every battery, format cards, clear phone storage","schedule":{"at":"2026-11-05T09:00:00.000Z","allowWhileIdle":true},"smallIcon":"ic_stat_igo","iconColor":"#e8a317","extra":{"tripId":"trip_mvldgqfb470jig"}},{"id":1371667267,"title":"Land and clear immigration","body":"15:00 in Addis Ababa","largeBody":"15:00 in Addis Ababa","schedule":{"at":"2026-11-06T11:30:00.000Z","allowWhileIdle":true},"smallIcon":"ic_stat_igo","iconColor":"#e8a317","extra":{"tripId":"trip_mvldgqfb470jig"}},{"id":1423770209,"title":"Get to your stay","body":"16:10 in Addis Ababa","largeBody":"16:10 in Addis Ababa","schedule":{"at":"2026-11-06T12:40:00.000Z","allowWhileIdle":true},"smallIcon":"ic_stat_igo","iconColor":"#e8a317","extra":{"tripId":"trip_mvldgqfb470jig"}},{"id":1974870681,"title":"Take it easy: Addis Ababa is at 2,355 m","body":"17:15 in Addis Ababa","largeBody":"17:15 in Addis Ababa","schedule":{"at":"2026-11-06T13:45:00.000Z","allowWhileIdle":true},"smallIcon":"ic_stat_igo","iconColor":"#e8a317","extra":{"tripId":"trip_mvldgqfb470jig"}},{"id":210627520,"title":"Tomorrow in Addis Ababa","body":"09:30 Shoot Ethnological Museum, Addis Ababa University\n12:30 Kitfo lunch at a Gurage kitfo house\n14:30 Shoot Red Terror Martyrs' Memorial Museum\n+5 more","largeBody":"09:30 Shoot Ethnological Museum, Addis Ababa University\n12:30 Kitfo lunch at a Gurage kitfo house\n14:30 Shoot Red Terror Martyrs' Memorial Museum\n+5 more","schedule":{"at":"2026-11-06T17:00:00.000Z","allowWhileIdle":true},"smallIcon":"ic_stat_igo","iconColor":"#e8a317","extra":{"tripId":"trip_mvldgqfb470jig"}},{"id":1951359805,"title":"Lights out by 22:00 local to reset your body clock","body":"22:00 in Addis Ababa","largeBody":"22:00 in Addis Ababa","schedule":{"at":"2026-11-06T18:30:00.000Z","allowWhileIdle":true},"smallIcon":"ic_stat_igo","iconColor":"#e8a317","extra":{"tripId":"trip_mvldgqfb470jig"}},{"id":1455570316,"title":"Shoot Ethnological Museum, Addis Ababa University","body":"09:30 in Addis Ababa","largeBody":"09:30 in Addis Ababa","schedule":{"at":"2026-11-07T06:00:00.000Z","allowWhileIdle":true},"smallIcon":"ic_stat_igo"
+10-23 19:37:58.927  3230  3665 W Capacitor/LocalNotification: Exact alarms not allowed in user settings.  Notification scheduled with non-exact alarm.
+10-23 19:37:58.958  3230  3665 W Capacitor/LocalNotification: Exact alarms not allowed in user settings.  Notification scheduled with non-exact alarm.
+10-23 19:37:58.975  3230  3665 W Capacitor/LocalNotification: Exact alarms not allowed in user settings.  Notification scheduled with non-exact alarm.
+10-23 19:37:58.989  3230  3665 W Capacitor/LocalNotification: Exact alarms not allowed in user settings.  Notification scheduled with non-exact alarm.
+10-23 19:37:58.993  3230  3665 W Capacitor/LocalNotification: Exact alarms not allowed in user settings.  Notification scheduled with non-exact alarm.
+10-23 19:37:58.999  3230  3665 W Capacitor/LocalNotification: Exact alarms not allowed in user settings.  Notification scheduled with non-exact alarm.
+10-23 19:37:59.007  3230  3665 W Capacitor/LocalNotification: Exact alarms not allowed in user settings.  Notification scheduled with non-exact alarm.
+10-23 19:37:59.014  3230  3665 W Capacitor/LocalNotification: Exact alarms not allowed in user settings.  Notification scheduled with non-exact alarm.
+10-23 19:37:59.024  3230  3665 W Capacitor/LocalNotification: Exact alarms not allowed in user settings.  Notification scheduled with non-exact alarm.
+10-23 19:37:59.030  3230  3665 W Capacitor/LocalNotification: Exact alarms not allowed in user settings.  Notification scheduled with non-exact alarm.
+10-23 19:37:59.039  3230  3665 W Capacitor/LocalNotification: Exact alarms not allowed in user settings.  Notification scheduled with non-exact alarm.
+10-23 19:37:59.047  3230  3665 W Capacitor/LocalNotification: Exact alarms not allowed in user settings.  Notification scheduled with non-exact alarm.
+10-23 19:37:59.058  3230  3665 W Capacitor/LocalNotification: Exact alarms not allowed in user settings.  Notification scheduled with non-exact alarm.
+10-23 19:37:59.066  3230  3665 W Capacitor/LocalNotification: Exact alarms not allowed in user settings.  Notification scheduled with non-exact alarm.
+10-23 19:37:59.075  3230  3665 W Capacitor/LocalNotification: Exact alarms not allowed in user settings.  Notification scheduled with non-exact alarm.
+10-23 19:37:59.085  3230  3665 W Capacitor/LocalNotification: Exact alarms not allowed in user settings.  Notification scheduled with non-exact alarm.
+10-23 19:37:59.093  3230  3665 W Capacitor/LocalNotification: Exact alarms not allowed in user settings.  Notification scheduled with non-exact alarm.
+10-23 19:37:59.101  3230  3665 W Capacitor/LocalNotification: Exact alarms not allowed in user settings.  Notification scheduled with non-exact alarm.
+10-23 19:37:59.115  3230  3665 W Capacitor/LocalNotification: Exact alarms not allowed in user settings.  Notification scheduled with non-exact alarm.
+10-23 19:37:59.122  3230  3665 W Capacitor/LocalNotification: Exact alarms not allowed in user settings.  Notification scheduled with non-exact alarm.
+10-23 19:37:59.131  3230  3665 W Capacitor/LocalNotification: Exact alarms not allowed in user settings.  Notification scheduled with non-exact alarm.
+10-23 19:37:59.141  3230  3665 W Capacitor/LocalNotification: Exact alarms not allowed in user settings.  Notification scheduled with non-exact alarm.
+10-23 19:37:59.149  3230  3665 W Capacitor/LocalNotification: Exact alarms not allowed in user settings.  Notification scheduled with non-exact alarm.
+10-23 19:37:59.158  3230  3665 W Capacitor/LocalNotification: Exact alarms not allowed in user settings.  Notification scheduled with non-exact alarm.
+10-23 19:37:59.166  3230  3665 W Capacitor/LocalNotification: Exact alarms not allowed in user settings.  Notification scheduled with non-exact alarm.
+10-23 19:37:59.190  3230  3665 W Capacitor/LocalNotification: Exact alarms not allowed in user settings.  Notification scheduled with non-exact alarm.
+10-23 19:37:59.212  3230  3665 W Capacitor/LocalNotification: Exact alarms not allowed in user settings.  Notification scheduled with non-exact alarm.
+10-23 19:37:59.224  3230  3665 W Capacitor/LocalNotification: Exact alarms not allowed in user settings.  Notification scheduled with non-exact alarm.
+10-23 19:37:59.242  3230  3665 W Capacitor/LocalNotification: Exact alarms not allowed in user settings.  Notification scheduled with non-exact alarm.
+10-23 19:37:59.258  3230  3665 W Capacitor/LocalNotification: Exact alarms not allowed in user settings.  Notification scheduled with non-exact alarm.
+10-23 19:37:59.277  3230  3665 W Capacitor/LocalNotification: Exact alarms not allowed in user settings.  Notification scheduled with non-exact alarm.
+10-23 19:37:59.285  3230  3665 W Capacitor/LocalNotification: Exact alarms not allowed in user settings.  Notification scheduled with non-exact alarm.
+10-23 19:37:59.299  3230  3665 W Capacitor/LocalNotification: Exact alarms not allowed in user settings.  Notification scheduled with non-exact alarm.
+10-23 19:37:59.319  3230  3665 W Capacitor/LocalNotification: Exact alarms not allowed in user settings.  Notification scheduled with non-exact alarm.
+10-23 19:37:59.329  3230  3665 W Capacitor/LocalNotification: Exact alarms not allowed in user settings.  Notification scheduled with non-exact alarm.
+10-23 19:37:59.360  3230  3665 W Capacitor/LocalNotification: Exact alarms not allowed in user settings.  Notification scheduled with non-exact alarm.
+10-23 19:38:01.887  3230  3230 V Capacitor/LocalNotificationsPlugin: Notifying listeners for event localNotificationReceived
+10-23 19:38:01.887  3230  3230 D Capacitor/LocalNotificationsPlugin: No listeners found for event localNotificationReceived
+10-23 19:38:05.625  3230  3549 D Capacitor: Handling local request: https://localhost/icon.svg
