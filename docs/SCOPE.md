@@ -37,6 +37,7 @@ General planners (Wanderlog, GetYourGuide, Visit A City, Culture Trip) cover Eth
 7. **Accounts and sync (Supabase)**. igo is local-first: trips always save on the device. Signing in with email and password syncs trips across devices; the newest edit of each trip wins, and deletions spread too. The example trip is never uploaded. Setup: run `supabase/migrations/0001_trips.sql` once in the Supabase SQL editor, and put the project URL and publishable key in `.env.local` (see `.env.example`).
 8. **Local place checks.** People on the `reviewers` list see a "Check places" button after signing in. For each place they choose "Looks right", "Needs a fix" (with a note) or "Closed or gone". Confirmed places show "Checked by a local" with the date, places with a fix show as flagged, and places reported closed stop appearing in plans. Setup: run `supabase/migrations/0002_place_checks.sql`, then add reviewers with `insert into public.reviewers (email, name) values ('them@example.com', 'Name');`.
 9. Your own tasks, hiding generated tasks, calendar export (.ics), works offline on a phone.
+10. **Bookings.** Each trip keeps the traveler's stays, flights, rides and guides with confirmation codes, addresses (open in Maps) and phone numbers (tap to call). They are saved with the trip, so they work offline and sync. The stay shows on the day's "Get to your stay" or check-in task, and a flight or ride booked for a day shows on that day's travel tasks.
 
 ## Not in the MVP
 

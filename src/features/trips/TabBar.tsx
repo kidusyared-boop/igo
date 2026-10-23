@@ -1,13 +1,14 @@
 import type { ReactNode } from 'react';
-import { CountryIcon, DaysIcon, PrepIcon, SpotsIcon } from '../../components/ui/Icons';
+import { BookingsIcon, CountryIcon, DaysIcon, PrepIcon, SpotsIcon } from '../../components/ui/Icons';
 import { useT } from '../../i18n';
 
-export type TripTab = 'days' | 'before' | 'spots' | 'country';
+export type TripTab = 'days' | 'before' | 'spots' | 'bookings' | 'country';
 
 const TABS: { id: TripTab; icon: ReactNode }[] = [
   { id: 'days', icon: <DaysIcon /> },
   { id: 'before', icon: <PrepIcon /> },
   { id: 'spots', icon: <SpotsIcon /> },
+  { id: 'bookings', icon: <BookingsIcon /> },
   { id: 'country', icon: <CountryIcon /> },
 ];
 

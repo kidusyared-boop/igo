@@ -5,6 +5,7 @@ import { ANY_SLOTS, EARLY_FLIGHT, LATEST_CHECK_IN, MOVE_DEPART, anySlots, arriva
 import { travelDetail } from './route';
 import { interestLabel } from './personalize';
 import { needsVisa } from './diaspora';
+import { withBookings } from '../bookings/bookings';
 
 export interface DayContext {
   trip: Trip;
@@ -357,7 +358,8 @@ export function buildDayTasks(ctx: DayContext): Task[] {
     drafts = drafts.filter((t) => !t.time || t.key === 'flight' || t.key === 'airport' || (toMinutes(t.time) >= landed && toMinutes(t.time) <= leave));
   }
 
-  return spreadOut(drafts).map(({ key, ...rest }) => ({ ...rest, id: `auto:${day.date}:${key}`, date: day.date, source: 'auto' as const }));
+  const tasks = spreadOut(drafts).map(({ key, ...rest }) => ({ ...rest, id: `auto:${day.date}:${key}`, date: day.date, source: 'auto' as const }));
+  return withBookings(trip, day, tasks);
 }
 
 /** Tasks tied to a clock someone else sets: flights, light, events and the audience's posting time. */
