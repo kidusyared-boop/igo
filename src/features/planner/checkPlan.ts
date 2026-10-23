@@ -1,7 +1,7 @@
 import type { Light, Spot, SunTimes, Task, Trip, TripPlan } from '../../types';
 import { toMinutes } from '../../utils/dates';
 import { generatePlan } from './generatePlan';
-import { moveTask, partnerOf, spotOf } from './taskEdits';
+import { moveTask, partnerOf, resetTask, spotOf } from './taskEdits';
 
 export type ProblemCode = 'wrongCity' | 'beforeLanding' | 'beforeCheckIn' | 'wrongLight' | 'afterAirport' | 'goAfterVisit' | 'twice' | 'routeOutside';
 
@@ -115,4 +115,19 @@ export function tryEdit(
   if (next === trip && edited.date !== original.date) return { problem: { code: 'routeOutside', date: edited.date, title: original.title, ref: original.id } };
   const added = newProblems(checkPlan(trip, plan), checkPlan(next, generatePlan(next, closed)));
   return added[0] ? { problem: added[0] } : { trip: next };
+}
+
+/**
+ * Puts back igo's version of any task the traveler changed in a way that breaks a rule,
+ * for plans saved before the checker existed or synced from an older copy of the app.
+ */
+export function repairTrip(trip: Trip): Trip {
+  let next = trip;
+  for (let round = 0; round < 5; round++) {
+    const copies = new Set(next.customTasks.filter((t) => t.replaces).map((t) => t.id));
+    const broken = [...new Set(checkPlan(next, generatePlan(next)).map((p) => p.ref).filter((ref) => copies.has(ref)))];
+    if (!broken.length) return next;
+    next = broken.reduce(resetTask, next);
+  }
+  return next;
 }

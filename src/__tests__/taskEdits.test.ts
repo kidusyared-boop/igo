@@ -290,3 +290,14 @@ describe('the checker refuses a place at a time you cannot be there', () => {
     expect('trip' in result).toBe(true);
   });
 });
+
+describe('repairing a trip saved before the checker', () => {
+  it("puts back igo's version of a night outing someone moved to the morning", () => {
+    const tr = trip({ spots: [{ id: 'sp4', cityId: 'addis', name: 'Night walk', light: 'night', shotList: '', date: '2026-11-12' }] });
+    const visit = generatePlan(tr).days.find((d) => d.date === '2026-11-12')!.tasks.find((x) => x.id.endsWith(':spot-sp4'))!;
+    const broken = saveTaskEdit(tr, visit, { ...visit, time: '07:17' }, () => 'task_bad');
+    const fixed = normalizeTrip(broken);
+    expect(fixed.customTasks).toEqual([]);
+    expect(generatePlan(fixed).days.find((d) => d.date === '2026-11-12')!.tasks.find((x) => x.id.endsWith(':spot-sp4'))!.time).toBe(visit.time);
+  });
+});
