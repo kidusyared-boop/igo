@@ -14,7 +14,7 @@ import { DayStrip } from '../days/DayStrip';
 import { DayView } from '../days/DayView';
 import { PreTripView } from '../days/PreTripView';
 import { TaskSheet } from '../days/TaskSheet';
-import { hiddenByTraveler } from '../planner/taskEdits';
+import { allowedDays, hiddenByTraveler, partnerOf, routeStop, spotOf } from '../planner/taskEdits';
 import { SpotsView } from '../spots/SpotsView';
 import { CountryBrief } from '../country/CountryBrief';
 import { TabBar, type TripTab } from './TabBar';
@@ -69,12 +69,24 @@ export function TripView({ trip, dispatch, onBack, onEdit, notify, justCreated =
   const add = (task: Task) => dispatch({ type: 'addTask', tripId: id, task });
   const remove = (task: Task) =>
     task.source === 'user' ? dispatch({ type: 'removeTask', tripId: id, taskId: task.id }) : dispatch({ type: 'hide', tripId: id, taskId: task.id });
-  const dayOptions = plan.days.map((d) => ({ date: d.date, label: `${formatDay(d.date)} · ${findCity(trip.countryCode, d.cityId)?.name ?? city.name}` }));
+  const cityName = (cityId: string) => findCity(trip.countryCode, cityId)?.name ?? city.name;
+  const editSpot = editing ? spotOf(editing, trip, plan.pickedSpots.map((p) => p.spot)) : undefined;
+  const editStop = editing ? routeStop(trip, editing) : undefined;
+  const allowed = editing ? new Set([editing.date, ...allowedDays(trip, editing, plan.days, editSpot)]) : new Set<string>();
+  const dayOptions = plan.days.filter((d) => allowed.has(d.date)).map((d) => ({ date: d.date, label: `${formatDay(d.date)} · ${cityName(d.cityId)}` }));
+  const linkHint = editStop
+    ? t('edit.routeHint', { city: cityName(editStop.cityId) })
+    : editSpot
+      ? t('edit.placeHint', { place: editSpot.name })
+      : undefined;
 
   function saveEdit(original: Task, edited: Task) {
-    dispatch({ type: 'editTask', tripId: id, original, edited });
+    const partner = partnerOf(original, plan.days.find((d) => d.date === original.date)?.tasks ?? []);
+    dispatch({ type: 'editTask', tripId: id, original, edited, spot: editSpot, partner });
     setEditing(null);
-    if (edited.date !== original.date) notify(t('toast.taskMoved', { day: formatDay(edited.date) }));
+    if (edited.date === original.date && !editStop) return;
+    if (editStop && edited.date === editStop.date) return;
+    notify(editStop ? t('toast.routeMoved', { city: cityName(editStop.cityId), day: formatDay(edited.date) }) : t('toast.taskMoved', { day: formatDay(edited.date) }));
   }
 
   async function exportIcs() {
@@ -147,6 +159,7 @@ export function TripView({ trip, dispatch, onBack, onEdit, notify, justCreated =
           task={editing}
           days={editing.date < trip.startDate ? undefined : dayOptions}
           latest={addDays(trip.startDate, -1)}
+          linkHint={linkHint}
           onSave={(edited) => saveEdit(editing, edited)}
           onRemove={() => { remove(editing); setEditing(null); }}
           onReset={() => { dispatch({ type: 'resetTask', tripId: id, taskId: editing.id }); setEditing(null); }}

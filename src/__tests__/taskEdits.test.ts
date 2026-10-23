@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { generatePlan } from '../features/planner/generatePlan';
-import { followsFlight, hiddenByTraveler, resetTask, restoreHidden, saveTaskEdit } from '../features/planner/taskEdits';
+import { allowedDays, followsFlight, hiddenByTraveler, moveTask, partnerOf, resetTask, restoreHidden, saveTaskEdit } from '../features/planner/taskEdits';
 import { buildReminders, LEAD_MINUTES } from '../features/reminders/buildReminders';
 import { buildIcs } from '../services/ics';
 import { mergeTrips } from '../services/sync';
@@ -8,6 +8,7 @@ import { sampleTrip } from '../data/sampleTrip';
 import { translate } from '../i18n';
 import type { Task, Trip } from '../types';
 import { zonedToUtc } from '../utils/timezone';
+import { shiftTime } from '../utils/dates';
 
 const t = (key: Parameters<typeof translate>[1], vars?: Parameters<typeof translate>[2]) => translate('en', key, vars);
 const trip = (over: Partial<Trip> = {}): Trip => ({
@@ -107,5 +108,94 @@ describe('editing and moving tasks', () => {
     const edited = { ...saveTaskEdit(tr, task, { ...task, title: 'From my phone' }, ids), updatedAt: '2026-10-02T00:00:00Z' };
     const merged = mergeTrips([tr], [], [{ id: tr.id, data: edited, updated_at: edited.updatedAt, deleted: false }]);
     expect(all(merged.trips[0]!).some((x) => x.title === 'From my phone')).toBe(true);
+  });
+});
+
+describe('moving a task moves what hangs on it', () => {
+  const route = (): Trip => trip({
+    startDate: '2026-11-10', endDate: '2026-11-16',
+    stops: [{ id: 's1', cityId: 'harar', date: '2026-11-12' }, { id: 's2', cityId: 'addis', date: '2026-11-13' }],
+  });
+  const dayOf = (tr: Trip, date: string) => generatePlan(tr).days.find((d) => d.date === date)!;
+  const taskOf = (tr: Trip, date: string, key: string) => dayOf(tr, date).tasks.find((x) => x.id === `auto:${date}:${key}`)!;
+
+  it('moving the journey to Harar moves the stop and the return along with it', () => {
+    const tr = route();
+    const travel = taskOf(tr, '2026-11-12', 'move');
+    const next = moveTask(tr, travel, { ...travel, date: '2026-11-14' });
+    expect(next.stops).toEqual([{ id: 's1', cityId: 'harar', date: '2026-11-14' }, { id: 's2', cityId: 'addis', date: '2026-11-15' }]);
+    expect(next.customTasks).toEqual([]);
+    const plan = generatePlan(next);
+    expect(plan.days.map((d) => d.cityId)).toEqual(['addis', 'addis', 'addis', 'addis', 'harar', 'addis', 'addis']);
+    expect(dayOf(next, '2026-11-14').tasks.some((x) => x.id.endsWith(':move-out'))).toBe(true);
+    expect(dayOf(next, '2026-11-12').tasks.some((x) => /:move(-in|-out)?$/.test(x.id))).toBe(false);
+  });
+
+  it('only offers days that keep every later journey inside the trip', () => {
+    const tr = route();
+    const travel = taskOf(tr, '2026-11-12', 'move-in');
+    const days = generatePlan(tr).days;
+    expect(allowedDays(tr, travel, days)).toEqual(['2026-11-11', '2026-11-12', '2026-11-13', '2026-11-14', '2026-11-15']);
+    const back = taskOf(tr, '2026-11-13', 'move');
+    expect(allowedDays(tr, back, days)).toEqual(['2026-11-13', '2026-11-14', '2026-11-15', '2026-11-16']);
+  });
+
+  it('a journey edited before this fix can still be moved, and the stale copy goes', () => {
+    const tr = route();
+    const travel = taskOf(tr, '2026-11-12', 'move');
+    const old = saveTaskEdit(tr, travel, { ...travel, date: '2026-11-14' }, () => 'task_old');
+    const copy = old.customTasks[0]!;
+    const next = moveTask(old, copy, { ...copy, date: '2026-11-14' });
+    expect(next.customTasks).toEqual([]);
+    expect(next.hiddenIds).toEqual([]);
+    expect(next.stops.find((s) => s.id === 's1')!.date).toBe('2026-11-14');
+  });
+
+  it('moving a sunset place moves leaving for it too, timed by the new day', () => {
+    const tr = trip({ spots: [{ id: 'sp2', cityId: 'addis', name: 'Entoto Park viewpoint', light: 'sunset', shotList: 'City reveal' }] });
+    const at = generatePlan(tr).days.find((d) => d.tasks.some((x) => x.id.endsWith(':spot-sp2')))!;
+    const target = at.date === '2026-11-12' ? '2026-11-13' : '2026-11-12';
+    const visit = at.tasks.find((x) => x.id.endsWith(':spot-sp2'))!;
+    const next = moveTask(tr, visit, { ...visit, date: target }, tr.spots[0]);
+    const day = dayOf(next, target);
+    expect(day.tasks.map((x) => x.id)).toEqual(expect.arrayContaining([`auto:${target}:go-sp2`, `auto:${target}:spot-sp2`]));
+    expect(all(next).filter((x) => x.id.endsWith('-sp2'))).toHaveLength(2);
+  });
+
+  it('moving a place igo picked pins it, and it stays in its own city', () => {
+    const tr = route();
+    const plan = generatePlan(tr);
+    const { spot, date } = plan.pickedSpots.find((p) => p.spot.cityId === 'addis' && p.date >= '2026-11-13')!;
+    const visit = dayOf(tr, date).tasks.find((x) => x.id === `auto:${date}:spot-${spot.id}`)!;
+    const days = allowedDays(tr, visit, plan.days, spot);
+    expect(days).not.toContain('2026-11-12');
+    const target = days.find((d) => d !== date)!;
+    const next = moveTask(tr, visit, { ...visit, date: target }, spot);
+    expect(next.spots.find((s) => s.id === spot.id)?.date).toBe(target);
+    expect(dayOf(next, target).tasks.some((x) => x.id === `auto:${target}:spot-${spot.id}`)).toBe(true);
+  });
+
+  it('changing the time of a visit moves leaving for it by as much', () => {
+    const tr = trip({ spots: [{ id: 'sp2', cityId: 'addis', name: 'Entoto Park viewpoint', light: 'sunset', shotList: 'City reveal' }] });
+    const day = generatePlan(tr).days.find((d) => d.tasks.some((x) => x.id.endsWith(':spot-sp2')))!;
+    const visit = day.tasks.find((x) => x.id.endsWith(':spot-sp2'))!;
+    const go = partnerOf(visit, day.tasks)!;
+    const next = moveTask(tr, visit, { ...visit, time: shiftTime(visit.time!, -30) }, tr.spots[0], go);
+    const tasks = dayOf(next, day.date).tasks;
+    expect(tasks.find((x) => x.replaces === go.id)?.time).toBe(shiftTime(go.time!, -30));
+  });
+
+  it('a place pinned to a day the route now spends elsewhere is planned again in its city', () => {
+    const tr = { ...route(), spots: [{ id: 'mine', cityId: 'harar', name: 'Hyena feeding', light: 'night' as const, shotList: '', date: '2026-11-12' }] };
+    const moved = { ...tr, stops: [{ id: 's1', cityId: 'harar', date: '2026-11-14' }, { id: 's2', cityId: 'addis', date: '2026-11-15' }] };
+    const plan = generatePlan(moved);
+    expect(dayOf(moved, '2026-11-12').tasks.some((x) => x.id.includes('-mine'))).toBe(false);
+    expect(plan.days.find((d) => d.tasks.some((x) => x.id.endsWith(':spot-mine')))?.cityId).toBe('harar');
+  });
+
+  it('airport and flight tasks stay on their day', () => {
+    const tr = route();
+    const days = generatePlan(tr).days;
+    expect(allowedDays(tr, taskOf(tr, '2026-11-16', 'airport'), days)).toEqual(['2026-11-16']);
   });
 });

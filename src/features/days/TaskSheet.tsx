@@ -11,6 +11,8 @@ interface TaskSheetProps {
   days?: { date: string; label: string }[];
   /** Last date a prep task can be due. */
   latest?: string;
+  /** What else moves when this task moves to another day. */
+  linkHint?: string;
   onSave: (edited: Task) => void;
   onRemove: () => void;
   onReset: () => void;
@@ -18,7 +20,7 @@ interface TaskSheetProps {
 }
 
 /** Change a task's wording, time, day, notes or category, or take it off the plan. */
-export function TaskSheet({ task, days, latest, onSave, onRemove, onReset, onClose }: TaskSheetProps) {
+export function TaskSheet({ task, days, latest, linkHint, onSave, onRemove, onReset, onClose }: TaskSheetProps) {
   const t = useT();
   const [title, setTitle] = useState(task.title);
   const [time, setTime] = useState(task.time ?? '');
@@ -67,7 +69,7 @@ export function TaskSheet({ task, days, latest, onSave, onRemove, onReset, onClo
         ) : (
           <div className="task-sheet-when">
             <Field id="edit-day" label={t('edit.day')}>
-              <select id="edit-day" className="select" value={date} disabled={locked} onChange={(e) => setDate(e.target.value)}>
+              <select id="edit-day" className="select" value={date} disabled={locked || days.length < 2} onChange={(e) => setDate(e.target.value)}>
                 {days.map((d) => <option key={d.date} value={d.date}>{d.label}</option>)}
               </select>
             </Field>
@@ -77,6 +79,7 @@ export function TaskSheet({ task, days, latest, onSave, onRemove, onReset, onClo
           </div>
         )}
         {locked && <p className="hint">{t('edit.flightHint')}</p>}
+        {!prep && linkHint && <p className="hint">{linkHint}</p>}
         {!prep && !locked && !time && <p className="hint">{t('edit.noTime')}</p>}
         <Field id="edit-detail" label={t('edit.notes')}>
           <textarea id="edit-detail" className="textarea" value={detail} onChange={(e) => setDetail(e.target.value)} />

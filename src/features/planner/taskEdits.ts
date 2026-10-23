@@ -1,5 +1,6 @@
-import type { Task, Trip } from '../../types';
+import type { Spot, Stop, Task, Trip } from '../../types';
 import { newId } from '../../utils/id';
+import { addDays, daysBetween, fromMinutes, toMinutes } from '../../utils/dates';
 
 /**
  * Saves the traveler's changes to a task. Their own tasks change in place. An igo task
@@ -49,7 +50,126 @@ export function restoreHidden(trip: Trip): Trip {
   return { ...trip, hiddenIds: trip.hiddenIds.filter((id) => stand.has(id)) };
 }
 
-/** Flight times come from the trip details, so these tasks cannot move on their own. */
+/** The plan task an edited copy stands in for, split into its day and what it is. */
+function origin(task: Task): { date: string; key: string } | null {
+  const m = /^auto:(\d{4}-\d{2}-\d{2}):(.+)$/.exec(task.replaces ?? task.id);
+  return m ? { date: m[1]!, key: m[2]! } : null;
+}
+
+/** Tasks whose day and time come from the flights or a festival's set date. */
 export function followsFlight(task: Task): boolean {
-  return /^auto:.*:(land|flight)$/.test(task.replaces ?? task.id);
+  return /^(land|flight|connect|fest-)/.test(origin(task)?.key ?? '');
+}
+
+/** Leaving for the airport stays on the day the flight leaves. */
+function dayLocked(task: Task): boolean {
+  return followsFlight(task) || /^airport/.test(origin(task)?.key ?? '');
+}
+
+/** The tasks of a day that moves to another city. Moving one moves the whole journey. */
+const ROUTE_KEYS = /^(move-out|move|move-in|settle-walk|travel-broll)$/;
+
+/** The stop on the route a moving-day task belongs to. */
+export function routeStop(trip: Trip, task: Task): Stop | undefined {
+  const o = origin(task);
+  return o && ROUTE_KEYS.test(o.key) ? trip.stops.find((s) => s.date === o.date) : undefined;
+}
+
+/** The id of the place behind a place task ("Shoot X" or "Leave for X"). */
+function spotIdOf(task: Task): string | undefined {
+  return /^(?:spot|go)-(.+)$/.exec(origin(task)?.key ?? '')?.[1];
+}
+
+/** The place a place task is for: one of the traveler's own, or one igo picked. */
+export function spotOf(task: Task, trip: Trip, picked: Spot[]): Spot | undefined {
+  const id = spotIdOf(task);
+  return id ? (trip.spots.find((s) => s.id === id) ?? picked.find((s) => s.id === id)) : undefined;
+}
+
+const weekday = (iso: string) => new Date(`${iso}T12:00:00Z`).getUTCDay();
+
+/**
+ * Days a task can move to, from the trip's days and the city each is in. A moving day's
+ * tasks move between the stops either side; a place stays in its city, on the weekdays
+ * it is open; flight and festival tasks stay put.
+ */
+export function allowedDays(trip: Trip, task: Task, days: { date: string; cityId: string }[], spot?: Spot): string[] {
+  const all = days.map((d) => d.date);
+  if (dayLocked(task)) return [task.date];
+  const stop = routeStop(trip, task);
+  if (stop) {
+    // Later journeys move along by the same number of days, so the last one must stay inside the trip.
+    const after = trip.stops.filter((s) => s.date < stop.date).map((s) => s.date).sort().at(-1) ?? trip.startDate;
+    const last = trip.stops.map((s) => s.date).sort().at(-1) ?? stop.date;
+    const latest = addDays(trip.endDate, -daysBetween(stop.date, last));
+    return all.filter((d) => d > after && d <= latest);
+  }
+  if (spot) {
+    const city = spot.cityId ?? trip.cityId;
+    return days.filter((d) => d.cityId === city && (!spot.weekdays || spot.weekdays.includes(weekday(d.date)))).map((d) => d.date);
+  }
+  return all;
+}
+
+const sameContent = (a: Task, b: Task) =>
+  a.title === b.title && (a.time ?? '') === (b.time ?? '') && (a.detail ?? '') === (b.detail ?? '') && a.category === b.category;
+
+/** igo's own task for `key` on `date`, as the rebuilt plan will have it. */
+const planTask = (base: Task, key: string, date: string): Task => {
+  const { replaces: _r, ...rest } = base;
+  return { ...rest, id: `auto:${date}:${key}`, date, source: 'auto' };
+};
+
+/**
+ * Saves a change to a task and moves what hangs on it. Moving a travel day's task moves
+ * the stop on the route, so checkout, the journey and check-in move together and the city
+ * changes on the new day. Moving a place moves both its tasks (leaving and the visit) by
+ * pinning the place to the new day, where igo times it by that day's light. Anything else
+ * is saved as the traveler's own task (see saveTaskEdit).
+ */
+export function moveTask(
+  trip: Trip,
+  original: Task,
+  edited: Task,
+  spot?: Spot,
+  partner?: Task,
+  makeId: () => string = () => newId('task'),
+): Trip {
+  const o = origin(original);
+  const stop = routeStop(trip, original);
+  const routeMove = stop && edited.date !== stop.date;
+  const placeMove = spot && edited.date !== original.date;
+  if (o && (routeMove || placeMove)) {
+    // Drop an earlier copy: the plan task on the new day takes over.
+    let next = original.replaces ? resetTask(trip, original.id) : trip;
+    if (routeMove) {
+      // This journey and every later one move by the same number of days.
+      const shift = daysBetween(stop.date, edited.date);
+      next = { ...next, stops: next.stops.map((s) => (s.date >= stop.date ? { ...s, date: addDays(s.date, shift) } : s)) };
+    } else if (spot) {
+      const pinned = { ...spot, date: edited.date };
+      next = { ...next, spots: next.spots.some((s) => s.id === spot.id) ? next.spots.map((s) => (s.id === spot.id ? pinned : s)) : [...next.spots, pinned] };
+    }
+    // Wording or notes changed as well: keep them on the task in its new place. A place's time comes from the new day's light.
+    const kept = placeMove ? { ...edited, time: original.time } : edited;
+    if (sameContent(original, kept)) return next;
+    return saveTaskEdit(next, planTask(original, o.key, edited.date), kept, makeId);
+  }
+  let next = saveTaskEdit(trip, original, edited, makeId);
+  // Moving a visit later or earlier moves leaving for it by as much, and the other way round.
+  if (partner?.time && original.time && edited.time && edited.time !== original.time && edited.date === original.date) {
+    const shift = toMinutes(edited.time) - toMinutes(original.time);
+    const time = fromMinutes(Math.min(Math.max(toMinutes(partner.time) + shift, 0), 24 * 60 - 1));
+    next = saveTaskEdit(next, partner, { ...partner, time }, makeId);
+  }
+  return next;
+}
+
+/** The other half of a place task: leaving for a place, or the visit itself. */
+export function partnerOf(task: Task, dayTasks: Task[]): Task | undefined {
+  const o = origin(task);
+  const id = spotIdOf(task);
+  if (!o || !id) return undefined;
+  const key = o.key.startsWith('go-') ? `spot-${id}` : `go-${id}`;
+  return dayTasks.find((t) => origin(t)?.key === key && t.date === task.date);
 }
