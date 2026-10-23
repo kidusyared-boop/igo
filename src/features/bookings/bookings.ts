@@ -2,6 +2,17 @@ import type { Booking, Task, Trip } from '../../types';
 
 export const BOOKING_KINDS: Booking['kind'][] = ['stay', 'flight', 'transport', 'guide', 'other'];
 
+export type BookingField = Exclude<keyof Booking, 'id' | 'kind' | 'name'>;
+
+/** The fields each kind of booking asks for, in form order. */
+export const FIELDS: Record<Booking['kind'], BookingField[]> = {
+  stay: ['cityId', 'date', 'endDate', 'ref', 'address', 'phone', 'notes'],
+  flight: ['from', 'to', 'date', 'time', 'arriveTime', 'ref', 'notes'],
+  transport: ['from', 'to', 'date', 'time', 'ref', 'phone', 'notes'],
+  guide: ['cityId', 'date', 'time', 'phone', 'notes'],
+  other: ['cityId', 'date', 'time', 'ref', 'address', 'phone', 'notes'],
+};
+
 /** Dated bookings in date and time order, then the undated ones. */
 export function sortBookings(bookings: Booking[]): Booking[] {
   return [...bookings].sort((a, b) => {
@@ -10,16 +21,26 @@ export function sortBookings(bookings: Booking[]): Booking[] {
   });
 }
 
-/** Where the traveler sleeps in a city on a date: the latest stay there that starts on or before it. */
+/** Where the traveler sleeps in a city on a date: the latest stay there that has started and not ended. */
 export function stayFor(trip: Pick<Trip, 'bookings'>, cityId: string, date: string): Booking | undefined {
   return sortBookings(trip.bookings ?? [])
-    .filter((b) => b.kind === 'stay' && b.cityId === cityId && (!b.date || b.date <= date))
+    .filter((b) => b.kind === 'stay' && b.cityId === cityId && (!b.date || b.date <= date) && (!b.endDate || date < b.endDate))
     .at(-1);
+}
+
+/** "Addis Ababa → Lalibela" for a flight or ride. */
+export function routeText(b: Pick<Booking, 'from' | 'to'>): string | undefined {
+  return b.from || b.to ? [b.from, b.to].map((x) => x || '?').join(' → ') : undefined;
+}
+
+/** "07:10–08:15", or the one time there is. */
+export function timeText(b: Pick<Booking, 'time' | 'arriveTime'>): string | undefined {
+  return b.time && b.arriveTime ? `${b.time}–${b.arriveTime}` : b.time ?? (b.arriveTime && `arrives ${b.arriveTime}`);
 }
 
 /** One line with what a traveler shows a driver or a check-in desk. */
 export function bookingLine(b: Booking): string {
-  return [b.name, b.time, b.ref && `ref ${b.ref}`, b.address, b.phone].filter(Boolean).join(' · ');
+  return [b.name, routeText(b), timeText(b), b.ref && `ref ${b.ref}`, b.address, b.phone].filter(Boolean).join(' · ');
 }
 
 /** Google Maps search for an address, which opens the Maps app on phones that have it. */

@@ -177,7 +177,14 @@ export interface Booking {
   cityId?: string;
   /** Check-in day for a stay, travel day for a flight or ride. */
   date?: string;
+  /** Check-out day for a stay. */
+  endDate?: string;
   time?: string;
+  /** Arrival time for a flight. */
+  arriveTime?: string;
+  /** Where a flight or ride leaves from and goes to. */
+  from?: string;
+  to?: string;
   /** Confirmation or booking code. */
   ref?: string;
   phone?: string;

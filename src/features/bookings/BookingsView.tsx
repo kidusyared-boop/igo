@@ -5,7 +5,7 @@ import { formatDay } from '../../utils/dates';
 import { routeCities } from '../planner/route';
 import { useT } from '../../i18n';
 import { BookingForm } from './BookingForm';
-import { mapLink, sortBookings, telLink } from './bookings';
+import { mapLink, routeText, sortBookings, telLink, timeText } from './bookings';
 
 interface BookingsViewProps {
   trip: Trip;
@@ -37,8 +37,11 @@ export function BookingsView({ trip, plan, onSave, onRemove }: BookingsViewProps
                 <div className="stack-sm" style={{ gap: 2, minWidth: 0 }}>
                   <span className="eyebrow">{t(`booking.kind.${b.kind}`)}</span>
                   <strong>{b.name}</strong>
-                  {(b.date || b.time || b.cityId) && (
-                    <span className="meta">{[b.date && formatDay(b.date), b.time, cityName(b.cityId)].filter(Boolean).join(' · ')}</span>
+                  {routeText(b) && <span className="meta">{routeText(b)}</span>}
+                  {(b.date || b.time || b.arriveTime || b.cityId) && (
+                    <span className="meta">
+                      {[b.date && (b.endDate ? `${formatDay(b.date)} – ${formatDay(b.endDate)}` : formatDay(b.date)), timeText(b), cityName(b.cityId)].filter(Boolean).join(' · ')}
+                    </span>
                   )}
                   {b.ref && <span className="booking-ref">{t('booking.refShown', { ref: b.ref })}</span>}
                   {b.address && <a className="booking-link" href={mapLink(b.address)} target="_blank" rel="noreferrer">{b.address}</a>}
