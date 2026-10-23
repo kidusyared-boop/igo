@@ -1,5 +1,5 @@
 import { useEffect, useReducer, useState } from 'react';
-import type { Spot, Task, Trip } from '../types';
+import type { Booking, Spot, Task, Trip } from '../types';
 import { loadTombstones, loadTrips, saveTombstones, saveTrips } from '../services/storage';
 import type { Tombstone } from '../services/sync';
 import { sampleTrip } from '../data/sampleTrip';
@@ -16,6 +16,8 @@ type Action =
   | { type: 'removeSpot'; tripId: string; spotId: string }
   | { type: 'dismissPlace'; tripId: string; key: string }
   | { type: 'restorePlaces'; tripId: string }
+  | { type: 'upsertBooking'; tripId: string; booking: Booking }
+  | { type: 'removeBooking'; tripId: string; bookingId: string }
   | { type: 'merge'; trips: Trip[]; tombstones: Tombstone[] };
 
 interface State {
@@ -62,6 +64,13 @@ function edit(trips: Trip[], action: Exclude<Action, { type: 'merge' }>): Trip[]
       return updateTrip(trips, action.tripId, (t) => ({ ...t, dismissedPlaces: [] }));
     case 'removeSpot':
       return updateTrip(trips, action.tripId, (t) => ({ ...t, spots: t.spots.filter((s) => s.id !== action.spotId) }));
+    case 'upsertBooking':
+      return updateTrip(trips, action.tripId, (t) => {
+        const list = t.bookings ?? [];
+        return { ...t, bookings: list.some((b) => b.id === action.booking.id) ? list.map((b) => (b.id === action.booking.id ? action.booking : b)) : [...list, action.booking] };
+      });
+    case 'removeBooking':
+      return updateTrip(trips, action.tripId, (t) => ({ ...t, bookings: (t.bookings ?? []).filter((b) => b.id !== action.bookingId) }));
   }
 }
 

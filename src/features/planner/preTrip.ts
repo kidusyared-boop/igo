@@ -50,7 +50,7 @@ export function buildPreTripTasks(trip: Trip, country: CountryPack, city: City):
     }),
     task(trip, 1, 'emergency', {
       title: 'Save emergency numbers and your hotel address offline',
-      detail: country.emergency,
+      detail: `${country.emergency} Add your stays under Bookings and igo keeps the address with you, even offline.`,
       category: 'prep',
     }),
   ];

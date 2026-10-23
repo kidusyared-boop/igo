@@ -166,6 +166,25 @@ export interface Spot {
   diets?: Diet[];
 }
 
+export type BookingKind = 'stay' | 'flight' | 'transport' | 'guide' | 'other';
+
+/** Something the traveler booked, kept in the trip so it is there offline. */
+export interface Booking {
+  id: string;
+  kind: BookingKind;
+  /** Hotel, airline and flight number, bus company or guide's name. */
+  name: string;
+  cityId?: string;
+  /** Check-in day for a stay, travel day for a flight or ride. */
+  date?: string;
+  time?: string;
+  /** Confirmation or booking code. */
+  ref?: string;
+  phone?: string;
+  address?: string;
+  notes?: string;
+}
+
 export interface Trip {
   id: string;
   name: string;
@@ -194,6 +213,8 @@ export interface Trip {
   /** Suggested places the traveler said no to. */
   dismissedPlaces: string[];
   spots: Spot[];
+  /** Stays, flights, rides and guides the traveler booked. Missing on trips saved before bookings existed. */
+  bookings?: Booking[];
   customTasks: Task[];
   doneIds: string[];
   hiddenIds: string[];
