@@ -54,7 +54,7 @@ export const PLACES: Record<string, SuggestedSpot[]> = {
     { name: 'Coffee at the cafes by the market', light: 'any', tags: ['coffee', 'city'], cost: 1, effort: 'easy', note: 'Small cafes around the town center serve macchiato and buna. Good for watching the town go by.' },
     { name: 'Lunch in the garden at Seven Olives', light: 'lunch', tags: ['food'], cost: 2, effort: 'easy', diets: ['vegan', 'vegetarian', 'fasting'], note: 'Lalibela\'s oldest hotel, with a leafy garden restaurant. Close to the churches.' },
     { name: 'Local food at Unique Restaurant', light: 'lunch', tags: ['food'], cost: 1, effort: 'easy', diets: ['vegan', 'vegetarian', 'fasting'], note: 'Small family-run place serving home-style Ethiopian dishes. Ask what is fresh that day.' },
-    { name: 'Sunset dinner at Ben Abeba', light: 'dinner', tags: ['food'], cost: 2, effort: 'easy', diets: ['vegan', 'vegetarian', 'fasting'], note: 'Spiral-shaped restaurant with views over the valley. Arrive before sunset.' },
+    { name: 'Dinner at Ben Abeba', light: 'dinner', tags: ['food'], cost: 2, effort: 'easy', diets: ['vegan', 'vegetarian', 'fasting'], note: 'Spiral-shaped restaurant with views over the valley. Come before sunset for a drink and the view, then stay for dinner.' },
     { name: 'Tej at a local tej bet', light: 'night', tags: ['nightlife', 'culture'], cost: 1, effort: 'easy', kids: false, note: 'Honey wine served in round flasks, sometimes with azmari music. Stronger than it tastes.' },
   ],
   gondar: [

@@ -188,7 +188,7 @@ describe('traveler preferences', () => {
     expect(names.some((n) => nightOut.includes(n))).toBe(false);
   });
   it('gives a moving day one easy outing after check-in', () => {
-    const route = (o: Partial<Trip>) => solo({ cityId: 'addis', startDate: '2026-11-10', endDate: '2026-11-19', stops: [{ id: 'a', cityId: 'gondar', date: '2026-11-12' }, { id: 'b', cityId: 'lalibela', date: '2026-11-15' }], ...o });
+    const route = (o: Partial<Trip>) => solo({ cityId: 'addis', startDate: '2026-11-10', endDate: '2026-11-19', stops: [{ id: 'a', cityId: 'gondar', date: '2026-11-12' }, { id: 'b', cityId: 'bahir-dar', date: '2026-11-15' }], ...o });
     const moves = (t: Trip) => generatePlan(t).days.filter((d) => d.movedFrom);
     const history = moves(route({ interests: ['history', 'religion', 'culture'] }));
     expect(history.some((d) => d.tasks.some((x) => x.id.includes(':spot-') && x.time === '15:30'))).toBe(true);
