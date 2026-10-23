@@ -88,7 +88,7 @@ export function TripView({ trip, dispatch, onBack, onEdit, notify, justCreated =
     const result = tryEdit(trip, plan, original, edited, closed);
     if ('problem' in result) {
       const p = result.problem;
-      return notify(t('check.refused', { reason: t(`check.${p.code}`, { title: p.title, city: p.cityId ? cityName(p.cityId) : '' }) }));
+      return notify(t('check.refused', { reason: t(`check.${p.code}`, { title: p.title, city: p.cityId ? cityName(p.cityId) : '', other: p.other ?? '' }) }));
     }
     dispatch({ type: 'upsert', trip: result.trip });
     setEditing(null);

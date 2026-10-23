@@ -301,3 +301,40 @@ describe('repairing a trip saved before the checker', () => {
     expect(generatePlan(fixed).days.find((d) => d.date === '2026-11-12')!.tasks.find((x) => x.id.endsWith(':spot-sp4'))!.time).toBe(visit.time);
   });
 });
+
+describe('travel and logistics steps keep their order', () => {
+  const tr = trip({
+    startDate: '2026-11-10', endDate: '2026-11-15',
+    stops: [{ id: 's1', cityId: 'harar', date: '2026-11-12' }, { id: 's2', cityId: 'addis', date: '2026-11-14' }],
+  });
+  const plan = generatePlan(tr);
+  const moving = plan.days.find((d) => d.date === '2026-11-12')!;
+  const step = (key: string, day = moving) => day.tasks.find((x) => x.id.endsWith(`:${key}`))!;
+
+  it('check-in in Harar cannot move before checking out in Addis', () => {
+    const result = tryEdit(tr, plan, step('move-in'), { ...step('move-in'), time: '02:30' });
+    expect('problem' in result && result.problem).toMatchObject({ code: 'movedBefore', other: step('move').title });
+  });
+
+  it('checkout cannot move after the journey', () => {
+    const result = tryEdit(tr, plan, step('move-out'), { ...step('move-out'), time: '11:00' });
+    expect('problem' in result && result.problem.code).toBe('movedAfter');
+  });
+
+  it('on landing day, the ride to your stay cannot come before landing', () => {
+    const arrival = plan.days[0]!;
+    const ride = step('ride', arrival);
+    const result = tryEdit(tr, plan, ride, { ...ride, time: '06:00' });
+    expect('problem' in result).toBe(true);
+  });
+
+  it('a step can still move within its place in the order', () => {
+    const result = tryEdit(tr, plan, step('move-in'), { ...step('move-in'), time: shiftTime(step('move-in').time!, 30) });
+    expect('trip' in result).toBe(true);
+  });
+
+  it('a saved trip with check-in before checkout repairs itself on load', () => {
+    const broken = saveTaskEdit(tr, step('move-in'), { ...step('move-in'), time: '02:30' }, () => 'task_bad');
+    expect(normalizeTrip(broken).customTasks).toEqual([]);
+  });
+});

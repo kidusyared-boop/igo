@@ -3,7 +3,7 @@ import { toMinutes } from '../../utils/dates';
 import { generatePlan } from './generatePlan';
 import { moveTask, partnerOf, resetTask, spotOf } from './taskEdits';
 
-export type ProblemCode = 'wrongCity' | 'beforeLanding' | 'beforeCheckIn' | 'wrongLight' | 'afterAirport' | 'goAfterVisit' | 'twice' | 'routeOutside';
+export type ProblemCode = 'wrongCity' | 'beforeLanding' | 'beforeCheckIn' | 'wrongLight' | 'afterAirport' | 'goAfterVisit' | 'twice' | 'routeOutside' | 'movedBefore' | 'movedAfter';
 
 export interface Problem {
   code: ProblemCode;
@@ -13,6 +13,8 @@ export interface Problem {
   ref: string;
   /** For wrongCity: the city the place is in. */
   cityId?: string;
+  /** For movedBefore and movedAfter: the step it would swap places with. */
+  other?: string;
 }
 
 /** What a plan task, or the traveler's copy of one, is: e.g. "move-in" or "spot-sp5". */
@@ -47,6 +49,7 @@ export function checkPlan(trip: Trip, plan: TripPlan): Problem[] {
     if (stop.date <= trip.startDate || stop.date > trip.endDate) problems.push({ code: 'routeOutside', date: stop.date, title: '', ref: stop.id });
   }
 
+  const igo = stepOrder(trip);
   const spots = new Map<string, Spot>([...plan.pickedSpots.map((p) => [p.spot.id, p.spot] as const), ...trip.spots.map((s) => [s.id, s] as const)]);
   const seen = new Map<string, string>();
   for (const day of plan.days) {
@@ -82,11 +85,49 @@ export function checkPlan(trip: Trip, plan: TripPlan): Problem[] {
       if (leave !== null && minutes > leave && !/^(airport|flight|connect)/.test(key)) problems.push({ code: 'afterAirport', ...base });
     }
 
+    problems.push(...outOfOrder(day, igo.get(day.date) ?? []));
+
     for (const task of day.tasks) {
       const go = /^go-(.+)$/.exec(keyOf(task));
       const visit = go ? visits.get(go[1]!) : undefined;
       if (go && task.time && visit != null && toMinutes(task.time) > visit) problems.push({ code: 'goAfterVisit', date: day.date, title: task.title, ref: task.id });
     }
+  }
+  return problems;
+}
+
+/** The trip as igo planned it, before any of the traveler's changes to igo's tasks. */
+function unedited(trip: Trip): Trip {
+  const copies = trip.customTasks.filter((t) => t.replaces);
+  if (!copies.length) return trip;
+  const replaced = new Set(copies.map((t) => t.replaces));
+  return { ...trip, customTasks: trip.customTasks.filter((t) => !t.replaces), hiddenIds: trip.hiddenIds.filter((id) => !replaced.has(id)) };
+}
+
+/**
+ * The order igo put each day's travel and logistics steps in: landing, getting cash, the
+ * ride, check-in, checkout, the journey, leaving for a place, leaving for the airport.
+ * These depend on each other, so a change may move them in time but never past each other.
+ */
+function stepOrder(trip: Trip): Map<string, string[]> {
+  const plan = generatePlan(unedited(trip));
+  return new Map(plan.days.map((d) => [d.date, d.tasks.filter((t) => t.category === 'logistics' && t.time).map(keyOf)]));
+}
+
+function outOfOrder(day: TripPlan['days'][number], order: string[]): Problem[] {
+  const byKey = new Map(day.tasks.filter((t) => t.time).map((t) => [keyOf(t), t]));
+  const steps = order.flatMap((key) => byKey.get(key) ?? []);
+  const problems: Problem[] = [];
+  for (let i = 1; i < steps.length; i++) {
+    const [a, b] = [steps[i - 1]!, steps[i]!];
+    if (toMinutes(a.time!) <= toMinutes(b.time!)) continue;
+    // Blame the step the traveler changed; when both or neither were, the later one.
+    const moved = a.replaces && !b.replaces ? a : b;
+    problems.push(
+      moved === b
+        ? { code: 'movedBefore', date: day.date, title: b.title, ref: b.id, other: a.title }
+        : { code: 'movedAfter', date: day.date, title: a.title, ref: a.id, other: b.title },
+    );
   }
   return problems;
 }

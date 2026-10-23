@@ -213,6 +213,8 @@ export const en = {
   'check.beforeLanding': '{title} would be before you land.',
   'check.beforeCheckIn': '{title} would be before you reach {city} that day.',
   'check.wrongLight': '{title} would be at the wrong time of day for it.',
+  'check.movedBefore': '{title} would come before {other}.',
+  'check.movedAfter': '{title} would come after {other}.',
   'check.afterAirport': '{title} would be after you leave for the airport.',
   'check.goAfterVisit': '{title} would come after the visit it leads to.',
   'check.twice': '{title} would be on two days.',
