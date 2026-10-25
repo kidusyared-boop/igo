@@ -1,6 +1,7 @@
 import type { CountryPack } from '../../types';
 import { formatEthiopian, toEthiopianClock } from '../../utils/ethiopian';
 import { ethiopianDayNotes, festivals } from './holidays';
+import { SEASONS } from './seasons';
 import { PLACES } from './places';
 
 const AMHARA_SAFETY =
@@ -54,42 +55,49 @@ export const ETHIOPIA: CountryPack = {
       id: 'addis', name: 'Addis Ababa', region: 'Addis Ababa', lat: 9.03, lon: 38.74, timeZone: 'Africa/Addis_Ababa', altitudeM: 2355,
       access: 'International hub at Bole airport.',
       suggestedSpots: PLACES['addis'] ?? [],
+      seasons: SEASONS['addis'],
     },
     {
       id: 'lalibela', name: 'Lalibela', region: 'Amhara', lat: 12.0317, lon: 39.0476, timeZone: 'Africa/Addis_Ababa', altitudeM: 2500,
       access: 'Flights from Addis were suspended in September 2026. By road it is about two days via Dessie, through areas under "do not travel" advice.', safety: AMHARA_SAFETY,
       hubHours: 16,
       suggestedSpots: PLACES['lalibela'] ?? [],
+      seasons: SEASONS['lalibela'],
     },
     {
       id: 'gondar', name: 'Gondar', region: 'Amhara', lat: 12.603, lon: 37.4521, timeZone: 'Africa/Addis_Ababa', altitudeM: 2133,
       access: 'Ethiopian Airlines flight from Addis, about 1 hour.', safety: AMHARA_SAFETY,
       hubHours: 4, roads: [{ cityId: 'simien', hours: 2.5 }, { cityId: 'bahir-dar', hours: 3 }],
       suggestedSpots: PLACES['gondar'] ?? [],
+      seasons: SEASONS['gondar'],
     },
     {
       id: 'bahir-dar', name: 'Bahir Dar', region: 'Amhara', lat: 11.5742, lon: 37.3614, timeZone: 'Africa/Addis_Ababa', altitudeM: 1800,
       access: 'Ethiopian Airlines flight from Addis, about 1 hour.', safety: AMHARA_SAFETY,
       hubHours: 4,
       suggestedSpots: PLACES['bahir-dar'] ?? [],
+      seasons: SEASONS['bahir-dar'],
     },
     {
       id: 'simien', name: 'Simien Mountains (Debark)', region: 'Amhara', lat: 13.1333, lon: 37.9, timeZone: 'Africa/Addis_Ababa', altitudeM: 2850,
       access: 'Fly to Gondar, then about 2.5 hours by road to Debark park headquarters.', safety: AMHARA_SAFETY,
       hubHours: 7,
       suggestedSpots: PLACES['simien'] ?? [],
+      seasons: SEASONS['simien'],
     },
     {
       id: 'axum', name: 'Axum', region: 'Tigray', lat: 14.1211, lon: 38.723, timeZone: 'Africa/Addis_Ababa', altitudeM: 2130,
       access: 'Civilian flights to Tigray are suspended and foreigners are barred as of October 2026.', safety: TIGRAY_SAFETY,
       hubHours: 16,
       suggestedSpots: PLACES['axum'] ?? [],
+      seasons: SEASONS['axum'],
     },
     {
       id: 'harar', name: 'Harar', region: 'Harari', lat: 9.312, lon: 42.118, timeZone: 'Africa/Addis_Ababa', altitudeM: 1885,
       access: 'Fly to Dire Dawa, then about 1 hour by road.',
       hubHours: 5,
       suggestedSpots: PLACES['harar'] ?? [],
+      seasons: SEASONS['harar'],
     },
     {
       id: 'hawassa', name: 'Hawassa', region: 'Sidama', lat: 7.05, lon: 38.48, timeZone: 'Africa/Addis_Ababa', altitudeM: 1708,
@@ -97,18 +105,21 @@ export const ETHIOPIA: CountryPack = {
       hubHours: 4.5, roads: [{ cityId: 'arba-minch', hours: 5 }],
       safety: 'Check current travel advice for the Sidama region and the roads to it before you go.',
       suggestedSpots: PLACES['hawassa'] ?? [],
+      seasons: SEASONS['hawassa'],
     },
     {
       id: 'arba-minch', name: 'Arba Minch', region: 'South Ethiopia', lat: 6.0333, lon: 37.55, timeZone: 'Africa/Addis_Ababa', altitudeM: 1285,
       access: 'Ethiopian Airlines flight from Addis, about 1 hour.', safety: SOUTH_NOTE,
       hubHours: 4, roads: [{ cityId: 'jinka', hours: 6 }],
       suggestedSpots: PLACES['arba-minch'] ?? [],
+      seasons: SEASONS['arba-minch'],
     },
     {
       id: 'jinka', name: 'Jinka (Omo Valley)', region: 'South Ethiopia', lat: 5.786, lon: 36.565, timeZone: 'Africa/Addis_Ababa', altitudeM: 1400,
       access: 'Flight from Addis to Jinka (only a few a week), or 2 days by road via Arba Minch.', safety: SOUTH_NOTE,
       hubHours: 4.5,
       suggestedSpots: PLACES['jinka'] ?? [],
+      seasons: SEASONS['jinka'],
     },
     {
       id: 'danakil', name: 'Danakil Depression (via Semera)', region: 'Afar', lat: 11.792, lon: 41.006, timeZone: 'Africa/Addis_Ababa', altitudeM: 430,
@@ -116,6 +127,7 @@ export const ETHIOPIA: CountryPack = {
       hubHours: 11,
       safety: 'Afar region: as of October 2026 foreigners cannot fly into Afar airports, and the UK advises against travel near the Tigray and Eritrea borders, which includes Dallol. Tours only, with an operator and escort; daytime heat passes 45 °C.',
       suggestedSpots: PLACES['danakil'] ?? [],
+      seasons: SEASONS['danakil'],
     },
   ],
 };

@@ -5,6 +5,7 @@ import { DEFAULT_HUB_HOURS, routeCities } from './route';
 import { preferencePrep } from './preferences';
 import { diasporaPrep, needsVisa } from './diaspora';
 import { festivalPrep } from './festivals';
+import { seasonPrep } from './seasons';
 
 function task(trip: Trip, daysBefore: number, key: string, fields: Omit<Task, 'id' | 'date' | 'source'>): Task {
   const date = addDays(trip.startDate, -daysBefore);
@@ -60,7 +61,7 @@ export function buildPreTripTasks(trip: Trip, country: CountryPack, city: City):
     tasks.push(task(trip, extra.daysBefore, extra.key, { title: extra.title, detail: extra.detail, category: 'prep' }));
   }
 
-  for (const pref of [...preferencePrep(trip), ...diasporaPrep(trip), ...festivalPrep(trip, country)]) {
+  for (const pref of [...preferencePrep(trip), ...diasporaPrep(trip), ...festivalPrep(trip, country), ...seasonPrep(trip)]) {
     tasks.push(task(trip, pref.daysBefore, pref.key, { title: pref.title, detail: pref.detail, category: 'prep' }));
   }
 

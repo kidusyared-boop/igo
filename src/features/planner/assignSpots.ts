@@ -3,6 +3,7 @@ import { dayCapacity, isMealSpot } from './personalize';
 import { addDays, toMinutes } from '../../utils/dates';
 import { eventWindow } from './festivals';
 import { findCountry } from '../../data/countries';
+import { roadsClosed, seasonOn, wantsMorning } from './seasons';
 
 export type DaySkeleton = Pick<DayPlan, 'date' | 'kind' | 'sun' | 'cityId' | 'movedFrom'> & {
   /** Festival events the traveler is in town for; nothing else is planned over them. */
@@ -48,6 +49,9 @@ const CAPACITY: Record<Light, number> = { sunrise: 1, any: 2, lunch: 1, sunset: 
 
 /** Start times for daytime places: one in the morning, one in the afternoon. */
 export const ANY_SLOTS = ['09:30', '14:30'];
+
+/** Daytime slots before this count as the morning, ahead of afternoon rain or heat. */
+export const NOON = toMinutes('12:00');
 
 /** After checking in on a moving day there is still time for one easy place nearby. */
 export const MOVE_SLOT = '15:30';
@@ -152,10 +156,17 @@ export function assignSpots(
   const breaksFast = (spot: Spot, d: DaySkeleton) =>
     keepsFast && isMealSpot(spot) && !spot.diets?.some((x) => x === 'fasting' || x === 'vegan') && fastingDay(d.date);
 
+  const seasonOf = (d: DaySkeleton) => seasonOn(country?.cities.find((c) => c.id === d.cityId), d.date);
+  // In the rains or the heat, igo's outdoor picks only go where a morning slot is still free.
+  const mornings = (d: DaySkeleton) => anySlots(d, trip).filter((t) => toMinutes(t) < NOON).length;
+  const morningsUsed = (d: DaySkeleton) => (byDate.get(d.date) ?? []).filter((s) => wantsMorning(s, seasonOf(d))).length;
+
   // Whole-day trips need a full day in one place with nothing else in daylight.
   const roomFor = (spot: Spot, d: DaySkeleton) => {
     if (spot.weekdays && !spot.weekdays.includes(weekday(d.date))) return false;
     if (breaksFast(spot, d)) return false;
+    if (roadsClosed(spot, seasonOf(d))) return false;
+    if (wantsMorning(spot, seasonOf(d)) && morningsUsed(d) >= mornings(d)) return false;
     if (spot.allDay) {
       return d.kind === 'full' && !d.movedFrom && !d.events?.length && anySlots(d, trip).length === ANY_SLOTS.length && used(d.date, 'any') === 0 && used(d.date, 'sunset') === 0;
     }

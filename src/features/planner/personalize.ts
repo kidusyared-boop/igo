@@ -2,6 +2,7 @@ import type { City, DayPlan, Interest, Pace, Spot, SuggestedSpot, Trip } from '.
 
 export type Preferences = Pick<Trip, 'interests' | 'budget' | 'diets' | 'mobility' | 'withKids'>;
 import type { DaySkeleton } from './assignSpots';
+import { isOutdoor, roadsClosed, seasonOn } from './seasons';
 
 export const INTERESTS: { value: Interest; label: string }[] = [
   { value: 'city', label: 'City life' },
@@ -98,11 +99,15 @@ export function pickPlaces(trip: Trip, days: DaySkeleton[], cityOf: (id: string)
 
   for (const cityId of cityIds) {
     const city = cityOf(cityId);
-    const capacity = days.filter((d) => d.cityId === cityId).reduce((n, d) => n + dayCapacity(d, trip.pace, trip.withKids), 0);
+    const cityDays = days.filter((d) => d.cityId === cityId);
+    const capacity = cityDays.reduce((n, d) => n + dayCapacity(d, trip.pace, trip.withKids), 0);
+    // When rains close the roads on every day there, whole-day trips make way for places that can happen.
+    const noDayTrips = cityDays.every((d) => roadsClosed({ allDay: true, pickedFor: [] }, seasonOn(city, d.date)));
     const own = trip.spots.filter((s) => (s.cityId ?? trip.cityId) === cityId && !isMealSpot(s)).length;
     const ranked = city.suggestedSpots
       .map((place, index) => ({ place, index, fit: scorePlace(place, trip) }))
       .filter((r) => r.fit && !dismissed.has(placeKey(cityId, r.place.name)) && !userNames.has(r.place.name.toLowerCase()))
+      .filter((r) => !(noDayTrips && r.place.allDay))
       .sort((a, b) => (b.fit?.score ?? 0) - (a.fit?.score ?? 0) || a.index - b.index);
     // Meals sit outside the pace limit: someone who loves food still eats on a relaxed day.
     const isMeal = (r: (typeof ranked)[number]) => r.place.light === 'lunch' || r.place.light === 'dinner';
@@ -120,6 +125,7 @@ export function pickPlaces(trip: Trip, days: DaySkeleton[], cityOf: (id: string)
         allDay: r.place.allDay,
         weekdays: r.place.weekdays,
         diets: r.place.diets,
+        ...(isOutdoor(r.place) ? { outdoor: true } : {}),
       });
     }
   }

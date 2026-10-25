@@ -7,6 +7,7 @@ import { interestLabel } from './personalize';
 import { needsVisa } from './diaspora';
 import { withBookings } from '../bookings/bookings';
 import { placeQuery } from '../places/mapQuery';
+import { seasonOn, wantsMorning } from './seasons';
 
 export interface DayContext {
   trip: Trip;
@@ -44,7 +45,10 @@ function spotDrafts(ctx: DayContext, sunrise: string, sunset: string): Draft[] {
   const drafts: Draft[] = [];
   const anyTimes = anySlots(ctx.day, ctx.trip);
   let anyIndex = 0;
-  for (const spot of ctx.spots) {
+  // In the rains or the heat, outdoor places take the morning slot and indoor ones the afternoon.
+  const season = seasonOn(ctx.city, ctx.day.date);
+  const spots = season?.mornings ? [...ctx.spots].sort((a, b) => Number(wantsMorning(b, season)) - Number(wantsMorning(a, season))) : ctx.spots;
+  for (const spot of spots) {
     const detail = spotDetail(spot, ctx.trip);
     const category = creator ? 'shoot' : 'explore';
     const key = `spot-${spot.id}`;
