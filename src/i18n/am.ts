@@ -200,6 +200,8 @@ export const am: Record<keyof typeof en, string> = {
   'task.task': 'ተግባር',
   'task.category': 'ምድብ',
   'task.localTime': 'የኢትዮጵያ ሰዓት',
+  'map.directions': 'አቅጣጫ',
+  'map.directionsTo': 'ወደ {place} አቅጣጫ በGoogle Maps',
   'task.editNamed': '{title}፦ ቀይር ወይም አንቀሳቅስ',
   'edit.title': 'ተግባሩን ቀይር',
   'edit.day': 'ቀን',

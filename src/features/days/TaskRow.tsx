@@ -2,6 +2,7 @@ import type { Task } from '../../types';
 import { useT } from '../../i18n';
 import { LinkText } from '../../components/ui/LinkText';
 import { PencilIcon } from '../../components/ui/Icons';
+import { Directions } from '../places/Directions';
 
 interface TaskRowProps {
   task: Task;
@@ -31,6 +32,7 @@ export function TaskRow({ task, done, localClock, onToggle, onOpen, timeless = f
         <span className={`cat cat-${task.category}`}>{t(`category.${task.category}`)}</span>
         <span className="title">{task.title}</span>
         {task.detail && <span className="detail"><LinkText text={task.detail} /></span>}
+        {task.map && <Directions query={task.map} place={task.title} />}
       </label>
       <button type="button" className="icon-btn" onClick={onOpen} aria-label={t('task.editNamed', { title: task.title })} title={t('common.edit')}>
         <PencilIcon />

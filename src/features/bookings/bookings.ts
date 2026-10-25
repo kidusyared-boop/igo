@@ -43,14 +43,7 @@ export function bookingLine(b: Booking): string {
   return [b.name, routeText(b), timeText(b), b.ref && `ref ${b.ref}`, b.address, b.phone].filter(Boolean).join(' · ');
 }
 
-/** Google Maps search for an address, which opens the Maps app on phones that have it. */
-export function mapLink(address: string): string {
-  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
-}
-
-export function telLink(phone: string): string {
-  return `tel:${phone.replace(/[^\d+]/g, '')}`;
-}
+export { mapLink, telLink } from '../../utils/links';
 
 /** Check-in steps that show the stay, and travel steps that a flight or ride booking covers. */
 const STAY_KEYS = new Set(['checkin', 'move-in']);

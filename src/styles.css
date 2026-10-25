@@ -452,3 +452,12 @@ h1, h2, h3 { text-wrap: balance; margin: 0; }
 /* Web addresses and emergency numbers inside plan text */
 /* The padding widens the tap area around short numbers without moving the text. */
 .task .detail a, .facts a, .note a { padding: 10px 4px; margin: -10px -4px; color: var(--accent-ink); font-weight: 600; text-decoration: underline; text-underline-offset: 2px; overflow-wrap: anywhere; }
+
+/* Directions to a place: a small pill so it reads as a button, big enough to tap. */
+.directions {
+  justify-self: start; display: inline-flex; align-items: center; gap: 6px; margin-top: 2px; padding: 8px 12px 8px 10px; min-height: 36px;
+  border: 1px solid var(--line); border-radius: 999px; background: var(--surface);
+  color: var(--accent-ink); font-weight: 600; font-size: 13px; text-decoration: none;
+}
+.directions svg { width: 16px; height: 16px; flex: none; }
+.spot .directions { align-self: flex-start; }

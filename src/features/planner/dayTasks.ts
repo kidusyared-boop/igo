@@ -6,6 +6,7 @@ import { travelDetail } from './route';
 import { interestLabel } from './personalize';
 import { needsVisa } from './diaspora';
 import { withBookings } from '../bookings/bookings';
+import { placeQuery } from '../places/mapQuery';
 
 export interface DayContext {
   trip: Trip;
@@ -47,6 +48,8 @@ function spotDrafts(ctx: DayContext, sunrise: string, sunset: string): Draft[] {
     const detail = spotDetail(spot, ctx.trip);
     const category = creator ? 'shoot' : 'explore';
     const key = `spot-${spot.id}`;
+    const map = placeQuery(spot.name, ctx.city, ctx.country.name);
+    const before = drafts.length;
     switch (spot.light) {
       case 'sunrise':
         drafts.push({ key: `go-${spot.id}`, time: shiftTime(sunrise, -60), title: `Leave for ${spot.name}`, category: 'logistics' });
@@ -80,6 +83,7 @@ function spotDrafts(ctx: DayContext, sunrise: string, sunset: string): Draft[] {
         drafts.push({ key, time, title, detail, category });
       }
     }
+    if (map) for (const d of drafts.slice(before)) d.map = map;
   }
   return drafts;
 }
