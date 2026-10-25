@@ -4,6 +4,7 @@ import { useTrips } from './hooks/useTrips';
 import { useSync } from './hooks/useSync';
 import { Home } from './features/home/Home';
 import { TripForm } from './features/trips/TripForm';
+import { followDates } from './features/planner/followDates';
 import { TripView } from './features/trips/TripView';
 import { blankTrip } from './features/trips/tripDraft';
 import { LanguageSwitch } from './components/ui/LanguageSwitch';
@@ -116,7 +117,7 @@ export function App() {
           initial={screen.trip}
           isNew={screen.isNew}
           onCancel={() => setScreen(parentScreen(screen) ?? { name: 'list' })}
-          onSave={(trip) => { dispatch({ type: 'upsert', trip }); if (screen.isNew) setFresh(trip.id); setScreen({ name: 'trip', id: trip.id }); }}
+          onSave={(edited) => { const trip = screen.isNew ? edited : followDates(screen.trip, edited); dispatch({ type: 'upsert', trip }); if (screen.isNew) setFresh(trip.id); setScreen({ name: 'trip', id: trip.id }); }}
         />
       )}
       {screen.name === 'trip' && openTrip && (
