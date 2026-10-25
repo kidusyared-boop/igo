@@ -9,7 +9,7 @@ import { RouteEditor } from './RouteEditor';
 import { InterestPicker } from './InterestPicker';
 import { PreferencePicker } from './PreferencePicker';
 import { DiasporaPicker } from './DiasporaPicker';
-import { formatDay } from '../../utils/dates';
+import { addDays, daysBetween, formatDay } from '../../utils/dates';
 import { BackIcon } from '../../components/ui/Icons';
 import { useT, type TKey } from '../../i18n';
 
@@ -36,6 +36,17 @@ export function TripForm({ initial, isNew, onSave, onCancel }: TripFormProps) {
   function changeCountry(code: string) {
     const next = findCountry(code);
     setTrip((prev) => ({ ...prev, countryCode: code, cityId: next?.cities[0]?.id ?? '', stops: [] }));
+  }
+
+  // A new start date moves the whole trip, stops and flight home included; the end date can then be changed on its own.
+  function changeStart(value: string) {
+    setTrip((prev) => {
+      // Half-typed years on a desktop keyboard (0002-11-10) would fling the trip centuries away.
+      const whole = (d: string) => /^(19|20)\d\d-\d\d-\d\d$/.test(d);
+      const shift = whole(prev.startDate) && whole(value) ? daysBetween(prev.startDate, value) : 0;
+      if (!shift) return { ...prev, startDate: value };
+      return { ...prev, startDate: value, endDate: addDays(prev.endDate, shift), stops: prev.stops.map((s) => ({ ...s, date: addDays(s.date, shift) })) };
+    });
   }
 
   function submit(e: FormEvent) {
@@ -71,7 +82,7 @@ export function TripForm({ initial, isNew, onSave, onCancel }: TripFormProps) {
             </select>
           </Field>
           <Field id="trip-start" label={t('form.firstDay')}>
-            <input id="trip-start" type="date" className="input" value={trip.startDate} onChange={(e) => set('startDate', e.target.value)} />
+            <input id="trip-start" type="date" className="input" value={trip.startDate} onChange={(e) => changeStart(e.target.value)} />
           </Field>
           <Field id="trip-end" label={t('form.lastDay')}>
             <input id="trip-end" type="date" className="input" value={trip.endDate} onChange={(e) => set('endDate', e.target.value)} />
