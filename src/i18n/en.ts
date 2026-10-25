@@ -197,6 +197,8 @@ export const en = {
   'task.task': 'Task',
   'task.category': 'Category',
   'task.localTime': 'Ethiopian time',
+  'map.directions': 'Directions',
+  'map.directionsTo': 'Directions to {place} in Google Maps',
   'task.editNamed': 'Change or move {title}',
   'edit.title': 'Change task',
   'edit.day': 'Day',

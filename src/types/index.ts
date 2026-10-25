@@ -238,6 +238,8 @@ export interface Task {
   title: string;
   detail?: string;
   category: TaskCategory;
+  /** Maps search for the place this task goes to, shown as a Directions link. */
+  map?: string;
   source: 'auto' | 'user';
   /** On the traveler's edited copy of an igo task: the id of the igo task it stands in for. */
   replaces?: string;

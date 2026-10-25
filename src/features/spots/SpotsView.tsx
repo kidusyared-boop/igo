@@ -8,6 +8,8 @@ import { placeKey } from '../planner/personalize';
 import { SpotForm } from './SpotForm';
 import { useT } from '../../i18n';
 import { usePlaceChecks } from '../../hooks/usePlaceChecks';
+import { placeQuery } from '../places/mapQuery';
+import { Directions } from '../places/Directions';
 
 interface SpotsViewProps {
   trip: Trip;
@@ -35,6 +37,10 @@ export function SpotsView({ trip, plan, onSave, onRemove, onDismiss, onRestore }
   const cityName = (id?: string) => findCity(trip.countryCode, id ?? trip.cityId)?.name ?? '';
   const shown = new Set([...trip.spots, ...plan.pickedSpots.map((p) => p.spot)].map((s) => s.name.toLowerCase()));
   const dismissed = new Set(trip.dismissedPlaces);
+  const directions = (spot: Spot) => {
+    const query = placeQuery(spot.name, findCity(trip.countryCode, spot.cityId ?? trip.cityId));
+    return query && <Directions query={query} place={spot.name} />;
+  };
 
   return (
     <div className="section">
@@ -57,6 +63,7 @@ export function SpotsView({ trip, plan, onSave, onRemove, onDismiss, onRestore }
                 if (check?.verdict === 'fix') return <span className="meta">{t('spots.flagged')}</span>;
                 return <span className="meta">{spot.checked ? t('spots.checked', { date: formatDay(spot.checked) }) : t('spots.unchecked')}</span>;
               })()}
+              {directions(spot)}
             </div>
             <div className="row" style={{ alignItems: 'start' }}>
               <button type="button" className="btn small" onClick={() => onDismiss(placeKey(spot.cityId ?? trip.cityId, spot.name))}>{t('spots.notForMe')}</button>
@@ -83,6 +90,7 @@ export function SpotsView({ trip, plan, onSave, onRemove, onDismiss, onRestore }
                   {spot.date ? ` ${t('spots.pinned')}` : ''}
                 </span>
                 {spot.shotList && <span className="meta">{spot.shotList}</span>}
+                {directions(spot)}
               </div>
               <div className="row" style={{ alignItems: 'start' }}>
                 <button type="button" className="btn small" onClick={() => setEditing(spot.id)}>{t('common.edit')}</button>

@@ -8,6 +8,7 @@ const KEY = (tripId: string) => `igo.calendar.${tripId}`;
 export interface PhoneEvent {
   title: string;
   description?: string;
+  location?: string;
   isAllDay: boolean;
   startDate: number;
   endDate?: number;
@@ -22,7 +23,7 @@ export function phoneCalendarAvailable(): boolean {
 export function phoneEvents(plan: TripPlan, timeZone: string): PhoneEvent[] {
   return calendarTasks(plan).map((task) => {
     const times = taskTimes(task, timeZone);
-    const base = { title: task.title, ...(task.detail ? { description: task.detail } : {}) };
+    const base = { title: task.title, ...(task.detail ? { description: task.detail } : {}), ...(task.map ? { location: task.map } : {}) };
     if (times) return { ...base, isAllDay: false, startDate: times.start.getTime(), endDate: times.end.getTime() };
     // Whole-day tasks: the plugin turns any moment of the local day into that calendar day.
     const [y = 0, m = 1, d = 1] = task.date.split('-').map(Number);

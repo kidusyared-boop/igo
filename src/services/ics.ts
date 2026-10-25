@@ -36,6 +36,7 @@ function eventFor(task: Task, timeZone: string, now: string): string[] {
     lines.push(`DTSTART;VALUE=DATE:${day}`, `DTEND;VALUE=DATE:${addDays(task.date, 1).replace(/-/g, '')}`);
   }
   if (task.detail) lines.push(`DESCRIPTION:${escape(task.detail)}`);
+  if (task.map) lines.push(`LOCATION:${escape(task.map)}`);
   lines.push('END:VEVENT');
   return lines;
 }
