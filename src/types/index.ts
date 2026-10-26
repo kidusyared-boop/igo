@@ -54,6 +54,26 @@ export interface City {
   lon: number;
   timeZone: string;
   suggestedSpots: SuggestedSpot[];
+  /** Rains or heat that change what a visit can do, by month. */
+  seasons?: Season[];
+}
+
+/** A stretch of the year when weather changes plans in a city. */
+export interface Season {
+  key: string;
+  kind: 'rain' | 'heat';
+  /** Months it covers, 1 for January to 12 for December. */
+  months: number[];
+  /** Short name, such as "the main rains". */
+  name: string;
+  /** What it means on the ground, shown on every day spent there. */
+  note: string;
+  /** Advice before booking, shown in the before-you-go list. */
+  prep: string;
+  /** Afternoons bring rain or heat, so igo plans outdoor places in the morning. */
+  mornings?: boolean;
+  /** Dirt roads turn impassable, so igo leaves out the whole-day trips it would pick. */
+  roughRoads?: boolean;
 }
 
 export interface SuggestedSpot {
@@ -129,7 +149,7 @@ export interface Festival {
 }
 
 export interface DayNote {
-  kind: 'holiday' | 'fasting' | 'safety' | 'move';
+  kind: 'holiday' | 'fasting' | 'safety' | 'move' | 'season';
   text: string;
 }
 
@@ -164,6 +184,8 @@ export interface Spot {
   weekdays?: number[];
   /** For meals: diets the place reliably serves. */
   diets?: Diet[];
+  /** On places igo picked: outdoors (countryside, hikes, wildlife), so weather decides when to go. */
+  outdoor?: boolean;
 }
 
 export type BookingKind = 'stay' | 'flight' | 'transport' | 'guide' | 'other';

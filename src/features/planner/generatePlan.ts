@@ -9,6 +9,7 @@ import { DEFAULT_HUB_HOURS, cityForDate, travelDetail, travelHours } from './rou
 import { pickPlaces, placeKey } from './personalize';
 import { festivalEventsByDate } from './festivals';
 import { placeKeyOf } from './taskEdits';
+import { seasonOn } from './seasons';
 
 function dayKind(index: number, total: number): DayPlan['kind'] {
   if (total === 1) return 'single';
@@ -82,9 +83,11 @@ export function generatePlan(trip: Trip, closed: ReadonlySet<string> = new Set()
     const city = cityOf(day.cityId);
     const fromCity = day.movedFrom ? cityOf(day.movedFrom) : undefined;
     const auto = buildDayTasks({ trip, country, city, fromCity, day, spots: byDate.get(day.date) ?? [] }).filter((t) => !placeCopies.has(keyOf(t)));
+    const season = seasonOn(city, day.date);
     const notes: DayNote[] = [
       ...(fromCity ? [{ kind: 'move' as const, text: `Moving from ${fromCity.name} to ${city.name}. ${travelDetail(fromCity, city, country) ?? ''}`.trim() }] : []),
       ...(country.dayNotes?.(day.date) ?? []),
+      ...(season ? [{ kind: 'season' as const, text: season.note }] : []),
       ...(city.safety ? [{ kind: 'safety' as const, text: city.safety }] : []),
     ];
     return {
