@@ -183,6 +183,7 @@ export const en = {
   'note.safety': 'Safety',
   'note.move': 'Travel',
   'note.season': 'Weather',
+  'note.event': 'Event',
   'sun.sunrise': 'Sunrise',
   'sun.sunset': 'Sunset',
   'sun.golden': 'Golden hour',

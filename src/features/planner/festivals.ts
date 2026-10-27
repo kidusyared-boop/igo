@@ -38,6 +38,8 @@ export interface FestivalPrep {
 
 const cityName = (trip: Trip, id: string) => findCity(trip.countryCode, id)?.name ?? id;
 
+const capital = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
+
 function listNames(names: string[]): string {
   return names.length < 2 ? (names[0] ?? '') : `${names.slice(0, -1).join(', ')} and ${names.at(-1)}`;
 }
@@ -56,8 +58,8 @@ export function festivalPrep(trip: Trip, country: CountryPack): FestivalPrep[] {
       out.push({
         daysBefore: 90,
         key: `fest-book-${f.key}`,
-        title: `Book your room in ${city} now: ${f.name} fills every hotel`,
-        detail: `You are there for ${f.name} on ${formatDay(f.date)}. Rooms sell out months ahead and prices rise sharply that week. Book domestic flights at the same time, and expect banks and offices to close on the day.`,
+        title: f.book?.title ?? `Book your room in ${city} now: ${f.name} fills every hotel`,
+        detail: f.book?.detail ?? `You are there for ${f.name} on ${formatDay(f.date)}. Rooms sell out months ahead and prices rise sharply that week. Book domestic flights at the same time, and expect banks and offices to close on the day.`,
       });
       continue;
     }
@@ -66,20 +68,21 @@ export function festivalPrep(trip: Trip, country: CountryPack): FestivalPrep[] {
     const best = f.cityIds.map((id) => cityName(trip, id));
     const onRoute = f.cityIds.filter((id) => legs.some((l) => l.cityId === id));
     const eve = formatDay(addDays(f.date, -1));
+    const when = f.when ?? `from the afternoon of ${eve} to the next morning`;
     if (onRoute.length) {
       const city = cityName(trip, onRoute[0]!);
       out.push({
         daysBefore: 90,
         key: `fest-route-${f.key}`,
         title: `Change your route to be in ${city} for ${f.name}`,
-        detail: `${f.name} is on ${formatDay(f.date)}, but your route has you in ${there} that day. ${city} is already on your route, so move that stop to cover ${eve} and ${formatDay(f.date)}: the celebrations run from the afternoon before to the morning of the feast.`,
+        detail: `${capital(f.name)} is on ${formatDay(f.date)}, but your route has you in ${there} that day. ${city} is already on your route, so move that stop to be there ${when}.`,
       });
     } else {
       out.push({
         daysBefore: 90,
         key: `fest-route-${f.key}`,
         title: `Decide where to spend ${f.name}`,
-        detail: `${f.name} is on ${formatDay(f.date)}, during your trip, and you will be in ${there}. The biggest celebrations are in ${listNames(best)}, from the afternoon of ${eve} to the next morning. Add a stop there if you want to see it.`,
+        detail: `${capital(f.name)} is on ${formatDay(f.date)}, during your trip, and you will be in ${there}. It is worth being in ${listNames(best)}, ${when}. Add a stop there if you want to see it.`,
       });
     }
   }

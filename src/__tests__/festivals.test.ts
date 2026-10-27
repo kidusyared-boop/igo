@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { generatePlan } from '../features/planner/generatePlan';
-import { festivals } from '../data/ethiopia/holidays';
+import { festivals, holidayNotes, irreecha } from '../data/ethiopia/holidays';
 import { sampleTrip } from '../data/sampleTrip';
 import type { Trip } from '../types';
 import { toMinutes } from '../utils/dates';
@@ -64,5 +64,36 @@ describe('festivals', () => {
     const plan = generatePlan(trip({ mode: 'traveler', interests: ['food', 'wildlife'], startDate: '2027-01-15', endDate: '2027-01-22', stops: [{ id: 's1', cityId: 'gondar', date: '2027-01-17' }] }));
     expect(plan.days.some((d) => d.tasks.some((t) => t.id.includes(':fest-')))).toBe(false);
     expect(plan.preTrip.some((t) => t.id.includes(':fest-'))).toBe(false);
+  });
+
+  it('expects Irreecha on the first-week October weekend', () => {
+    expect(irreecha(2026)).toBe('2026-10-04');
+    expect(irreecha(2025)).toBe('2025-10-05');
+    expect(irreecha(2016)).toBe('2016-10-02');
+    expect(holidayNotes('2026-10-03').map((n) => n.kind)).toContain('event');
+  });
+
+  it('plans Irreecha in Addis Ababa and at Bishoftu, without a second Bishoftu day trip', () => {
+    const plan = generatePlan(trip({ startDate: '2026-10-01', endDate: '2026-10-07', interests: ['culture', 'countryside'], pace: 'packed' }));
+    expect(day(plan, '2026-10-03').tasks.find((t) => t.id.endsWith('fest-irreecha-addis'))?.time).toBe('06:00');
+    expect(day(plan, '2026-10-04').tasks.find((t) => t.id.endsWith('fest-irreecha-bishoftu'))?.time).toBe('05:30');
+    expect(plan.days.flatMap((d) => d.tasks).filter((t) => /Bishoftu crater lakes/.test(t.title))).toEqual([]);
+    expect(pre(plan, 'fest-book-irreecha')?.title).toBe('Book a car to Bishoftu for Irreecha');
+  });
+
+  it('plans the Great Ethiopian Run in Addis Ababa and warns everyone about the road closures', () => {
+    const plan = generatePlan(trip({ startDate: '2026-11-20', endDate: '2026-11-24', interests: ['culture'] }));
+    expect(day(plan, '2026-11-22').tasks.find((t) => t.id.endsWith('fest-great-run-addis'))?.time).toBe('07:30');
+    expect(pre(plan, 'fest-book-great-run')?.detail).toMatch(/Wed, Nov 11/);
+    expect(holidayNotes('2026-11-22').some((n) => /Great Ethiopian Run/.test(n.text))).toBe(true);
+    // Years without an announced date get nothing rather than a guess.
+    expect(festivals('2027-11-01', '2027-11-30').some((f) => f.key === 'great-run')).toBe(false);
+  });
+
+  it('points travelers elsewhere to Addis Ababa for the run', () => {
+    const plan = generatePlan(trip({ cityId: 'hawassa', startDate: '2026-11-20', endDate: '2026-11-24', interests: ['culture'] }));
+    const prep = pre(plan, 'fest-route-great-run');
+    expect(prep?.title).toBe('Decide where to spend the Great Ethiopian Run');
+    expect(prep?.detail).toMatch(/^The Great Ethiopian Run is on Sun, Nov 22/);
   });
 });

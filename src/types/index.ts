@@ -146,10 +146,14 @@ export interface Festival {
   /** Cities with the celebrations worth travelling for, best first. */
   cityIds: string[];
   events: FestivalEvent[];
+  /** When the celebrations happen, for prep advice. Defaults to the afternoon before until the next morning. */
+  when?: string;
+  /** Advice once the route catches it. Defaults to booking rooms early. */
+  book?: { title: string; detail: string };
 }
 
 export interface DayNote {
-  kind: 'holiday' | 'fasting' | 'safety' | 'move' | 'season';
+  kind: 'holiday' | 'fasting' | 'safety' | 'move' | 'season' | 'event';
   text: string;
 }
 
