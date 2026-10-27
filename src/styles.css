@@ -377,6 +377,7 @@ h1, h2, h3 { text-wrap: balance; margin: 0; }
 .note-safety b { color: var(--danger); }
 .note-move b { color: var(--c-logistics); }
 .note-season b { color: var(--c-prep); }
+.note-event b { color: var(--accent-ink); }
 .city-list { display: grid; gap: 0; }
 .city-list > div { padding: 10px 0; border-bottom: 1px solid var(--line); display: grid; gap: 2px; }
 .city-list > div:last-child { border-bottom: 0; }

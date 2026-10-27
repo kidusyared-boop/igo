@@ -186,6 +186,7 @@ export const am: Record<keyof typeof en, string> = {
   'note.safety': 'ደህንነት',
   'note.move': 'ጉዞ',
   'note.season': 'የአየር ሁኔታ',
+  'note.event': 'ዝግጅት',
   'sun.sunrise': 'ፀሐይ መውጫ',
   'sun.sunset': 'ፀሐይ መግቢያ',
   'sun.golden': 'ወርቃማ ሰዓት',

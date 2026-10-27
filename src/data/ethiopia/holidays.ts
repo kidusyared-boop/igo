@@ -1,4 +1,4 @@
-import { addDays } from '../../utils/dates';
+import { addDays, formatDay } from '../../utils/dates';
 import { fromEthiopian, toEthiopian } from '../../utils/ethiopian';
 import type { DayNote, Festival, FestivalEvent } from '../../types';
 
@@ -40,6 +40,26 @@ function ethiopianFeast(month: number, day: number) {
   };
 }
 
+/**
+ * Irreecha: Abbaa Gadaa leaders announce the date each year. It has fallen on
+ * the Sunday from 2 to 8 October (Hora Harsadi at Bishoftu), with Hora Finfinne
+ * in Addis Ababa the Saturday before, so this is an expected date.
+ */
+export function irreecha(gYear: number): string {
+  for (let d = 2; d <= 8; d += 1) {
+    const iso = `${gYear}-10-0${d}`;
+    if (new Date(`${iso}T12:00:00Z`).getUTCDay() === 0) return iso;
+  }
+  return '';
+}
+
+/** The Great Ethiopian Run is set by its organisers each year; add each new date from ethiopianrun.org. */
+const GREAT_RUN: Record<number, { date: string; registerBy: string }> = {
+  2026: { date: '2026-11-22', registerBy: '2026-11-11' },
+};
+
+const greatRun = (gYear: number) => GREAT_RUN[gYear]?.date ?? '';
+
 const FIXED: Fixed[] = [
   { name: 'Genna (Christmas)', detail: 'Overnight church services; Lalibela draws huge crowds. Many shops close.', date: (y) => `${y}-01-07` },
   { name: 'Timkat (Epiphany)', detail: 'Processions from the eve before. Gondar\'s Fasilides Bath and Lalibela are packed: book rooms months ahead.', date: ethiopianFeast(5, 11) },
@@ -64,6 +84,10 @@ export function holidayNotes(iso: string): DayNote[] {
   const easter = fasika(year);
   if (iso === easter) notes.push({ kind: 'holiday', text: 'Fasika (Easter). The fast ends after midnight services; most businesses close.' });
   if (iso === addDays(easter, -2)) notes.push({ kind: 'holiday', text: 'Siklet (Good Friday). Public holiday; long church services.' });
+  const bishoftu = irreecha(year);
+  if (iso === addDays(bishoftu, -1)) notes.push({ kind: 'event', text: 'Irreecha in Addis Ababa (expected date). Huge crowds gather at Hora Finfinne in the morning and central roads close.' });
+  if (iso === bishoftu) notes.push({ kind: 'event', text: 'Irreecha at Bishoftu (expected date). The road from Addis Ababa is jammed all morning.' });
+  if (iso === greatRun(year)) notes.push({ kind: 'event', text: 'Great Ethiopian Run in Addis Ababa. Roads around Meskel Square, the National Palace and Bole Road close in the morning, so leave extra time for the airport.' });
   const islamic = ISLAMIC[iso];
   if (islamic) notes.push({ kind: 'holiday', text: `${islamic} (expected; depends on moon sighting). Public holiday.` });
   return notes;
@@ -71,14 +95,23 @@ export function holidayNotes(iso: string): DayNote[] {
 
 type EventDraft = Omit<FestivalEvent, 'date'> & { dayOffset: number };
 
+interface FestivalDraft {
+  key: string;
+  name: string;
+  date: (y: number) => string;
+  cityIds: string[];
+  events: EventDraft[];
+  when?: (date: string) => string;
+  book?: (date: string) => { title: string; detail: string };
+}
+
 const CONFIRM = 'Times shift each year, so confirm with your hotel or guide the day before.';
 
 /**
- * The big three, with the cities where they are worth being for. Times are
- * typical, checked against travel guides and tour operators in October 2026.
- * Irreecha is left out: Abbaa Gadaa leaders announce its date each year.
+ * The big festivals and events, with the cities where they are worth being for.
+ * Times are typical, checked against travel guides and tour operators in October 2026.
  */
-const FESTIVALS: { key: string; name: string; date: (y: number) => string; cityIds: string[]; events: EventDraft[] }[] = [
+const FESTIVALS: FestivalDraft[] = [
   {
     key: 'timkat',
     name: 'Timkat',
@@ -112,6 +145,35 @@ const FESTIVALS: { key: string; name: string; date: (y: number) => string; cityI
       { key: 'meskel-eve-addis', cityId: 'addis', dayOffset: -1, start: '14:00', end: '20:00', title: 'Demera: the Meskel bonfire at Meskel Square', detail: `Processions converge on the square from early afternoon and the bonfire is lit at nightfall. Arrive by 14:00 for a filming spot. ${CONFIRM}` },
     ],
   },
+  {
+    key: 'irreecha',
+    name: 'Irreecha',
+    date: irreecha,
+    cityIds: ['addis'],
+    events: [
+      { key: 'irreecha-addis', cityId: 'addis', dayOffset: -1, start: '06:00', end: '11:00', title: 'Irreecha at Hora Finfinne: the Oromo thanksgiving in Addis', detail: `Hundreds of thousands gather in white and traditional dress, carrying fresh grass and flowers to the water to give thanks for the end of the rains. Go on foot, since central roads close. Ask before photographing people at prayer. ${CONFIRM}` },
+      { key: 'irreecha-bishoftu', cityId: 'addis', place: 'Day trip to the Bishoftu crater lakes', dayOffset: 0, start: '05:30', end: '13:00', title: 'Irreecha at Lake Hora Harsadi, Bishoftu', detail: 'Leave Addis by 05:30: Bishoftu is about an hour away and the road jams. Abbaa Gadaa leaders open with blessings, then the crowd walks down to the lake. Stay off the steep slope to the water and keep your way out in mind, because a crush there killed dozens in 2016.' },
+    ],
+    when: (date) => `on the morning of ${formatDay(addDays(date, -1))} in Addis Ababa and the next morning at Bishoftu, an hour away`,
+    book: (date) => ({
+      title: 'Book a car to Bishoftu for Irreecha',
+      detail: `You are in Addis Ababa for Irreecha on ${formatDay(addDays(date, -1))} and ${formatDay(date)}. Abbaa Gadaa leaders confirm the date a few weeks before, so check it then. Book a driver for the early run to Bishoftu now, because cars and Bishoftu rooms sell out.`,
+    }),
+  },
+  {
+    key: 'great-run',
+    name: 'the Great Ethiopian Run',
+    date: greatRun,
+    cityIds: ['addis'],
+    events: [
+      { key: 'great-run-addis', cityId: 'addis', dayOffset: 0, start: '07:30', end: '10:30', title: 'Watch the Great Ethiopian Run at Meskel Square', detail: 'Up to 60,000 runners in matching shirts fill the streets for Africa\'s biggest 10 km race. The elite races start around 08:15, then the mass waves. The start and finish are both at Meskel Square, so film from the terraces. Times are set each year: check ethiopianrun.org the week before.' },
+    ],
+    when: (date) => `on the morning of ${formatDay(date)} at Meskel Square`,
+    book: (date) => ({
+      title: 'Want to run the Great Ethiopian Run? Register early',
+      detail: `The race is on ${formatDay(date)} and international entries close on ${formatDay(GREAT_RUN[Number(date.slice(0, 4))]!.registerBy)} at ethiopianrun.org. Collect your race pack in person in Addis Ababa in the days before. Only watching? Nothing to book, but roads around Meskel Square close that morning.`,
+    }),
+  },
 ];
 
 /** Festivals whose main day or eve falls between two dates. */
@@ -122,7 +184,7 @@ export function festivals(from: string, to: string): Festival[] {
       const date = f.date(y);
       if (!date || date < from || addDays(date, -1) > to) continue;
       const events = f.events.map(({ dayOffset, ...e }) => ({ ...e, date: addDays(date, dayOffset) })).filter((e) => e.date >= from && e.date <= to);
-      out.push({ key: f.key, name: f.name, date, cityIds: f.cityIds, events });
+      out.push({ key: f.key, name: f.name, date, cityIds: f.cityIds, events, when: f.when?.(date), book: f.book?.(date) });
     }
   }
   return out;
