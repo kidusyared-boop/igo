@@ -1,0 +1,73 @@
+console.startGroupCollapsed %cnative %cApp.addListener (#22120973) font-weight: lighter; color: gray font-weight: bold; color: #000
+console.dir Object
+console.endGroup console.groupEnd
+console.startGroupCollapsed %cnative %cApp.addListener (#22120974) font-weight: lighter; color: gray font-weight: bold; color: #000
+console.dir Object
+console.endGroup console.groupEnd
+console.startGroupCollapsed %cnative %cLocalNotifications.addListener (#22120975) font-weight: lighter; color: gray font-weight: bold; color: #000
+console.dir Object
+console.endGroup console.groupEnd
+console.startGroupCollapsed %cnative %cStatusBar.setStyle (#22120976) font-weight: lighter; color: gray font-weight: bold; color: #000
+console.dir Object
+console.endGroup console.groupEnd
+console.startGroupCollapsed %cnative %cStatusBar.setBackgroundColor (#22120977) font-weight: lighter; color: gray font-weight: bold; color: #000
+console.dir Object
+console.endGroup console.groupEnd
+console.startGroupCollapsed %cresult %cStatusBar.setStyle (#22120976) font-style: italic; font-weight: lighter; color: gray font-style: italic; font-weight: bold; color: #444
+console.dir 
+console.endGroup console.groupEnd
+console.startGroupCollapsed %cresult %cStatusBar.setBackgroundColor (#22120977) font-style: italic; font-weight: lighter; color: gray font-style: italic; font-weight: bold; color: #444
+console.dir 
+console.endGroup console.groupEnd
+shot 01-launch: igo ETHIOPIA · TRIP PLANNER PLAN YOUR ETHIOPIA TRIP Visa, eSIM and arrival sorted before you fly Shoots timed to the best light Reminders for every day of the t
+console.startGroupCollapsed %cnative %cStatusBar.setStyle (#22120978) font-weight: lighter; color: gray font-weight: bold; color: #000
+console.dir Object
+console.endGroup console.groupEnd
+console.startGroupCollapsed %cnative %cStatusBar.setBackgroundColor (#22120979) font-weight: lighter; color: gray font-weight: bold; color: #000
+console.dir Object
+console.endGroup console.groupEnd
+tapped Addis and Harar
+console.startGroupCollapsed %cresult %cStatusBar.setStyle (#22120978) font-style: italic; font-weight: lighter; color: gray font-style: italic; font-weight: bold; color: #444
+console.dir 
+console.endGroup console.groupEnd
+console.startGroupCollapsed %cresult %cStatusBar.setBackgroundColor (#22120979) font-style: italic; font-weight: lighter; color: gray font-style: italic; font-weight: bold; color: #444
+console.dir 
+console.endGroup console.groupEnd
+shot 02-example-trip: ADDIS AND HARAR (EXAMPLE) BEFORE YOU GO 0/21 done THU, SEP 24 · 45 DAYS BEFORE PREP Check your government's travel advice for every region on your route Parts o
+tapped Before you go
+shot 03-before-you-go: ADDIS AND HARAR (EXAMPLE) BEFORE YOU GO 0/21 done THU, SEP 24 · 45 DAYS BEFORE PREP Check your government's travel advice for every region on your route Parts o
+tapped Places
+shot 04-places: ADDIS AND HARAR (EXAMPLE) PLACES PICKED FOR YOU Dinner and dancing at Yod Abyssinia Addis Ababa · Dinner · Sun, Nov 8 Because you like restaurants and food, loc
+tapped Country
+shot 05-country: ADDIS AND HARAR (EXAMPLE) ETHIOPIA BRIEF Reviewed 2026-10. Entry, safety and drone rules change often. Confirm on the official e-Visa site and your government's
+tapped Days
+shot 06-days: ADDIS AND HARAR (EXAMPLE) Planned for city life restaurants and food coffee local culture historic sites balanced pace mid-range budget Change Get a reminder on
+tapped Trip options
+shot 07-trip-menu: ADDIS AND HARAR (EXAMPLE) ADDIS AND HARAR (EXAMPLE) Edit trip Add to my calendar Share calendar file (.ics) Turn on reminders Delete trip Planned for city life 
+console.startGroupCollapsed %cnative %cStatusBar.setStyle (#22120980) font-weight: lighter; color: gray font-weight: bold; color: #000
+console.dir Object
+console.endGroup console.groupEnd
+console.startGroupCollapsed %cnative %cStatusBar.setBackgroundColor (#22120981) font-weight: lighter; color: gray font-weight: bold; color: #000
+console.dir Object
+console.endGroup console.groupEnd
+tapped All trips
+console.startGroupCollapsed %cresult %cStatusBar.setStyle (#22120980) font-style: italic; font-weight: lighter; color: gray font-style: italic; font-weight: bold; color: #444
+console.dir 
+console.endGroup console.groupEnd
+console.startGroupCollapsed %cresult %cStatusBar.setBackgroundColor (#22120981) font-style: italic; font-weight: lighter; color: gray font-style: italic; font-weight: bold; color: #444
+console.dir 
+console.endGroup console.groupEnd
+shot 08-back-to-list: igo ETHIOPIA · TRIP PLANNER PLAN YOUR ETHIOPIA TRIP Visa, eSIM and arrival sorted before you fly Shoots timed to the best light Reminders for every day of the t
+console.startGroupCollapsed %cnative %cStatusBar.setStyle (#22120982) font-weight: lighter; color: gray font-weight: bold; color: #000
+console.dir Object
+console.endGroup console.groupEnd
+console.startGroupCollapsed %cnative %cStatusBar.setBackgroundColor (#22120983) font-weight: lighter; color: gray font-weight: bold; color: #000
+console.dir Object
+console.endGroup console.groupEnd
+tapped New trip
+console.startGroupCollapsed %cresult %cStatusBar.setStyle (#22120982) font-style: italic; font-weight: lighter; color: gray font-style: italic; font-weight: bold; color: #444
+console.dir 
+console.endGroup console.groupEnd
+console.startGroupCollapsed %cresult %cStatusBar.setBackgroundColor (#22120983) font-style: italic; font-weight: lighter; color: gray font-style: italic; font-weight: bold; color: #444
+console.dir 
+console.endGroup console.groupEnd

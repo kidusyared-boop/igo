@@ -1,0 +1,76 @@
+10-27 20:18:25.003   523   565 D AppWidgetServiceImpl: Provider info from ComponentInfo{com.android.chrome/org.chromium.chrome.browser.quickactionsearchwidget.QuickActionSearchWidgetProvider$QuickActionSearchWidgetProviderSearch} won't be persisted.
+10-27 20:18:25.003   523   565 D AppWidgetServiceImpl: Provider info from ComponentInfo{com.android.chrome/org.chromium.chrome.browser.quickactionsearchwidget.QuickActionSearchWidgetProvider$QuickActionSearchWidgetProviderDino} won't be persisted.
+10-27 20:18:25.003   523   565 D AppWidgetServiceImpl: Provider info from ComponentInfo{com.android.chrome/org.chromium.chrome.browser.searchwidget.SearchWidgetProvider} won't be persisted.
+10-27 20:18:26.562   523   567 I ActivityManager: Start proc 2835:com.android.chrome/u0a149 for service {com.android.chrome/org.chromium.chrome.browser.customtabs.CustomTabsConnectionService}
+10-27 20:18:26.822   523   567 I ActivityManager: Start proc 2906:com.google.android.webview:webview_service/u0a134 for service {com.google.android.webview/org.chromium.android_webview.services.VariationsSeedServer}
+10-27 20:18:27.659   523   567 I ActivityManager: Start proc 2974:com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0/u0ai9000 for  {app.igo.ethiopia/org.chromium.content.app.SandboxedProcessService0:0}
+10-27 20:18:27.877  2619  2927 W chromium: [WARNING:dns_config_service_android.cc(115)] Failed to read DnsConfig.
+10-27 20:18:28.052  2974  2974 I cr_WebViewApkApp: Launched version=113.0.5672.136 minSdkVersion=29 isBundle=false processName=com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0
+10-27 20:18:28.253  2619  2619 D Capacitor: Starting BridgeActivity
+10-27 20:18:28.277  2619  2619 D Capacitor: Registering plugin instance: CapacitorCookies
+10-27 20:18:28.283  2619  2619 D Capacitor: Registering plugin instance: WebView
+10-27 20:18:28.285  2619  2619 D Capacitor: Registering plugin instance: CapacitorHttp
+10-27 20:18:28.288  2619  2619 D Capacitor: Registering plugin instance: App
+10-27 20:18:28.289  2619  2619 D Capacitor: Registering plugin instance: Filesystem
+10-27 20:18:28.292  2619  2619 D Capacitor: Registering plugin instance: LocalNotifications
+10-27 20:18:28.311  2619  2619 D Capacitor: Registering plugin instance: Share
+10-27 20:18:28.315  2619  2619 D Capacitor: Registering plugin instance: SplashScreen
+10-27 20:18:28.318  2619  2619 D Capacitor: Registering plugin instance: StatusBar
+10-27 20:18:28.329  2619  2619 V Capacitor/StatusBarPlugin: Notifying listeners for event statusBarOverlayChanged
+10-27 20:18:28.330  2619  2619 D Capacitor/StatusBarPlugin: No listeners found for event statusBarOverlayChanged
+10-27 20:18:28.336  2619  2619 V Capacitor/StatusBarPlugin: Notifying listeners for event statusBarOverlayChanged
+10-27 20:18:28.336  2619  2619 D Capacitor/StatusBarPlugin: No listeners found for event statusBarOverlayChanged
+10-27 20:18:28.337  2619  2619 D Capacitor: Registering plugin instance: CapacitorCalendar
+10-27 20:18:28.400  2619  2619 W Capacitor: Unable to read file at path public/plugins
+10-27 20:18:28.419  2619  2619 D Capacitor: Loading app at https://localhost
+10-27 20:18:28.509  2619  2619 D Capacitor: App started
+10-27 20:18:28.516  2619  2619 D Capacitor/AppPlugin: Firing change: true
+10-27 20:18:28.517  2619  2619 V Capacitor/AppPlugin: Notifying listeners for event appStateChange
+10-27 20:18:28.518  2619  2619 D Capacitor/AppPlugin: No listeners found for event appStateChange
+10-27 20:18:28.521  2619  2619 D Capacitor: App resumed
+10-27 20:18:28.587  2619  2983 D Capacitor: Handling local request: https://localhost/
+10-27 20:18:28.868   523   567 I ActivityManager: Start proc 3199:com.google.android.webview:webview_apk/u0a134 for service {com.google.android.webview/org.chromium.android_webview.nonembedded.AwComponentUpdateService}
+10-27 20:18:29.000  2619  2983 D Capacitor: Handling local request: https://localhost/assets/index-D--4YNsZ.css
+10-27 20:18:29.008  2619  2928 D Capacitor: Handling local request: https://localhost/assets/index-Doq8NFYn.js
+10-27 20:18:30.395  3199  3309 W cr_AWNetworkFetcherTask: 	at org.chromium.android_webview.nonembedded.NetworkFetcherTask.download(chromium-TrichromeWebViewGoogle6432.apk-stable-567263637:48)
+10-27 20:18:30.754  2619  2928 D Capacitor: Handling local request: https://localhost/assets/big-shoulders-display-latin-800-normal-DDUD9Xuh.woff2
+10-27 20:18:30.757  2619  2928 D Capacitor: Handling local request: https://localhost/assets/ibm-plex-mono-latin-600-normal-BgSNZQsw.woff2
+10-27 20:18:30.760  2619  2928 D Capacitor: Handling local request: https://localhost/assets/ibm-plex-sans-latin-400-normal-CDDApCn2.woff2
+10-27 20:18:30.761  2619  2983 D Capacitor: Handling local request: https://localhost/assets/ibm-plex-sans-latin-600-normal-CuJfVYMP.woff2
+10-27 20:18:30.765  2619  2928 D Capacitor: Handling local request: https://localhost/assets/big-shoulders-display-latin-700-normal-KM2fueoL.woff2
+10-27 20:18:30.860  2619  2619 V Capacitor/Plugin: To native (Capacitor plugin): callbackId: 22120973, pluginId: App, methodName: addListener
+10-27 20:18:30.861  2619  2619 V Capacitor: callback: 22120973, pluginId: App, methodName: addListener, methodData: {"eventName":"backButton"}
+10-27 20:18:30.861  2619  2619 V Capacitor/Plugin: To native (Capacitor plugin): callbackId: 22120974, pluginId: App, methodName: addListener
+10-27 20:18:30.861  2619  2619 V Capacitor: callback: 22120974, pluginId: App, methodName: addListener, methodData: {"eventName":"resume"}
+10-27 20:18:30.861  2619  2619 V Capacitor/Plugin: To native (Capacitor plugin): callbackId: 22120975, pluginId: LocalNotifications, methodName: addListener
+10-27 20:18:30.861  2619  2619 V Capacitor: callback: 22120975, pluginId: LocalNotifications, methodName: addListener, methodData: {"eventName":"localNotificationActionPerformed"}
+10-27 20:18:30.861  2619  2619 V Capacitor/Plugin: To native (Capacitor plugin): callbackId: 22120976, pluginId: StatusBar, methodName: setStyle
+10-27 20:18:30.862  2619  2619 V Capacitor: callback: 22120976, pluginId: StatusBar, methodName: setStyle, methodData: {"style":"DARK"}
+10-27 20:18:30.862  2619  2619 V Capacitor/Plugin: To native (Capacitor plugin): callbackId: 22120977, pluginId: StatusBar, methodName: setBackgroundColor
+10-27 20:18:30.862  2619  2619 V Capacitor: callback: 22120977, pluginId: StatusBar, methodName: setBackgroundColor, methodData: {"color":"#1d2a4d"}
+10-27 20:18:30.869  2619  2928 D Capacitor: Handling local request: https://localhost/icon.svg
+10-27 20:18:32.882  2619  2619 I Capacitor/Console: File:  - Line 333 - Msg: undefined
+10-27 20:18:32.882  2619  2619 I Capacitor/Console: File:  - Line 333 - Msg: undefined
+10-27 20:18:41.613  2619  2619 V Capacitor/Plugin: To native (Capacitor plugin): callbackId: 22120978, pluginId: StatusBar, methodName: setStyle
+10-27 20:18:41.613  2619  2619 V Capacitor: callback: 22120978, pluginId: StatusBar, methodName: setStyle, methodData: {"style":"LIGHT"}
+10-27 20:18:41.615  2619  2619 V Capacitor/Plugin: To native (Capacitor plugin): callbackId: 22120979, pluginId: StatusBar, methodName: setBackgroundColor
+10-27 20:18:41.615  2619  2619 V Capacitor: callback: 22120979, pluginId: StatusBar, methodName: setBackgroundColor, methodData: {"color":"#eef1f5"}
+10-27 20:18:41.710  2619  2927 D Capacitor: Handling local request: https://localhost/assets/ibm-plex-sans-latin-500-normal-6ng42L7E.woff2
+10-27 20:18:41.714  2619  2928 D Capacitor: Handling local request: https://localhost/assets/ibm-plex-mono-latin-500-normal-DSY6xOcd.woff2
+10-27 20:18:41.800  2619  2619 I Capacitor/Console: File:  - Line 333 - Msg: undefined
+10-27 20:18:41.813  2619  2619 I Capacitor/Console: File:  - Line 333 - Msg: undefined
+10-27 20:18:58.473  2619  2619 V Capacitor/Plugin: To native (Capacitor plugin): callbackId: 22120980, pluginId: StatusBar, methodName: setStyle
+10-27 20:18:58.473  2619  2619 V Capacitor: callback: 22120980, pluginId: StatusBar, methodName: setStyle, methodData: {"style":"DARK"}
+10-27 20:18:58.474  2619  2619 V Capacitor/Plugin: To native (Capacitor plugin): callbackId: 22120981, pluginId: StatusBar, methodName: setBackgroundColor
+10-27 20:18:58.474  2619  2619 V Capacitor: callback: 22120981, pluginId: StatusBar, methodName: setBackgroundColor, methodData: {"color":"#1d2a4d"}
+10-27 20:18:58.478  2619  2619 I Capacitor/Console: File:  - Line 333 - Msg: undefined
+10-27 20:18:58.571  2619  2619 I Capacitor/Console: File:  - Line 333 - Msg: undefined
+10-27 20:19:01.488  2619  2619 V Capacitor/Plugin: To native (Capacitor plugin): callbackId: 22120982, pluginId: StatusBar, methodName: setStyle
+10-27 20:19:01.488  2619  2619 V Capacitor: callback: 22120982, pluginId: StatusBar, methodName: setStyle, methodData: {"style":"LIGHT"}
+10-27 20:19:01.496  2619  2619 V Capacitor/Plugin: To native (Capacitor plugin): callbackId: 22120983, pluginId: StatusBar, methodName: setBackgroundColor
+10-27 20:19:01.496  2619  2619 V Capacitor: callback: 22120983, pluginId: StatusBar, methodName: setBackgroundColor, methodData: {"color":"#eef1f5"}
+10-27 20:19:01.508  2619  2619 I Capacitor/Console: File:  - Line 333 - Msg: undefined
+10-27 20:19:01.652  2619  2619 I Capacitor/Console: File:  - Line 333 - Msg: undefined
+10-27 20:19:02.568  4312  5086 I cr_CronetUrlRequestContext: destroyNativeStreamLocked org.chromium.net.impl.CronetBidirectionalStream@31ce07a
+10-27 20:19:04.283   523   552 W ActivityManager: Exception when unbinding service app.igo.ethiopia/org.chromium.content.app.SandboxedProcessService0:0
+10-27 20:19:04.283   523   552 I ActivityManager: Killing 2974:com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0/u0a192i0 (adj 900): isolated not needed
